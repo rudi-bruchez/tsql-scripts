@@ -1,3 +1,7 @@
+------------------------------------------------------------
+-- retrieves the tasks in the waiting queue in SQL Server 
+-- rudi@babaluga.com, go ahead license
+------------------------------------------------------------
 SELECT
 	s.session_id
    ,CAST(s.login_time AS DATETIME2(0)) AS login_time

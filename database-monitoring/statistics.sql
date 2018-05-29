@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------
 -- Listing potential duplication in auto generated statistics in SQL Server 
--- rudi@babaluga.com, go ahead licence
+-- rudi@babaluga.com, go ahead license
 -------------------------------------------------------------------------------
 SELECT 
 	OBJECT_NAME(stat.object_id) as tbl,
