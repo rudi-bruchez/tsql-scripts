@@ -1,7 +1,9 @@
+
+----------------------------------------------------------------------------------------------------------
+-- 1. Monitoring using XEvents
 -- Borrowed from David Barbarin, slightly modified
 -- https://blog.dbi-services.com/sql-server-2016-alwayson-direct-seeding-and-performance-considerations/
-
--- 1. Create Event Session
+----------------------------------------------------------------------------------------------------------
 CREATE EVENT SESSION [hadr_direct_seeding] 
 ON SERVER 
 ADD EVENT sqlserver.hadr_automatic_seeding_start ( 
