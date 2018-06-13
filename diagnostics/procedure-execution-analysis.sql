@@ -6,6 +6,7 @@
 -----------------------------------------------------------------
 
 SELECT 
+	OBJECT_NAME(ps.object_id) as procedure_name,
 	ps.cached_time, 
 	ps.last_execution_time,
 	ps.execution_count,
@@ -15,4 +16,5 @@ SELECT
 	qp.query_plan
 FROM sys.dm_exec_procedure_stats ps
 CROSS APPLY sys.dm_exec_query_plan(ps.plan_handle) qp
-WHERE ps.object_id = OBJECT_ID('<PROCEDURE NAME>');
+WHERE ps.database_id = DB_ID()
+AND ps.object_id = OBJECT_ID('<PROCEDURE NAME>');
