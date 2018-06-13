@@ -6,7 +6,8 @@
 
 SELECT	
 	object_name(object_id) as [table], 
-	d.equality_columns + COALESCE(', ' + d.inequality_columns, '') as key_columns,
+	d.equality_columns,
+	d.inequality_columns,
 	d.included_columns,
 	s.avg_total_user_cost,
 	s.avg_user_impact,
