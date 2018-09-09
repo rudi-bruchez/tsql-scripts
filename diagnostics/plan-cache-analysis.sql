@@ -70,6 +70,9 @@ GROUP BY cacheobjtype,
 	CASE WHEN usecounts = 1 THEN '1 time' ELSE 'many times' END
 WITH ROLLUP;
 
+-----------------------------------------------------
+--    analysis for optimize for adhoc workloads    --
+-----------------------------------------------------
 SELECT
 	'total' as type,
 	CAST(SUM(CAST(cp.size_in_bytes as bigint)/1024.00) / 1024 as decimal(10, 2)) AS [Plan Size in MB]
