@@ -5,7 +5,7 @@
 
 SELECT OBJECT_NAME(ips.object_id) as [table], i.name as [index], i.index_id, 
 	ips.index_type_desc as [type], ips.alloc_unit_type_desc as [alloc], 
-	CAST(ips.avg_fragmentation_in_percent as numeric(4,2)) as [frag%], 
+	CAST(ips.avg_fragmentation_in_percent as numeric(5,2)) as [frag%], 
 	ips.fragment_count, ips.page_count, 
 	COALESCE(ips.forwarded_record_count, 0) as forwarded_records, i.is_unique
 FROM sys.dm_db_index_physical_stats(DB_ID(), NULL, NULL, NULL, NULL) ips
