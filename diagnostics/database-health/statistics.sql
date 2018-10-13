@@ -1,5 +1,6 @@
 -------------------------------------------------------------------------------
--- Listing potential duplication in auto generated statistics in SQL Server 
+-- Listing column statistics, ordered by columns to detect 
+-- potential duplication in auto generated statistics in SQL Server 
 -- rudi@babaluga.com, go ahead license
 -------------------------------------------------------------------------------
 SELECT 
