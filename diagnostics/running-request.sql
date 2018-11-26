@@ -10,4 +10,55 @@ OUTER APPLY sys.dm_exec_sql_text(r.sql_handle) t
 WHERE r.session_id > 50
 AND r.command NOT IN ('VDI_CLIENT_WORKER', 'PARALLEL REDO TASK', 'UNKNOWN TOKEN', 'PARALLEL REDO HELP TASK', 
 	'BRKR TASK', 'DB STARTUP', 'TASK MANAGER', 'HADR_AR_MGR_NOTIFICATION_WORKER') -- removing AlwaysOn processes
-AND t.text NOT IN ('sp_server_diagnostics');
+AND t.text NOT IN ('sp_server_diagnostics')
+OPTION (RECOMPILE);
+
+-- with full details, for SQL 2008
+-- TODO : add sys.dm_exec_input_buffer for more recent versions
+SELECT 
+	CAST(SYSDATETIME() as DATETIME2(3)) as quand,
+	r.session_id,
+	r.start_time,
+	r.status,
+	r.command,
+	t.text,
+	--r.statement_end_offset, r.statement_start_offset,
+	CASE 
+		WHEN r.statement_start_offset > 0 AND r.statement_end_offset > 0 THEN 
+			SUBSTRING(t.text, 
+				r.statement_start_offset / 2, 
+				(r.statement_end_offset - r.statement_start_offset) / 2) 
+		ELSE t.text END as text_offset,
+	OBJECT_NAME(t.objectid, r.database_id) as [proc],
+	DB_NAME(r.database_id) as db,
+	r.blocking_session_id,
+	r.wait_type,
+	r.wait_time,
+	r.last_wait_type,
+	r.open_transaction_count,
+	r.open_resultset_count,
+	r.cpu_time,
+	r.total_elapsed_time,
+	r.reads,
+	r.logical_reads,
+	r.row_count,
+	r.granted_query_memory,
+	r.executing_managed_code, 
+	qp.query_plan,
+	CAST(tqp.query_plan as XML) as specific_plan,
+	mg.dop,
+	mg.requested_memory_kb,
+	mg.granted_memory_kb,
+	mg.max_used_memory_kb,
+	mg.is_small
+FROM sys.dm_exec_requests r
+CROSS APPLY sys.dm_exec_sql_text (r.plan_handle) t
+CROSS APPLY sys.dm_exec_query_plan(r.plan_handle) qp
+OUTER APPLY sys.dm_exec_text_query_plan(plan_handle, r.statement_start_offset, r.statement_end_offset) tqp
+LEFT JOIN sys.dm_exec_query_memory_grants mg ON mg.session_id = r.session_id AND mg.request_id = r.request_id
+WHERE r.session_id > 50
+AND r.command NOT IN ('VDI_CLIENT_WORKER', 'PARALLEL REDO TASK', 'UNKNOWN TOKEN', 'PARALLEL REDO HELP TASK', 
+	'BRKR TASK', 'DB STARTUP', 'TASK MANAGER', 'HADR_AR_MGR_NOTIFICATION_WORKER') -- removing AlwaysOn processes
+AND t.text NOT IN ('sp_server_diagnostics')
+ORDER BY total_elapsed_time DESC
+OPTION (RECOMPILE);
