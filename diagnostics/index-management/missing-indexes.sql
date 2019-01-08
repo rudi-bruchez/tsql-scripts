@@ -9,10 +9,10 @@ SELECT
 	d.equality_columns,
 	d.inequality_columns,
 	d.included_columns,
-	s.avg_total_user_cost,
+	CAST(s.avg_total_user_cost as decimal(8,2)) as avg_total_user_cost,
 	s.avg_user_impact,
 	s.user_seeks + s.user_scans as usage,
-	COALESCE(s.last_user_seek, s.last_user_scan) as last_usage
+	CAST(COALESCE(s.last_user_seek, s.last_user_scan) as datetime2(0)) as last_usage
 FROM	sys.dm_db_missing_index_details d 
 INNER JOIN sys.dm_db_missing_index_groups g
 	ON	d.index_handle = g.index_handle

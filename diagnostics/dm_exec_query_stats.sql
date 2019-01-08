@@ -14,6 +14,7 @@ SELECT TOP 100
 	qp.query_plan, 
 	qs.creation_time, 
 	qs.last_execution_time, 
+	qs.execution_count / ISNULL(NULLIF(DATEDIFF(hour, qs.creation_time, qs.last_execution_time), 0), 1) AS executions_per_hour,
 	qs.total_worker_time,
 	qs.last_worker_time,
 	qs.min_worker_time,
