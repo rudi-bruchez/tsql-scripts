@@ -5,6 +5,6 @@ SELECT
 / 1024)) / 1024 AS 'taille utilisée GB'
 FROM sys.master_files mf
 JOIN sys.databases db ON mf.database_id = db.database_id
-WHERE DB_NAME(mf.database_id) = 'DWH'
+WHERE DB_NAME(mf.database_id) = '<DATABASE NAME>'
 AND mf.type_desc = 'ROWS';
 
