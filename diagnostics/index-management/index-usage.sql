@@ -36,6 +36,8 @@ ORDER BY tbl;
 -- Get index usage on a specific SQL Server table  
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
+SELECT sqlserver_start_time FROM sys.dm_os_sys_info;
+GO
 
 SELECT 
 	SCHEMA_NAME(t.schema_id) + '.' + OBJECT_NAME(ius.object_id) as tbl,
@@ -59,3 +61,37 @@ AND ius.object_id = OBJECT_ID('<TABLE NAME>')
 AND i.type_desc = N'NONCLUSTERED'
 AND i.is_primary_key = 0
 ORDER BY tbl, ps.page_count DESC;
+
+-------------------------------------------------------------------------------------
+-- Really unused indexes in the database. Look at the last server start date to 
+-- evaluate index usage. Then use the last column DDL statement
+-- to remove the indexes.
+-------------------------------------------------------------------------------------
+
+;WITH size AS (
+	SELECT s.[object_id], s.[index_id], 
+		SUM(s.[used_page_count]) * 8 AS IndexSizeKB
+	FROM sys.dm_db_partition_stats AS s
+	GROUP BY s.[object_id], s.[index_id]
+)
+SELECT 
+	SCHEMA_NAME(t.schema_id) + '.' + OBJECT_NAME(ius.object_id) as tbl,
+	i.name as idx, 
+	i.type_desc as idxType,
+	i.is_unique,
+	i.is_primary_key,
+	ius.user_seeks, 
+	ius.user_scans, 
+	ius.user_updates, 
+	ius.last_user_seek, 
+	ius.last_user_scan, 
+	ius.last_user_update,
+	s.IndexSizeKB,
+	'DROP INDEX [' + i.name + '] ON [' + SCHEMA_NAME(t.schema_id) + '].[' + OBJECT_NAME(ius.object_id) + ']'
+FROM sys.dm_db_index_usage_stats ius
+JOIN sys.indexes i ON ius.object_id = i.object_id AND ius.index_id = i.index_id
+JOIN sys.tables t ON i.object_id = t.object_id
+JOIN size s ON t.object_id = s.object_id AND i.index_id = s.index_id
+WHERE database_id = DB_ID()
+AND ius.user_seeks + ius.user_scans = 0 AND i.type_desc = N'NONCLUSTERED'
+ORDER BY tbl;
