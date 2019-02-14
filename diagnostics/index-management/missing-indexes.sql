@@ -5,7 +5,7 @@
 -----------------------------------------------------------------
 
 SELECT	
-	object_name(object_id) as [table], 
+	object_name(d.object_id) as [table], 
 	d.equality_columns,
 	d.inequality_columns,
 	d.included_columns,
@@ -19,7 +19,8 @@ INNER JOIN sys.dm_db_missing_index_groups g
 INNER JOIN sys.dm_db_missing_index_group_stats s
 	ON	g.index_group_handle = s.group_handle
 WHERE	database_id = db_id()
-ORDER BY  s.user_seeks DESC, object_id;
+--AND object_name(d.object_id) IN (N'TABLE_NAME') 
+ORDER BY  s.user_seeks DESC, d.object_id;
 
 -------------------------------
 --   to create the indexes   --
