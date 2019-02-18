@@ -10,7 +10,7 @@ SELECT TOP 100
 	qs.total_logical_reads / qs.execution_count as average_logical_reads,
 	qs.total_worker_time / qs.execution_count as average_worker_time,
 	qs.last_rows,
-	st.text, 
+	REPLACE(REPLACE(st.text, '-', ''), '*', '') as [text], -- some random cleaning. the sql text often starts with long comment lines.
 	qp.query_plan, 
 	qs.creation_time, 
 	qs.last_execution_time, 
@@ -40,6 +40,7 @@ CROSS APPLY sys.dm_exec_query_plan(qs.plan_handle) qp
 WHERE qs.execution_count > 1
 --AND st.dbid IS NOT NULL AND st.dbid <> 32767 -- resource 
 --AND st.dbid = DB_ID() -- only the current database
+AND CAST(qs.last_execution_time as time) BETWEEN '08:00:00' AND '21:00:00' -- do not take night batches into account
 ORDER BY average_logical_reads DESC;
 
 -----------------------------------------------------------------
