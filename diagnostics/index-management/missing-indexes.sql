@@ -6,6 +6,7 @@
 
 SELECT	
 	object_name(d.object_id) as [table], 
+	COALESCE(d.equality_columns + ', ' + d.inequality_columns, d.equality_columns, d.inequality_columns) as [key],
 	d.equality_columns,
 	d.inequality_columns,
 	d.included_columns,
@@ -20,7 +21,7 @@ INNER JOIN sys.dm_db_missing_index_group_stats s
 	ON	g.index_group_handle = s.group_handle
 WHERE	database_id = db_id()
 --AND object_name(d.object_id) IN (N'TABLE_NAME') 
-ORDER BY  s.user_seeks DESC, d.object_id;
+ORDER BY object_name(d.object_id), s.user_seeks DESC, d.object_id;
 
 -------------------------------
 --   to create the indexes   --
