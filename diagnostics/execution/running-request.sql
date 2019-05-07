@@ -1,4 +1,4 @@
--- list running requests with query text 
+-- 1. list running requests with query text 
 
 SELECT r.session_id, s.login_name, s.host_name, r.start_time, r.status, r.command, t.text,
 	DB_NAME(r.database_id) as db, r.wait_type, r.wait_time, r.last_wait_type,
@@ -15,7 +15,7 @@ AND r.wait_type NOT IN ('BROKER_RECEIVE_WAITFOR')
 AND r.session_id <> @@SPID
 OPTION (RECOMPILE);
 
--- short version
+-- 2. short version
 SELECT r.session_id, t.text, r.status, DB_NAME(database_id) as db, wait_type, wait_time, last_wait_type, open_transaction_count, p.query_plan
 FROM sys.dm_exec_requests r
 CROSS APPLY sys.dm_exec_sql_text(r.sql_handle) t
@@ -23,7 +23,7 @@ OUTER APPLY sys.dm_exec_query_plan(r.plan_handle) p
 WHERE r.session_id > 50 AND r.session_id <> @@SPID
 AND last_wait_type NOT IN ('SP_SERVER_DIAGNOSTICS_SLEEP')
 
--- with full details, for SQL 2008
+-- 3. with full details, for SQL 2008
 -- TODO : add sys.dm_exec_input_buffer for more recent versions
 SELECT 
 	CAST(SYSDATETIME() as DATETIME2(3)) as quand,
