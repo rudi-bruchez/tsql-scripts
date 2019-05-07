@@ -4,6 +4,8 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT TOP 100
 	DB_NAME(st.dbid) as db,
 	qs.execution_count,
@@ -38,10 +40,15 @@ FROM sys.dm_exec_query_stats qs
 CROSS APPLY sys.dm_exec_sql_text(qs.plan_handle) st
 CROSS APPLY sys.dm_exec_query_plan(qs.plan_handle) qp
 WHERE qs.execution_count > 1
---AND st.dbid IS NOT NULL AND st.dbid <> 32767 -- resource 
---AND st.dbid = DB_ID() -- only the current database
-AND CAST(qs.last_execution_time as time) BETWEEN '08:00:00' AND '21:00:00' -- do not take night batches into account
-ORDER BY average_logical_reads DESC;
+--AND st.dbid IS NOT NULL AND st.dbid <> 32767 -- resource
+
+-- *** only the current database ***
+--AND st.dbid = DB_ID()
+
+-- *** do not take night batches into account ***
+-- AND CAST(qs.last_execution_time as time) BETWEEN '08:00:00' AND '21:00:00' 
+ORDER BY average_logical_reads DESC
+OPTION (RECOMPILE, MAXDOP 1);
 
 -----------------------------------------------------------------
 -- export to XML 
