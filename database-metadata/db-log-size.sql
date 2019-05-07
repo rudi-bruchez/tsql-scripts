@@ -14,3 +14,22 @@ AND counter_name IN ('Log File(s) Size (KB)', 'Percent Log Used', 'Log File(s) U
 AND instance_name NOT IN ('_Total', 'master', 'model', 'mssqlsystemresource')
 GROUP BY instance_name
 ORDER BY instance_name;
+
+-- a new one, using PIVOT ...
+SELECT 
+	instance_name as [database],
+	CAST([Log File(s) Size (KB)] / 1024.0 as decimal(20,2)) as log_size_mb,
+	[Percent Log Used] as percent_used,
+	db.recovery_model_desc as recovery_model,
+	db.log_reuse_wait_desc as log_reuse_wait 
+FROM (
+	SELECT counter_name, cntr_value, instance_name
+	FROM sys.dm_os_performance_counters
+	WHERE counter_name IN ('Log File(s) Size (KB)', 'Percent Log Used')) as t
+	PIVOT  
+	(  
+	MIN(cntr_value)  
+	FOR counter_name IN ([Log File(s) Size (KB)], [Percent Log Used])  
+) AS pt
+JOIN sys.databases db ON pt.instance_name = db.name
+ORDER BY [database];  
