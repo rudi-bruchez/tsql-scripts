@@ -91,9 +91,9 @@ IF EXISTS (
 
 	EXEC msdb.dbo.sp_send_dbmail 
 		@profile_name = 'PROFIL',
-		@recipients = 'DESTINATAIRE',
+		@recipients = 'RECIPIENT',
 		@copy_recipients = 'rudi@babaluga.com',
-		@subject = '[DATABASE] ALERTE - blocage en cours',   
+		@subject = '[DATABASE] ALERT - blocking',   
 		@body = @body,
 		@body_format = 'HTML',
 		@importance = 'high';
