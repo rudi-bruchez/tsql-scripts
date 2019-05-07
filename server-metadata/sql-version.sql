@@ -2,6 +2,8 @@
 -- get detailed SQL Server version information
 -- rudi@babaluga.com, go ahead license
 -------------------------------------------------------------------------------
+
+-- retrieving detailed SQL Server version information
 SELECT 
 	SERVERPROPERTY('ProductVersion') AS ProductVersion,
 	SERVERPROPERTY('ProductMajorVersion') AS ProductMajorVersion,
