@@ -4,20 +4,19 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+SELECT N'Buffer cache hit ratio' AS counter_name, CAST((ratio.cntr_value * 1.0 / base.cntr_value) * 100.0 AS NUMERIC(5, 2)) as [Value]
+FROM sys.dm_os_performance_counters ratio WITH (READUNCOMMITTED)
+JOIN sys.dm_os_performance_counters base  WITH (READUNCOMMITTED) 
+	ON ratio.object_name = base.object_name
+WHERE RTRIM(ratio.object_name) LIKE N'%:Buffer Manager'
+AND ratio.counter_name = N'Buffer cache hit ratio'
+AND base.counter_name = N'Buffer cache hit ratio base'
+UNION ALL
 SELECT 
-	@@SERVERNAME AS [Server Name], 
-	RTRIM([object_name]) as [object_name], 
 	RTRIM(counter_name) as counter_name, 
-	cntr_value AS [valeur]
-FROM sys.dm_os_performance_counters WITH (NOLOCK)
-WHERE 
-	([object_name] LIKE N'%Buffer Manager%' -- Handle named instances
-	AND counter_name IN (
-		N'Page life expectancy', 
-		N'Buffer cache hit ratio',
-		N'Buffer cache hit ratio base'
-	)
-	)
-	OR ([object_name] LIKE N'%Plan Cache%' AND instance_name = N'_Total' AND counter_name = N'Cache Object Counts')
+	cntr_value AS [value]
+FROM sys.dm_os_performance_counters WITH (READUNCOMMITTED)
+WHERE (RTRIM([object_name]) LIKE N'%:Buffer Manager' -- Handle named instances
+	AND counter_name IN (N'Page life expectancy'))
+OR (RTRIM([object_name]) LIKE N'%:Plan Cache' AND instance_name = N'_Total' AND counter_name = N'Cache Object Counts')
 OPTION (RECOMPILE);
--- todo : 100 * 'Buffer Cache Hit Ratio' / 'Buffer Cache Hit Ratio base'
