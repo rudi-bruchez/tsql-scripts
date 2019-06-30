@@ -41,6 +41,7 @@ CROSS APPLY sys.dm_exec_sql_text(qs.plan_handle) st
 CROSS APPLY sys.dm_exec_query_plan(qs.plan_handle) qp
 WHERE qs.execution_count > 1
 --AND st.dbid IS NOT NULL AND st.dbid <> 32767 -- resource
+-- TODO - find a way to use spool_id from cached plans to filter out the internal pool (1)
 
 -- *** only the current database ***
 --AND st.dbid = DB_ID()
