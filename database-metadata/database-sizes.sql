@@ -17,11 +17,18 @@ PIVOT (
 	SUM([value])
 	FOR [counter] IN ([Data File(s) Size (KB)], [Log File(s) Size (KB)], [Log File(s) Used Size (KB)])
 ) AS pt
+WHERE db NOT IN ('master', 'model', 'mssqlsystemresource')
 ORDER BY db
 OPTION (RECOMPILE);
 
-
---SELECT DISTINCT counter_name
---FROM sys.dm_os_performance_counters pc
---WHERE pc.object_name LIKE '%:Databases%'
+-- 2. used space in the current database
+SELECT 
+	SUM(
+	((CAST(mf.size as bigint) * 8192) / 1024 / 1024) -
+	(((mf.size * CONVERT(FLOAT, 8) - CAST(FILEPROPERTY(mf.name, 'SpaceUsed') AS FLOAT) * CONVERT(FLOAT, 8)))
+/ 1024)) / 1024 AS 'spaced used GB'
+FROM sys.master_files mf
+JOIN sys.databases db ON mf.database_id = db.database_id
+WHERE mf.database_id = DB_ID()
+AND mf.type_desc = 'ROWS';
 
