@@ -11,3 +11,8 @@ WHERE OBJECT_NAME(st.objectid, st.dbid) = '<PROCEDURE NAME>';
 
 -- paste the plan_handle here
 DBCC FREEPROCCACHE (0x0123456....);
+
+-- or, more modern
+
+ALTER DATABASE SCOPED CONFIGURATION
+CLEAR PROCEDURE_CACHE 0x0123456... -- paste the plan_handle here

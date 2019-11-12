@@ -7,7 +7,7 @@ SELECT r.session_id, s.login_name, s.host_name, r.start_time, r.status, r.comman
 FROM sys.dm_exec_requests r
 JOIN sys.dm_exec_sessions s ON r.session_id = s.session_id
 OUTER APPLY sys.dm_exec_sql_text(r.sql_handle) t
-WHERE r.session_id > 50
+WHERE s.is_user_process = 1
 AND r.command NOT IN ('VDI_CLIENT_WORKER', 'PARALLEL REDO TASK', 'UNKNOWN TOKEN', 'PARALLEL REDO HELP TASK', 
 	'BRKR TASK', 'DB STARTUP', 'TASK MANAGER', 'HADR_AR_MGR_NOTIFICATION_WORKER') -- removing uninteresting processes
 AND t.text NOT IN ('sp_server_diagnostics')
