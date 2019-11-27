@@ -16,7 +16,7 @@ cte AS (
     CROSS APPLY sys.dm_exec_sql_text(s.sql_handle) as t 
     CROSS APPLY sys.dm_exec_query_plan(s.plan_handle) as p 
     CROSS APPLY query_plan.nodes('//sp:Object') as p1(n)
-    WHERE n.value(N'@Index', N'sysname') IN (N'[T_FACTURATION_ODS_IDX7]', N'[T_FACTURATION_ODS_IDX2]')
+    WHERE n.value(N'@Index', N'sysname') IN (N'[IX1]', N'[IX2]')
 )
 SELECT 
     IndexName, 

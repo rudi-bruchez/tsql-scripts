@@ -15,15 +15,24 @@ SELECT
 FROM sys.dm_os_waiting_tasks wt
 JOIN sys.dm_exec_sessions s
 	ON wt.session_id = s.session_id
-WHERE s.session_id > 50
-AND s.session_id <> @@SPID
+WHERE s.is_user_process = 1
+AND (
+    (s.session_id <> @@SPID AND s.is_user_process = 1)
+    OR s.session_id IS NULL -- THREADPOOL
+    )
 AND wt.wait_type NOT IN (
 	'XE_LIVE_TARGET_TVF',
 	'BROKER_TASK_STOP',
+    'BROKER_EVENTHANDLER',
 	'XE_DISPATCHER_WAIT',
 	'HADR_WORK_QUEUE',
 	'SP_SERVER_DIAGNOSTICS_SLEEP',
 	'PREEMPTIVE_XE_DISPATCHER',
-    'WAITFOR'
+    'WAITFOR',
+    'BROKER_TRANSMITTER',
+    'BROKER_TO_FLUSH',
+    'HADR_FILESTREAM_IOMGR_IOCOMPLETION',
+    'SLEEP_TASK'
+    -- 'TRACEWRITE' -- to filter out profiler
 )
 ORDER BY s.session_id;

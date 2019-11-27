@@ -7,7 +7,8 @@
 
 -- global
 SELECT 
-	OBJECT_NAME(ps.object_id) as procedure_name,
+	DB_NAME(ps.database_id) as [db],
+	OBJECT_NAME(ps.object_id, ps.database_id) as [proc],
 	ps.cached_time, 
 	ps.last_execution_time,
 	DATEDIFF(day, ps.cached_time, ps.last_execution_time) as days_in_cache,
@@ -29,6 +30,7 @@ OPTION (RECOMPILE);
 
 -- proc analysis
 SELECT 
+	DB_NAME(ps.database_id) as [DB],
 	object_name(ps.object_id) as [proc], 
 	CAST(ps.cached_time as DATETIME2(0)) as cached_time, 
 	CAST(ps.last_execution_time as DATETIME2(0)) as last_execution_time, 
@@ -42,6 +44,7 @@ SELECT
 	ps.max_elapsed_time / 1000 as max_execution_time_ms
 FROM sys.dm_exec_procedure_stats ps
 WHERE object_name(ps.object_id) NOT LIKE N'sp_%'
+-- AND ps.database_id = DB_ID() -- current DB only
 ORDER BY average_execution_per_hour DESC;
 
 -- detailed
