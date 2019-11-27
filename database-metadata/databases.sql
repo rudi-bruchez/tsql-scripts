@@ -17,6 +17,7 @@ SELECT
 		WHEN 120 THEN 'SQL Server 2014'
 		WHEN 130 THEN 'SQL Server 2016'
 		WHEN 140 THEN 'SQL Server 2017'
+		WHEN 150 THEN 'SQL Server 2019'
 		ELSE CAST(compatibility_level as varchar(50))
 	END AS [compatibility_level],
 	user_access_desc as user_access,
