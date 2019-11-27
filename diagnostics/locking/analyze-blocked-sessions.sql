@@ -48,8 +48,8 @@ WITH
         , command
         , text_offset
         , [proc]
-        , database_id
-        , CAST(SUBSTRING(resource_description, resource_description_start,
+        -- , database_id
+        , TRY_CAST(SUBSTRING(resource_description, resource_description_start,
         CHARINDEX(' ', resource_description, resource_description_start)-resource_description_start) AS INT) AS [object_id]
         FROM cte
     )
