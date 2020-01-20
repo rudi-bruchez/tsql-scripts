@@ -12,9 +12,12 @@ SELECT
    ,wt.wait_type
    ,wt.wait_duration_ms
    ,wt.blocking_session_id
+   ,r.command
+   ,t.text
 FROM sys.dm_os_waiting_tasks wt
-JOIN sys.dm_exec_sessions s
-	ON wt.session_id = s.session_id
+JOIN sys.dm_exec_sessions s 	ON wt.session_id = s.session_id
+    JOIN sys.dm_exec_requests r ON r.session_id = s.session_id
+OUTER APPLY sys.dm_exec_sql_text(r.sql_handle) t
 WHERE s.is_user_process = 1
 AND (
     (s.session_id <> @@SPID AND s.is_user_process = 1)
@@ -32,7 +35,8 @@ AND wt.wait_type NOT IN (
     'BROKER_TRANSMITTER',
     'BROKER_TO_FLUSH',
     'HADR_FILESTREAM_IOMGR_IOCOMPLETION',
-    'SLEEP_TASK'
+    'SLEEP_TASK',
+    'XE_TIMER_EVENT'
     -- 'TRACEWRITE' -- to filter out profiler
 )
 ORDER BY s.session_id;

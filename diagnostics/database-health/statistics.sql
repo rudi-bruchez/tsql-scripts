@@ -21,8 +21,8 @@ JOIN sys.columns c ON sc.object_id = c.object_id AND sc.column_id = c.column_id
 JOIN sys.objects o ON stat.object_id = o.object_id
 CROSS APPLY sys.dm_db_stats_properties(stat.object_id, stat.stats_id) AS sp 
 WHERE o.is_ms_shipped = 0
-AND stat.object_id = OBJECT_ID('<TABLE NAME>') -- remove this line if you want a result for the whole database
-AND stat.name LIKE '_WA_Sys_%'
+-- AND stat.object_id = OBJECT_ID('<TABLE NAME>') -- remove this line if you want a result for the whole database
+-- AND stat.name LIKE '_WA_Sys_%'
 ORDER BY tbl, column_name, stat.name;
 
 -- for pre-2012 SQL Server
