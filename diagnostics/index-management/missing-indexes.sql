@@ -21,7 +21,7 @@ INNER JOIN sys.dm_db_missing_index_group_stats s
 	ON	g.index_group_handle = s.group_handle
 WHERE	database_id = db_id()
 --AND object_name(d.object_id) IN (N'TABLE_NAME') 
-ORDER BY object_name(d.object_id), s.user_seeks DESC, d.object_id;
+ORDER BY usage DESC, object_name(d.object_id), s.user_seeks DESC, d.object_id;
 
 -------------------------------
 --   to create the indexes   --
