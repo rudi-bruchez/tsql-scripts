@@ -23,6 +23,7 @@ AND (
     (s.session_id <> @@SPID AND s.is_user_process = 1)
     OR s.session_id IS NULL -- THREADPOOL
     )
+AND s.status NOT IN (N'spleeping')
 AND wt.wait_type NOT IN (
 	'XE_LIVE_TARGET_TVF',
 	'BROKER_TASK_STOP',
@@ -36,7 +37,8 @@ AND wt.wait_type NOT IN (
     'BROKER_TO_FLUSH',
     'HADR_FILESTREAM_IOMGR_IOCOMPLETION',
     'SLEEP_TASK',
-    'XE_TIMER_EVENT'
+    'XE_TIMER_EVENT',
+    'DISPATCHER_QUEUE_SEMAPHORE'
     -- 'TRACEWRITE' -- to filter out profiler
 )
 ORDER BY s.session_id;
