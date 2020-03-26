@@ -11,26 +11,27 @@
 	GROUP BY s.[object_id], s.[index_id]
 )
 SELECT 
-	SCHEMA_NAME(t.schema_id) + '.' + OBJECT_NAME(ius.object_id) as tbl,
+	SCHEMA_NAME(t.schema_id) + '.' + OBJECT_NAME(t.object_id) as tbl,
 	i.name as idx, 
 	i.type_desc as idxType,
 	i.is_unique,
 	i.is_primary_key,
-	ius.user_seeks, 
-	ius.user_scans, 
-	ius.user_updates, 
+	COALESCE(ius.user_seeks, 0) as user_seeks, 
+	COALESCE(ius.user_scans, 0) as user_scans, 
+	COALESCE(ius.user_updates, 0) as user_updates, 
 	ius.last_user_seek, 
 	ius.last_user_scan, 
 	ius.last_user_update,
 	s.IndexSizeKB,
 	SUM(s.IndexSizeKB) OVER () / 1024 as TotalSizeMB
-FROM sys.dm_db_index_usage_stats ius
-JOIN sys.indexes i ON ius.object_id = i.object_id AND ius.index_id = i.index_id
+FROM sys.indexes i 
 JOIN sys.tables t ON i.object_id = t.object_id
 JOIN size s ON t.object_id = s.object_id AND i.index_id = s.index_id
-WHERE database_id = DB_ID()
---AND t.name = N'TABLE_NAME'
+LEFT JOIN sys.dm_db_index_usage_stats ius ON ius.object_id = i.object_id AND ius.index_id = i.index_id AND ius.database_id = DB_ID()
+-- WHERE LOWER(i.name) LIKE '%...%'
+-- AND LOWER(t.name) = N'table'
 ORDER BY tbl;
+
 
 -----------------------------------------------------------------
 -- Get index usage on a specific SQL Server table  
