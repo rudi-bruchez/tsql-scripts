@@ -43,6 +43,9 @@ WHERE qs.execution_count > 1
 --AND st.dbid IS NOT NULL AND st.dbid <> 32767 -- resource
 -- TODO - find a way to use spool_id from cached plans to filter out the internal pool (1)
 
+-- queries executed on the last 24 hours
+AND qs.last_execution_time >= DATEADD(day, -1, CURRENT_TIMESTAMP)
+
 -- *** only the current database ***
 --AND st.dbid = DB_ID()
 
