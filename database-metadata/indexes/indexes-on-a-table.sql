@@ -24,7 +24,8 @@ SELECT
 FROM sys.indexes i
 JOIN sys.partitions p ON p.object_id = i.object_id AND p.index_id = i.index_id
 JOIN sys.tables t ON i.object_id = t.object_id
-LEFT JOIN sys.dm_db_index_usage_stats ius ON ius.object_id = i.object_id AND ius.index_id = i.index_id
+LEFT JOIN sys.dm_db_index_usage_stats ius ON ius.object_id = i.object_id
+	AND ius.index_id = i.index_id AND ius.database_id = DB_ID()
 WHERE t.schema_id = SCHEMA_ID('dbo')
 AND t.name = '<TABLE_NAME>'
 GROUP BY i.object_id, i.index_id;

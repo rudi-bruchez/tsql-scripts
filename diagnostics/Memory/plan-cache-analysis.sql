@@ -64,6 +64,7 @@ SELECT
 		WHEN 0 THEN CASE WHEN usecounts = 1 THEN '1 time' ELSE 'many times' END
 		ELSE 'TOTAL'
 	END as usage,
+    COUNT(*) as [count],
 	CAST(SUM(CAST(size_in_bytes as bigint)) / 1000.0 / 1000 as DECIMAL(10,2)) as size_mb
 FROM sys.dm_exec_cached_plans cp
 GROUP BY cacheobjtype,

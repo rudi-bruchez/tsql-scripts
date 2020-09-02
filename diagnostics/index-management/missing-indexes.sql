@@ -30,7 +30,7 @@ SELECT
 	'CREATE INDEX nix$' + lower(object_name(object_id)) + '$' 
 	+ REPLACE(REPLACE(REPLACE(COALESCE(equality_columns, inequality_columns), ']', ''), '[', ''), ', ', '_')
 	+ ' ON ' + statement + ' (' + COALESCE(equality_columns, inequality_columns) 
-	+ COALESCE(') INCLUDE (' + included_columns, '') + ')'
+	+ COALESCE(') INCLUDE (' + included_columns, '') + ') WITH (ONLINE = ON, DATA_COMPRESSION = ROW, SORT_IN_TEMPDB = ON)'
 FROM	sys.dm_db_missing_index_details d 
 INNER JOIN sys.dm_db_missing_index_groups g
 	ON	d.index_handle = g.index_handle
