@@ -8,7 +8,7 @@
 -- global
 SELECT 
 	DB_NAME(ps.database_id) as [db],
-	OBJECT_NAME(ps.object_id, ps.database_id) as [proc],
+	CONCAT(OBJECT_SCHEMA_NAME(ps.object_id, ps.database_id), '.', OBJECT_NAME(ps.object_id, ps.database_id)) as [proc],
 	ps.cached_time, 
 	ps.last_execution_time,
 	DATEDIFF(day, ps.cached_time, ps.last_execution_time) as days_in_cache,

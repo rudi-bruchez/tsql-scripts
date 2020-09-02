@@ -1,3 +1,4 @@
+-- find query plans using an index, in the plan cache
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
 ;WITH qry AS (
@@ -7,7 +8,7 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 	CROSS APPLY sys.dm_exec_query_plan(qs.plan_handle) qp
 )
 SELECT 
-	OBJECT_NAME(i.object_id) as [table],
+	OBJECT_NAME(i.object_id, ius.database_id) as [table],
 	i.name as [index],
 	ius.user_seeks,
 	ius.user_scans,
