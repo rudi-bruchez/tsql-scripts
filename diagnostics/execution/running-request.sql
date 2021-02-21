@@ -75,7 +75,7 @@ WHERE s.is_user_process = 1
 AND r.command NOT IN ('VDI_CLIENT_WORKER', 'PARALLEL REDO TASK', 'UNKNOWN TOKEN', 'PARALLEL REDO HELP TASK', 
 	'BRKR TASK', 'DB STARTUP', 'TASK MANAGER', 'HADR_AR_MGR_NOTIFICATION_WORKER') -- removing AlwaysOn processes
 AND t.text NOT IN ('sp_server_diagnostics')
-AND r.wait_type NOT IN ('BROKER_RECEIVE_WAITFOR')
+AND (r.wait_type NOT IN (N'BROKER_RECEIVE_WAITFOR', N'HADR_CLUSAPI_CALL', N'XE_LIVE_TARGET_TVF') OR r.wait_type IS NULL)
 AND r.session_id <> @@SPID
 ORDER BY total_elapsed_time DESC
 OPTION (RECOMPILE);
