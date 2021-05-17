@@ -1,4 +1,10 @@
--- seen as DBCC command in sys.dm_exec_requests
+---------------------------------------------
+-- look at index physical stats
+--
+-- rudi@babaluga.com, go ahead license
+---------------------------------------------
+
+DECLARE @table_name sysname = '<TABLE_NAME>';
 
 SELECT i.name
 	,i.index_id
@@ -34,5 +40,5 @@ SELECT i.name
 FROM sys.indexes i
 CROSS APPLY sys.dm_db_index_physical_stats(DB_ID(), i.object_id, i.index_id, NULL, N'DETAILED') ps
 CROSS APPLY sys.dm_db_index_operational_stats(DB_ID(), i.object_id, i.index_id, ps.partition_number) ops
-WHERE i.object_id = OBJECT_ID('<TABLE NAME>')
+WHERE i.object_id = OBJECT_ID(@table_name)
 AND ps.page_count > 0;

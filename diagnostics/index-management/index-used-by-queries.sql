@@ -1,4 +1,7 @@
 -- find query plans using an index, in the plan cache
+
+DECLARE @indexName sysname = '';
+
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
 ;WITH qry AS (
@@ -13,13 +16,14 @@ SELECT
 	ius.user_seeks,
 	ius.user_scans,
 	qry.text,
+	CAST(qry.query_plan as xml) as query_plan,
 	qry.execution_count,
 	qry.last_execution_time,
 	qry.last_elapsed_time
 FROM sys.indexes i
 JOIN sys.dm_db_index_usage_stats ius ON i.object_id = ius.object_id AND i.index_id = ius.index_id
 JOIN qry ON qry.query_plan LIKE '%' + i.name + '%'
-WHERE i.name LIKE 'index-name%'
+WHERE i.name = @indexName
 AND ius.database_id = DB_ID()
-ORDER BY [table], [index]
+ORDER BY execution_count DESC
 OPTION (RECOMPILE);

@@ -1,11 +1,16 @@
-//[System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SqlServer.Smo") | out-null
+# [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.SqlServer.Smo") | out-null
+# Install-Module -Name SqlServer
 Import-Module SqlServer
 
 $cn = new-object Microsoft.SqlServer.Management.Common.ServerConnection
-$cn.ServerInstance = "MW10112\SQL2016"
-$cn.LoginSecure    = $false
-$cn.Login          = "sa"
-$cn.Password       = "sa"
+# ---------------------------------------------------------------------- 
+# ------------                   parameters                 ------------
+$cn.ServerInstance = ".\SQL2019"  # server name
+$cn.LoginSecure    = $true       # set to true for Windows Authentication 
+# $cn.Login          = "sa"
+# $cn.Password       = "sa"
+$destinationFolder = "c:/temp/"     # destination folder
+# ---------------------------------------------------------------------- 
 
 $srv = New-Object Microsoft.SqlServer.Management.Smo.Server($cn);  
 $so = New-Object "Microsoft.SqlServer.Management.Smo.ScriptingOptions";
@@ -23,8 +28,8 @@ $so.Indexes = $TRUE
 #$so.ClusteredIndexes = $TRUE
 #$so.NonClusteredIndexes = $TRUE
 
-#$path = "~/db_scripts/"
-$path = "c:/temp/$(($cn.ServerInstance).replace('\','-'))_$((Get-Date –f 'yyyyMMdd-HHmm'))/"
+$path = "$($destinationFolder)$(($srv.Name).replace('\','-'))_$((Get-Date -f 'yyyyMMdd_HHmm'))/"
+
 if (!(Test-Path -path $path)) { Mkdir $path }
 
 foreach ($db in $srv.Databases) {
@@ -36,10 +41,10 @@ foreach ($db in $srv.Databases) {
 		foreach ($tbl in $db.tables) {
 			if (!$tbl.IsSystemObject) {
 				$so.FileName = $localPath+"tables/"+$tbl.Schema+"."+$tbl.Name+".tbl.sql"
-				#Write-Host "écriture de $($tbl.Name) dans $($so.FileName)"
+				#Write-Host "Ecriture de $($tbl.Name) dans $($so.FileName)"
 				$so.FileName
 				$tbl.Script($so)
-				#$tbl.Script($so) > [$tbl.Name].tbl.sql
+
 			} # if (!$tbl.IsSystemObject)
 		} # foreach $tbl
 		if (!(Test-Path -path ($localPath+"procedures/"))) { Mkdir ($localPath+"procedures/") }
