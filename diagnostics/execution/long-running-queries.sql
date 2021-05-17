@@ -12,14 +12,13 @@ SELECT
 	r.wait_time,
 	r.wait_type,
 	r.last_wait_type,
-	r.open_transaction_count,
+	r.open_transaction_count as trancount,
 	r.open_resultset_count,
 	r.percent_complete,
-	r.estimated_completion_time,
 	r.nest_level,
-	r.total_elapsed_time,
+	r.total_elapsed_time as elapsed_ms,
 	r.cpu_time,
-	r.granted_query_memory,
+	r.granted_query_memory as [mem_grant],
 	r.dop,
 	r.parallel_worker_count,
 	s.host_name,
@@ -31,3 +30,4 @@ CROSS APPLY sys.dm_exec_sql_text(r.sql_handle) t
 WHERE s.is_user_process = 1
 AND r.total_elapsed_time > 30000 -- milliseconds
 AND COALESCE(r.last_wait_type, '') NOT IN ('SP_SERVER_DIAGNOSTICS_SLEEP' /* sp_server_diagnostics */)
+AND r.session_id <> @@SPID -- who knows ?

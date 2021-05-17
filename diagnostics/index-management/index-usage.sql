@@ -3,6 +3,7 @@
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
+DECLARE @table_name sysname = '%';
 
 ;WITH cte AS (
 	SELECT 
@@ -38,8 +39,8 @@
 	JOIN sys.indexes AS ix ON ps.[object_id] = ix.[object_id] AND ps.[index_id] = ix.[index_id]
 	JOIN sys.tables tn ON tn.OBJECT_ID = ix.object_id
 	WHERE 
-		tn.[name] = '<TABLE NAME>' AND 
-		ix.index_id > 1
+		tn.[name] LIKE @table_name AND 
+		ix.index_id > 1 -- do not take clustered index into consideration
 	GROUP BY tn.object_id, ix.index_id
 )
 SELECT 
@@ -97,38 +98,3 @@ AND ius.object_id = OBJECT_ID('<TABLE NAME>')
 AND i.type_desc = N'NONCLUSTERED'
 AND i.is_primary_key = 0
 ORDER BY tbl, ps.page_count DESC;
-
--------------------------------------------------------------------------------------
--- Really unused indexes in the database. Look at the last server start date to 
--- evaluate index usage. Then use the last column DDL statement
--- to remove the indexes.
--------------------------------------------------------------------------------------
-
-;WITH size AS (
-	SELECT s.[object_id], s.[index_id], 
-		SUM(s.[used_page_count]) * 8 AS IndexSizeKB
-	FROM sys.dm_db_partition_stats AS s
-	GROUP BY s.[object_id], s.[index_id]
-)
-SELECT 
-	(SELECT DATEDIFF(day, sqlserver_start_time, CURRENT_TIMESTAMP) FROM sys.dm_os_sys_info) as [Period_days],
-	SCHEMA_NAME(t.schema_id) + '.' + OBJECT_NAME(ius.object_id) as tbl,
-	i.name as idx, 
-	i.type_desc as idxType,
-	i.is_unique,
-	i.is_primary_key,
-	ius.user_updates, 
-	CAST(ius.last_user_update AS DATETIME2(0)) as last_user_update,
-	s.IndexSizeKB,
-	SUM(s.IndexSizeKB) OVER () / 1024 as TotalSizeMB,
-	CAST(SUM(ius.user_updates) OVER () * 1.0
-		/ (SELECT DATEDIFF(minute, sqlserver_start_time, CURRENT_TIMESTAMP) FROM sys.dm_os_sys_info) as decimal(20, 2)) as Modifications_Per_Minute_Avg,
-	'DROP INDEX [' + i.name + '] ON [' + SCHEMA_NAME(t.schema_id) + '].[' + OBJECT_NAME(ius.object_id) + ']'
-FROM sys.dm_db_index_usage_stats ius
-JOIN sys.indexes i ON ius.object_id = i.object_id AND ius.index_id = i.index_id
-JOIN sys.tables t ON i.object_id = t.object_id
-JOIN size s ON t.object_id = s.object_id AND i.index_id = s.index_id
-WHERE database_id = DB_ID()
-AND ius.user_seeks + ius.user_scans = 0 
-AND i.is_primary_key = 0 AND i.is_unique = 0 AND i.type = 2 /* nonclustered */
-ORDER BY tbl;
