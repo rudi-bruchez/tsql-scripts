@@ -1,4 +1,7 @@
--- average logical reads per minute, estimated from query stats
+-------------------------------------------------------
+-- execution activity per database
+-- rudi@babaluga.com, go ahead license
+-------------------------------------------------------
 SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
@@ -33,11 +36,17 @@ SELECT
 	CAST(SUM(worker_time) / 1000.0 / 1000 / 60 as decimal(20, 2)) as worker_time_min,
 	CAST(SUM(worker_time) / 1000.0 / 1000 / 60 / @cpu_count as decimal(20, 2)) as worker_time_min_per_cpu,
 	SUM(row_count) as row_count,
-	MIN(creation_time) as creation_time, 
-	MAX(last_execution_time) as last_execution_time, 
+	CAST(MIN(creation_time) as datetime2(0)) as creation_time, 
+	CAST(MAX(last_execution_time) as datetime2(0)) as last_execution_time, 
 	SUM(executions) as executions,
 	CAST(SUM(elapsed_time) / 1000.0 / 1000 / 60 as decimal(20, 2)) as elapsed_time_min,
-	CAST(SUM(elapsed_time) / 1000.0 / 1000 / 60 / @cpu_count as decimal(20, 2)) as elapsed_time_min_per_cpu
-FROM query_stats
+	CAST(SUM(elapsed_time) / 1000.0 / 1000 / 60 / @cpu_count as decimal(20, 2)) as elapsed_time_min_per_cpu,
+	MIN(db.collation_name) as [collation],
+	MAX(CAST(db.is_auto_close_on as tinyint)) as [auto_close],
+	MAX(CAST(db.is_auto_shrink_on as tinyint)) as [auto_shrink],
+	MAX(CAST(db.is_read_committed_snapshot_on as tinyint)) as RCSI
+FROM query_stats qs
+JOIN sys.databases db ON qs.db = db.name
+WHERE qs.db NOT IN (N'master', N'model')
 GROUP BY db
-OPTION (RECOMPILE);
+OPTION (RECOMPILE, MAXDOP 1);
