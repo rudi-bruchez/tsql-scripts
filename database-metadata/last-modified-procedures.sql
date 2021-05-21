@@ -1,6 +1,5 @@
 -----------------------------------------------------------------
 -- Last modified stored procedures in a database 
-
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 

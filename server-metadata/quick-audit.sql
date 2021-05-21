@@ -38,7 +38,7 @@ WHERE configuration_id = 1538
 UNION ALL
 SELECT counter_name, cntr_value
 FROM sys.dm_os_performance_counters WITH (READUNCOMMITTED)
-WHERE counter_name = 'page life expectancy'
+WHERE counter_name = 'Page life expectancy'
 AND object_name LIKE '%Buffer Manager%'
 UNION ALL
 SELECT N'Buffer cache hit ratio', CAST((ratio.cntr_value * 1.0 / base.cntr_value) * 100.0 AS NUMERIC(5, 2))

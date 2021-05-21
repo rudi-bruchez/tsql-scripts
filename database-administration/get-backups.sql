@@ -9,11 +9,11 @@ SELECT
 		WHEN 'G' THEN 'File Diff'
 		WHEN 'P' THEN 'Partial'
 		WHEN 'Q' THEN 'Partial Diff'
-		ELSE [Type]
-	END as [Type],
+		ELSE [type]
+	END as [type],
 	DATEDIFF(minute, backup_start_date, backup_finish_date) as duration_in_minutes,
 	CAST(ROUND(backup_size / 1024 / 1024 / 1024.00, 2) as numeric(10, 2)) as backup_size_GB,
 	CAST(ROUND(compressed_backup_size / 1024 / 1024 / 1024.00, 2) as numeric(10, 2)) as compressed_backup_size_GB
 FROM msdb.[dbo].[backupset]
-WHERE Database_name = DB_NAME()
+WHERE database_name = DB_NAME()
 ORDER BY backup_start_date;

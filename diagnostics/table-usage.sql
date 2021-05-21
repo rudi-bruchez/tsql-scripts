@@ -8,4 +8,5 @@ SELECT
 FROM  sys.dm_db_index_operational_stats (DB_ID(), NULL, NULL, NULL) ios
 JOIN  sys.objects o on ios.object_id = o.object_id
 where ios.index_id in (0, 1)
-and o.type = 'U' and o.is_ms_shipped = 0;
+and o.type = 'U' and o.is_ms_shipped = 0
+ORDER BY select_count DESC;
