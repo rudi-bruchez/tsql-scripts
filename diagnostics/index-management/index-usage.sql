@@ -3,6 +3,11 @@
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
+SELECT sqlserver_start_time 
+FROM sys.dm_os_sys_info
+OPTION (RECOMPILE, MAXDOP 1);
+GO
+
 DECLARE @table_name sysname = '%';
 
 ;WITH cte AS (
@@ -37,7 +42,7 @@ DECLARE @table_name sysname = '%';
 	JOIN sys.dm_db_partition_stats AS ps ON p.object_id = ps.object_id
 		AND p.index_id = ps.index_id AND p.partition_id = ps.partition_id
 	JOIN sys.indexes AS ix ON ps.[object_id] = ix.[object_id] AND ps.[index_id] = ix.[index_id]
-	JOIN sys.tables tn ON tn.OBJECT_ID = ix.object_id
+	JOIN sys.tables tn ON tn.object_id = ix.object_id
 	WHERE 
 		tn.[name] LIKE @table_name AND 
 		ix.index_id > 1 -- do not take clustered index into consideration
@@ -65,36 +70,5 @@ SELECT
 FROM cte
 LEFT JOIN sys.dm_db_index_usage_stats ius ON ius.object_id = cte.object_id AND ius.index_id = cte.index_id 
 	AND ius.database_id = DB_ID()
-ORDER BY tbl;
-
-
------------------------------------------------------------------
--- Get index usage on a specific SQL Server table  
--- rudi@babaluga.com, go ahead license
------------------------------------------------------------------
-SELECT sqlserver_start_time FROM sys.dm_os_sys_info;
-GO
-
-SELECT 
-	SCHEMA_NAME(t.schema_id) + '.' + OBJECT_NAME(ius.object_id) as tbl,
-	i.name as idx, 
-	i.is_unique AS uq,
-	user_seeks AS seeks, 
-	user_scans AS scans, 
-	user_updates AS updates, 
-	CAST(last_user_seek AS DATETIME2(0)) AS last_seek, 
-	CAST(last_user_scan AS DATETIME2(0)) AS last_scan, 
-	CAST(last_user_update AS DATETIME2(0)) AS last_upd,
-	FORMAT(ps.page_count * 8.192, 'N', 'fr-fr') as size_kb,
-	ps.fragmentation AS [fragmentation %],
-	i.index_id
-FROM sys.dm_db_index_usage_stats ius
-JOIN sys.indexes i ON ius.object_id = i.object_id AND ius.index_id = i.index_id
-JOIN sys.tables t ON i.object_id = t.object_id
-CROSS APPLY (SELECT SUM(page_count) as page_count, CAST(MAX(avg_fragmentation_in_percent) AS DECIMAL(5,2)) AS fragmentation FROM sys.dm_db_index_physical_stats(DB_ID(), i.object_id, i.index_id, NULL , N'LIMITED')) AS ps
-WHERE ius.database_id = DB_ID()
-AND ius.object_id = OBJECT_ID('<TABLE NAME>')
--- AND user_seeks = 0
-AND i.type_desc = N'NONCLUSTERED'
-AND i.is_primary_key = 0
-ORDER BY tbl, ps.page_count DESC;
+ORDER BY tbl
+OPTION (RECOMPILE, MAXDOP 1);
