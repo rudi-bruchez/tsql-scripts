@@ -16,6 +16,20 @@ SELECT
 	(SELECT DATEDIFF(day, sqlserver_start_time, CURRENT_TIMESTAMP) FROM sys.dm_os_sys_info) as [Period_days],
 	SCHEMA_NAME(t.schema_id) + '.' + OBJECT_NAME(ius.object_id) as tbl,
 	i.name as idx, 
+	CONCAT(STUFF((SELECT ', ' + c.name as [text()]
+			FROM sys.index_columns ic
+			JOIN sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id
+			WHERE ic.object_id = t.object_id AND ic.index_id = i.index_id
+			AND ic.is_included_column = 0
+			ORDER BY ic.key_ordinal
+			FOR XML PATH('')), 1, 2, ''), ' (' +
+		STUFF((SELECT ', ' + c.name as [text()]
+			FROM sys.index_columns ic
+			JOIN sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id
+			WHERE ic.object_id = t.object_id AND ic.index_id = i.index_id
+			AND ic.is_included_column = 1
+			ORDER BY ic.key_ordinal
+			FOR XML PATH('')), 1, 2, '') + ')') as [key],
 	i.type_desc as idxType,
 	i.is_unique,
 	i.is_primary_key,
