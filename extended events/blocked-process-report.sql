@@ -1,4 +1,4 @@
-CREATE EVENT SESSION [blocked process report] ON SERVER 
+CREATE EVENT SESSION [blocked_processes] ON SERVER 
 ADD EVENT sqlserver.blocked_process_report(
     ACTION(
             sqlserver.client_app_name,
@@ -9,11 +9,11 @@ ADD EVENT sqlserver.blocked_process_report(
             sqlserver.username
             )
         )
-ADD TARGET package0.event_file(SET filename=N'blocked process report',max_file_size=(50))
+ADD TARGET package0.event_file(SET filename=N'blocked_processes',max_file_size=(50))
 WITH (STARTUP_STATE=OFF)
 GO
 
 -- start the session
-ALTER EVENT SESSION [blocked process report] ON SERVER STATE=START;
+ALTER EVENT SESSION [blocked_processes] ON SERVER STATE=START;
 -- stop the sesison
-ALTER EVENT SESSION [blocked process report] ON SERVER STATE=STOP;
+ALTER EVENT SESSION [blocked_processes] ON SERVER STATE=STOP;

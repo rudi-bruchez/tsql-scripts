@@ -70,5 +70,5 @@ SELECT
 FROM cte
 LEFT JOIN sys.dm_db_index_usage_stats ius ON ius.object_id = cte.object_id AND ius.index_id = cte.index_id 
 	AND ius.database_id = DB_ID()
-ORDER BY tbl
+ORDER BY tbl, [key]
 OPTION (RECOMPILE, MAXDOP 1);

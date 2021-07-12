@@ -28,7 +28,7 @@ BEGIN
     INSERT INTO #HeapList
     SELECT object_name(object_id) as ObjectName
         ,page_count
-        ,avg_page_space_used_in_percent
+        ,CAST(avg_page_space_used_in_percent as NUMERIC(5, 2))
         ,record_count
         ,forwarded_record_count
     FROM sys.dm_db_index_physical_stats (db_id(), @IndexID,  0, null,  'DETAILED'); 
