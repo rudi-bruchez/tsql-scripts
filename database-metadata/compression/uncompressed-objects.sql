@@ -24,6 +24,7 @@ DECLARE @maxdop tinyint = 2;
 		,i.fill_factor as ff 
 		,p.partition_number AS [partition]
 		,FORMAT(P.rows, 'N0') as rows
+		,P.rows as rows_nb
 		,FORMAT(s.[used_page_count] * 8 / 1000, 'N0') AS MB
 		,STUFF((SELECT ', ' + CONCAT(c.name, ' (', t.name, 
 				IIF(t.name IN ('char', 'nchar', 'varchar', 'nvarchar', 'datetime2', 'decimal', 'numeric'), CONCAT(' ', t.max_length), '') , ')') 
@@ -54,7 +55,7 @@ DECLARE @maxdop tinyint = 2;
 	WHERE p.data_compression_desc = 'NONE'
 	AND i.object_id NOT IN (SELECT object_id FROM sys.objects WHERE is_ms_shipped = 1)
 )
---SELECT *  -- to see the result
+--SELECT [Table], IndexID, [Index], [Type], ff, [partition], rows, MB, keys, cmd  -- to see the result
 SELECT cmd  -- to generate the commands (choose "result as text" in SSMS)
 FROM cte
-ORDER BY [rows] DESC;
+ORDER BY [rows_nb] DESC;
