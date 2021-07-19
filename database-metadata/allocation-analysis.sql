@@ -9,6 +9,7 @@ SELECT
        au.total_pages,
        au.used_pages,
        au.used_pages * 8 / 1024 as used_mb,
+       SUM(au.used_pages * 8 / 1024) OVER () as total_used_mb,
        au.data_pages,
        p.data_compression_desc as [compression]
 FROM sys.partitions p

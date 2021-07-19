@@ -21,6 +21,7 @@ DECLARE @maxdop tinyint = 2;
 			WHEN 'NONCLUSTERED' THEN 'NC'
 			ELSE i.[type_desc]
 		 END AS [Type]
+		,i.fill_factor as ff 
 		,p.partition_number AS [partition]
 		,FORMAT(P.rows, 'N0') as rows
 		,FORMAT(s.[used_page_count] * 8 / 1000, 'N0') AS MB
@@ -40,6 +41,8 @@ DECLARE @maxdop tinyint = 2;
 			QUOTENAME(OBJECT_SCHEMA_NAME(i.[object_id])), '.', QUOTENAME(OBJECT_NAME(i.[object_id])),
 			' REBUILD WITH (', IIF(@online = 1, 'ONLINE = ON, ', ''),
 			IIF(@online = 1 AND @resumable = 1, 'RESUMABLE = ON, ', ''),
+			IIF(i.fill_factor NOT IN (0, 100) AND i.[index_id] = 1, 'FILLFACTOR = 100, ', ''),
+			IIF(i.fill_factor NOT IN (0, 100) AND i.[index_id] > 1, 'FILLFACTOR = 95, ', ''),
 			'DATA_COMPRESSION = ', @compressionType , ', MAXDOP = ', @maxdop ,')',
 			IIF(@backuplog = 1, CONCAT(char(13), char(10), 'GO', char(13), char(10), 
 				'BACKUP LOG ', QUOTENAME(DB_NAME()) , ' TO DISK = ''NUL'';'),''),
