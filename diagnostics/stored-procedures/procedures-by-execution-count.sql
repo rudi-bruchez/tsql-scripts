@@ -3,6 +3,7 @@
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 SELECT 
 	DB_NAME(ps.database_id) as [DB],
@@ -21,4 +22,4 @@ FROM sys.dm_exec_procedure_stats ps
 WHERE object_name(ps.object_id) NOT LIKE N'sp_%'
 AND ps.database_id = DB_ID() -- current DB only
 ORDER BY avg_exec_per_hour DESC
-OPTION (RECOMPILE);
+OPTION (RECOMPILE, MAXDOP 1);
