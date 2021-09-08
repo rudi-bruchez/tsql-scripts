@@ -68,7 +68,8 @@ WITH [Waits] AS
         N'WAIT_XTP_CKPT_CLOSE',
         N'XE_DISPATCHER_JOIN',
         N'XE_DISPATCHER_WAIT',
-        N'XE_TIMER_EVENT'
+        N'XE_TIMER_EVENT',
+        N'XE_LIVE_TARGET_TVF' -- xevents target
         )
 	AND [wait_type] NOT IN ( -- mirroring
         
