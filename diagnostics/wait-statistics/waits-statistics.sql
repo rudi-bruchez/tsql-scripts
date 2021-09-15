@@ -1,4 +1,8 @@
--- Last updated October 14, 2020
+---------------------------------------------------------------------------------------------------------
+-- copied from https://www.sqlskills.com/blogs/paul/wait-statistics-or-please-tell-me-where-it-hurts/
+-- please refer to the original query!
+-- copied here for my own usage, selecting wait types I want to filter out.
+---------------------------------------------------------------------------------------------------------
 WITH [Waits] AS
     (SELECT
         [wait_type],
@@ -92,6 +96,11 @@ WITH [Waits] AS
         N'HADR_TIMER_TASK',
         N'HADR_WORK_QUEUE'
 	)
+    AND [wait_type] NOT IN ( -- 2012 only ?
+        -- N'PREEMPTIVE_HADR_LEASE_MECHANISM', -- sign of lease timeout ...
+        N'PREEMPTIVE_SP_SERVER_DIAGNOSTICS',
+        N'PREEMPTIVE_XE_DISPATCHER'
+    )
     AND [waiting_tasks_count] > 0
     )
 SELECT

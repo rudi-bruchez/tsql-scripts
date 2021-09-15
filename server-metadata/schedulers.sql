@@ -7,11 +7,14 @@ SELECT
 	cpu_id,
 	is_idle,
 	current_tasks_count,
-	current_workers_count,
 	runnable_tasks_count,
+	current_workers_count,
+	active_workers_count,
 	work_queue_count,
-	pending_disk_io_count,
-	load_factor,
-	total_cpu_idle_capped_ms
+	SUM(CAST(is_idle as tinyint)) OVER () as nb_idle,
+	SUM(current_tasks_count) OVER () as nb_tasks,
+	SUM(active_workers_count) OVER () as nb_workers,
+	SUM(runnable_tasks_count) OVER () as nb_runnable
 FROM sys.dm_os_schedulers
-WHERE status = 'VISIBLE ONLINE';
+WHERE status = N'VISIBLE ONLINE'
+OPTION (RECOMPILE, MAXDOP 1);
