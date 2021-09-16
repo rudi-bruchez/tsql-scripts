@@ -55,22 +55,6 @@ LEFT JOIN qs ON cp.plan_handle = qs.plan_handle
 LEFT JOIN sys.dm_os_memory_cache_entries ce ON cp.memory_object_address = ce.memory_object_address; 
 
 
---------------------------------
---           usage
---------------------------------
-SELECT 
-	cacheobjtype, 
-	CASE GROUPING(CASE WHEN usecounts = 1 THEN '1 time' ELSE 'many times' END)
-		WHEN 0 THEN CASE WHEN usecounts = 1 THEN '1 time' ELSE 'many times' END
-		ELSE 'TOTAL'
-	END as usage,
-    COUNT(*) as [count],
-	CAST(SUM(CAST(size_in_bytes as bigint)) / 1000.0 / 1000 as DECIMAL(10,2)) as size_mb
-FROM sys.dm_exec_cached_plans cp
-GROUP BY cacheobjtype,
-	CASE WHEN usecounts = 1 THEN '1 time' ELSE 'many times' END
-WITH ROLLUP;
-
 -----------------------------------------------------
 --    analysis for optimize for adhoc workloads    --
 -----------------------------------------------------

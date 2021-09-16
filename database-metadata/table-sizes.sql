@@ -1,5 +1,5 @@
 -----------------------------------------------------------------
--- See table size
+-- See tables size
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
@@ -22,4 +22,5 @@ JOIN sys.allocation_units au ON au.container_id = CASE au.type
 WHERE p.index_id < 2
 GROUP BY p.object_id, p.data_compression_desc, au.type
 HAVING SUM(au.data_pages) > 0
-ORDER BY SUM(Rows) DESC;
+ORDER BY SUM(Rows) DESC
+OPTION (RECOMPILE, MAXDOP 1);
