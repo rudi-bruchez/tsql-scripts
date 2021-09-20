@@ -25,5 +25,6 @@ GO
 
 -- start the session
 ALTER EVENT SESSION [blocked_processes] ON DATABASE STATE=START;
+
 -- stop the sesison
 ALTER EVENT SESSION [blocked_processes] ON DATABASE STATE=STOP;
