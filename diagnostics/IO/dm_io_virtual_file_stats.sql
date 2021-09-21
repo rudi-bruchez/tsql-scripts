@@ -1,8 +1,13 @@
 -----------------------------------------------------------------
 -- Use dm_io_virtual_file_stats to get IO stall statistics per
 -- database and file
+-- it doesn't work on Azure SQL Database, sys.master_files is
+-- not there.
+
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 SELECT 
 	CAST(SYSDATETIME() as DATETIME2(0)) as [Date],
@@ -26,4 +31,5 @@ JOIN [sys].[master_files] [mf]
     ON [vfs].[database_id] = [mf].[database_id] 
     AND [vfs].[file_id] = [mf].[file_id]
 WHERE DB_NAME([vfs].[database_id]) NOT IN (N'master', N'model')
-ORDER BY [DB], [type] DESC;
+ORDER BY [DB], [type] DESC
+OPTION (RECOMPILE, MAXDOP 1);
