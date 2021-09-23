@@ -4,7 +4,7 @@
 -----------------------------------------------------------------
 
 SELECT 
-	name, database_id, 
+	name as db, database_id, 
 	SUSER_SNAME(owner_sid) as [owner],
 	CAST(create_date as date) as create_date,
 	CASE compatibility_level
@@ -40,4 +40,6 @@ SELECT
 	is_encrypted
 FROM sys.databases
 WHERE database_id > 4
-ORDER BY 1;
+ORDER BY 1
+OPTION (RECOMPILE);
+

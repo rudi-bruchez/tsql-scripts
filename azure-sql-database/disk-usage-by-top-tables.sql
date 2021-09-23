@@ -1,10 +1,5 @@
------------------------------------------------------------------
--- See tables size
---
--- rudi@babaluga.com, go ahead license
------------------------------------------------------------------
-
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+GO
 
 SELECT 
     OBJECT_NAME(p.object_id) AS [table], 

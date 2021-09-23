@@ -1,5 +1,8 @@
 -- list running requests with query text 
 
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+GO
+
 SELECT r.session_id, s.login_name, s.host_name, r.start_time, r.status, r.command, COALESCE(t.text, tqp.query_plan) as [text],
 	DB_NAME(r.database_id) as db, r.wait_type, r.wait_time, r.last_wait_type,
 	r.open_resultset_count, r.cpu_time, r.total_elapsed_time,
