@@ -2,7 +2,7 @@
 
 ## ![index on table](./index-on-table.sql)
 
-Liste indexes on a specific table.
+Liste indexes on a specific table, with simple statistics.
 
 ## ![index usage](./index-usage.sql)
 
