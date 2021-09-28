@@ -2,4 +2,4 @@
 
 ## index usage
 
-Run this to see index usage information for al ttables or a specific table.
+Run this to see index usage information for all tables or a specific table.
