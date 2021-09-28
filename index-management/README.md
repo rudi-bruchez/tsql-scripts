@@ -1,5 +1,9 @@
 # Index management queries
 
+## ![index on table](./index-on-table.sql)
+
+Liste indexes on a specific table.
+
 ## ![index usage](./index-usage.sql)
 
 Run this to see index usage information for all tables or a specific table.
