@@ -1,6 +1,6 @@
 # Index management queries
 
-## [index on table](./index-on-table.sql)
+## &#128462;[index on table](./index-on-table.sql)
 
 Liste indexes on a specific table, with simple statistics.
 
