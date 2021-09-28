@@ -1,14 +1,14 @@
 # Index management queries
 
-## &#128462; [index on table](./index-on-table.sql)
+## &#4042; [index on table](./index-on-table.sql)
 
 Liste indexes on a specific table, with simple statistics.
 
-## &#128462; [operational stats](./index-operational-stats.sql)
+## &#4042; [operational stats](./index-operational-stats.sql)
 
 Retreives *operational stats* on indexes. Operational stats are physical access statistics accumulated since last instance restart, to see hone many time the index was modified, how many page allocations occured at different levels of the index, etc.
 
-## &#128462; [index usage](./index-usage.sql)
+## &#4042; [index usage](./index-usage.sql)
 
 Run this to see index usage information for all tables or a specific table.
 
