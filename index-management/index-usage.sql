@@ -67,6 +67,8 @@ SELECT
 	CAST(COALESCE(ius.last_user_seek, ius.last_user_scan) as datetime2(0)) as last_usage, 
 	CAST(ius.last_user_update as datetime2(0)) as last_update,
 	SUM(cte.IndexSizeKB) OVER () / 1024 as TotalSizeMB
+	-- to generate compression code
+	--,CONCAT('ALTER INDEX ', QUOTENAME(cte.idx), ' ON ', cte.tbl, ' REBUILD WITH (ONLINE = ON, DATA_COMPRESSION = ROW, SORT_IN_TEMPDB = ON, FILLFACTOR = 90)')
 FROM cte
 LEFT JOIN sys.dm_db_index_usage_stats ius ON ius.object_id = cte.object_id AND ius.index_id = cte.index_id 
 	AND ius.database_id = DB_ID()
