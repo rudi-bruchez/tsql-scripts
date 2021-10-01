@@ -44,8 +44,8 @@ DECLARE @table_name sysname = '%';
 	JOIN sys.indexes AS ix ON ps.[object_id] = ix.[object_id] AND ps.[index_id] = ix.[index_id]
 	JOIN sys.tables tn ON tn.object_id = ix.object_id
 	WHERE 
-		tn.[name] LIKE @table_name AND 
-		ix.index_id > 1 -- do not take clustered index into consideration
+		tn.[name] LIKE @table_name 
+		AND ix.index_id > 1 -- do not take clustered index into consideration
 	GROUP BY tn.object_id, ix.index_id
 )
 SELECT 
