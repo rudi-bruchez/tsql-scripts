@@ -11,6 +11,10 @@
     Since SQL Server 2019 (infrastructure v3), it is enabled by default
     https://docs.microsoft.com/en-us/sql/relational-databases/performance/query-profiling-infrastructure
 */
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+GO
+
 DBCC TRACEON (7412, -1)
 
 SELECT r.session_id, s.login_name, s.host_name, r.start_time, r.status, r.command, t.text,
@@ -29,5 +33,5 @@ AND r.command NOT IN ('VDI_CLIENT_WORKER', 'PARALLEL REDO TASK', 'UNKNOWN TOKEN'
 AND t.text NOT IN ('sp_server_diagnostics')
 AND r.wait_type NOT IN ('BROKER_RECEIVE_WAITFOR')
 AND r.session_id <> @@SPID
-OPTION (RECOMPILE);
+OPTION (RECOMPILE, MAXDOP 1);
 
