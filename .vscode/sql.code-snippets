@@ -28,5 +28,24 @@
 		  ""
         ],
         "description": "Header for SQL file"
-    }
+    },
+
+	"OptionRecompile": {
+		"prefix": "option_recompile",
+        "body": [
+          "OPTION (RECOMPILE, MAXDOP 1);"
+        ],
+        "description": "tail for all DMV queries"
+	},
+
+	"StartStopXEvent": {
+		"prefix": "start and stop xevent",
+        "body": [
+          "-- start the session",
+		  "ALTER EVENT SESSION [$1] ON SERVER STATE=START;",
+		  "-- stop the sesison",
+		  "ALTER EVENT SESSION [$1] ON SERVER STATE=STOP;"
+        ],
+        "description": "boilerplate for xevent"
+	}	
 }
