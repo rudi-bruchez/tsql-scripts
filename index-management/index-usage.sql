@@ -69,6 +69,8 @@ SELECT
 	SUM(cte.IndexSizeKB) OVER () / 1024 as TotalSizeMB
 	-- to generate compression code
 	--,CONCAT('ALTER INDEX ', QUOTENAME(cte.idx), ' ON ', cte.tbl, ' REBUILD WITH (ONLINE = ON, DATA_COMPRESSION = ROW, SORT_IN_TEMPDB = ON, FILLFACTOR = 90)')
+	-- to generate DROP code
+	--,CONCAT('DROP INDEX ', QUOTENAME(cte.idx), ' ON ', cte.tbl, ';')
 FROM cte
 LEFT JOIN sys.dm_db_index_usage_stats ius ON ius.object_id = cte.object_id AND ius.index_id = cte.index_id 
 	AND ius.database_id = DB_ID()
