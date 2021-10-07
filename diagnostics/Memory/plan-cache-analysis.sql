@@ -52,22 +52,5 @@ CROSS APPLY sys.dm_exec_sql_text(cp.plan_handle) st
 OUTER APPLY sys.dm_exec_query_plan(cp.plan_handle) qp
 LEFT JOIN attr ON cp.plan_handle = attr.plan_handle
 LEFT JOIN qs ON cp.plan_handle = qs.plan_handle
-LEFT JOIN sys.dm_os_memory_cache_entries ce ON cp.memory_object_address = ce.memory_object_address; 
-
-
------------------------------------------------------
---    analysis for optimize for adhoc workloads    --
------------------------------------------------------
-SELECT
-	'total' as type,
-	CAST(SUM(CAST(cp.size_in_bytes as bigint)/1024.00) / 1024 as decimal(10, 2)) AS [Plan Size in MB]
-FROM sys.dm_exec_cached_plans AS cp WITH (READUNCOMMITTED)
-WHERe cp.objtype <> 'Proc'
-UNION ALL
-SELECT
-	'usecounts_1' as type,
-	CAST(SUM(CAST(cp.size_in_bytes as bigint)/1024.00) / 1024 as decimal(10, 2)) AS [Plan Size in MB]
-FROM sys.dm_exec_cached_plans AS cp WITH (READUNCOMMITTED)
-WHERE cp.usecounts = 1 AND cp.objtype <> 'Proc'
-ORDER BY type
-OPTION (RECOMPILE);
+LEFT JOIN sys.dm_os_memory_cache_entries ce ON cp.memory_object_address = ce.memory_object_address
+OPTION (RECOMPILE, MAXDOP 1);
