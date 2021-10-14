@@ -1,5 +1,5 @@
 -----------------------------------------------------------------
--- change the session_id, change de destination folder
+-- change the session_id, change the destination folder
 -- use wait_completed if available
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
