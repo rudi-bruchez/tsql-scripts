@@ -68,7 +68,7 @@ SELECT
 	CAST(ius.last_user_update as datetime2(0)) as last_update,
 	SUM(cte.IndexSizeKB) OVER () / 1024 as TotalSizeMB
 	-- to generate compression code
-	--,CONCAT('ALTER INDEX ', QUOTENAME(cte.idx), ' ON ', cte.tbl, ' REBUILD WITH (ONLINE = ON, DATA_COMPRESSION = ROW, SORT_IN_TEMPDB = ON, FILLFACTOR = 90)')
+	--,CONCAT('ALTER INDEX ', QUOTENAME(cte.idx), ' ON ', cte.tbl, ' REBUILD WITH (ONLINE = ', IIF(CAST(SERVERPROPERTY('Edition') as nchar(10)) = 'Enterprise', 'ON', 'OFF'), ', DATA_COMPRESSION = ROW, SORT_IN_TEMPDB = ON, FILLFACTOR = 90)')
 	-- to generate DROP code
 	--,CONCAT('DROP INDEX ', QUOTENAME(cte.idx), ' ON ', cte.tbl, ';')
 FROM cte
