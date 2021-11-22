@@ -1,8 +1,12 @@
 # Index management queries
 
+## &#x21E8; [clustered index on uniqueidentifier](./clustered-index-on-uniqueidentifier.sql)
+
+Lists tables that have a clustered index on a `UNIQUEIDENTIFIER` column. If so, this is bad. Look for table fragmentation, `INSERT`'s bad performances, etc. Check at least that the default value is set to `NEWSEQUENTIALID()`.
+
 ## &#x21E8; [index on table](./index-on-table.sql)
 
-List indexes on a specific table, with simple usage statistics, like # of seeks and scans, fragmentation and index size.
+Lists indexes on a specific table, with simple usage statistics, like # of seeks and scans, fragmentation and index size.
 
 ## &#x21E8; [operational stats](./index-operational-stats.sql)
 
