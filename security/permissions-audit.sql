@@ -11,8 +11,18 @@ SELECT
 		FROM sys.server_role_members rm
 		JOIN sys.server_principals r ON rm.role_principal_id = r.principal_id
 		WHERE rm.member_principal_id = sp.principal_id
-	 ) as server_roles
+	 ) as server_roles,
+	 lt.session_nb,
+	 lt.last_login
 FROM sys.server_principals sp
+LEFT JOIN (
+	SELECT 
+		login_name,
+		count(*) as session_nb,
+		cast(max(login_time) as datetime2(0)) as last_login
+	FROM sys.dm_exec_sessions
+	GROUP BY login_name
+) lt ON sp.name = lt.login_name
 WHERE sp.type IN ('S', 'U')
 AND sp.principal_id > 1
 AND sp.name NOT LIKE N'##%'
