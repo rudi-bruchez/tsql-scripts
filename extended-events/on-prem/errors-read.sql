@@ -1,3 +1,9 @@
+--------------------------------------------------------------------
+-- read errors (exceptions) event session from event_file
+--
+-- rudi@babaluga.com, go ahead license
+--------------------------------------------------------------------
+
 DECLARE @file nvarchar(max) = (SELECT (CONVERT(xml, target_data)).value('(/EventFileTarget/File/@name)[1]', 'nvarchar(max)')
 	FROM sys.dm_xe_sessions AS s 
 	JOIN sys.dm_xe_session_targets AS t 
