@@ -1,3 +1,5 @@
+[moved to sp_logspace.sql](./sp_logspace.sql)
+
 USE master;
 GO
 
