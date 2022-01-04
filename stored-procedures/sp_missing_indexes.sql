@@ -1,7 +1,13 @@
 USE Master;
 GO
 
-ALTER PROCEDURE sp_missing_indexes
+-----------------------------------------------------------------
+-- Analyze missing and existing indexes for all tables
+-- or a specific table in the current database.
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+CREATE OR ALTER PROCEDURE sp_missing_indexes
 	@table_name sysname = '%'
 AS BEGIN
 	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
