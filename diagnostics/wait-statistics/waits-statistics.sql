@@ -116,5 +116,5 @@ SELECT
 FROM [Waits] AS [W1]
 INNER JOIN [Waits] AS [W2] ON [W2].[RowNum] <= [W1].[RowNum]
 GROUP BY [W1].[RowNum]
-HAVING SUM ([W2].[Percentage]) - MAX( [W1].[Percentage] ) < 95; -- percentage threshold
-GO
+HAVING SUM ([W2].[Percentage]) - MAX( [W1].[Percentage] ) < 95 -- percentage threshold
+OPTION (RECOMPILE, MAXDOP 1);

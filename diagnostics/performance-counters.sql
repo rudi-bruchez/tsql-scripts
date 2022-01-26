@@ -19,4 +19,4 @@ FROM sys.dm_os_performance_counters WITH (READUNCOMMITTED)
 WHERE (RTRIM([object_name]) LIKE N'%:Buffer Manager' -- Handle named instances
 	AND counter_name IN (N'Page life expectancy'))
 OR (RTRIM([object_name]) LIKE N'%:Plan Cache' AND instance_name = N'_Total' AND counter_name = N'Cache Object Counts')
-OPTION (RECOMPILE);
+OPTION (RECOMPILE, MAXDOP 1);
