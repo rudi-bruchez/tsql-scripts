@@ -48,4 +48,4 @@ JOIN sys.dm_os_performance_counters base  WITH (READUNCOMMITTED)
 WHERE RTRIM(ratio.object_name) LIKE N'%:Buffer Manager'
 AND ratio.counter_name = N'Buffer cache hit ratio'
 AND base.counter_name = N'Buffer cache hit ratio base'
-OPTION (RECOMPILE);
+OPTION (RECOMPILE, MAXDOP 1);

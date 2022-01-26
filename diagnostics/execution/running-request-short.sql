@@ -1,4 +1,7 @@
 -- short version
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT r.session_id, t.text, r.status, DB_NAME(database_id) as db, wait_type, wait_time, last_wait_type, open_transaction_count, p.query_plan
 FROM sys.dm_exec_requests r
 CROSS APPLY sys.dm_exec_sql_text(r.sql_handle) t
