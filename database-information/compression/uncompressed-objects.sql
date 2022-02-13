@@ -1,8 +1,15 @@
--- find uncompressed objects in the database
+-----------------------------------------------------------------
+-- Find uncompressed objects in the database
 -- and generate code to compress them all
+-- If you want to only generate the compression code, 
+-- choose "result as text" in SSMS, to properly generate GO 
+-- instructions with carriage returns.
+-- 
 -- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
 
 SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 GO
 
 DECLARE @compressionType varchar(10) = 'ROW';
@@ -55,7 +62,8 @@ DECLARE @maxdop tinyint = 2;
 	WHERE p.data_compression_desc = 'NONE'
 	AND i.object_id NOT IN (SELECT object_id FROM sys.objects WHERE is_ms_shipped = 1)
 )
---SELECT [Table], IndexID, [Index], [Type], ff, [partition], rows, MB, keys, cmd  -- to see the result
-SELECT cmd  -- to generate the commands (choose "result as text" in SSMS)
+SELECT [Table], IndexID, [Index], [Type], ff, [partition], rows, MB, keys, cmd  -- to see the result
+--SELECT cmd  -- to generate the commands (choose "result as text" in SSMS)
 FROM cte
-ORDER BY [rows_nb] DESC;
+ORDER BY [rows_nb] DESC
+OPTION (RECOMPILE, MAXDOP 1);
