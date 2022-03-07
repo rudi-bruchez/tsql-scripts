@@ -3,12 +3,17 @@
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
-SELECT sqlserver_start_time 
+SELECT sqlserver_start_time, 
+	DATEDIFF(day, sqlserver_start_time, CURRENT_TIMESTAMP) as days_online,
+	DATEDIFF(hour, sqlserver_start_time, CURRENT_TIMESTAMP) as hours_online
 FROM sys.dm_os_sys_info
 OPTION (RECOMPILE, MAXDOP 1);
 GO
 
-DECLARE @table_name sysname = '%';
+-------------------------------------------------------
+DECLARE @table_name sysname = 'smw_Transaction';
+DECLARE @index_id int = NULL;
+-------------------------------------------------------
 
 ;WITH cte AS (
 	SELECT 
@@ -45,14 +50,16 @@ DECLARE @table_name sysname = '%';
 	JOIN sys.tables tn ON tn.object_id = ix.object_id
 	WHERE 
 		tn.[name] LIKE @table_name 
-		AND ix.index_id > 1 -- do not take clustered index into consideration
+		AND (ix.index_id = COALESCE(@index_id, ix.index_id))
 	GROUP BY tn.object_id, ix.index_id
 )
 SELECT 
 	cte.tbl,
 	cte.idx,
+	cte.index_id,
 	CASE cte.idxType
 		WHEN 'NONCLUSTERED' THEN 'NC'
+		WHEN 'CLUSTERED' THEN 'CL'
 		ELSE cte.idxType
 	END as t,
 	CONCAT(CASE cte.is_unique WHEN 1 THEN 'UQ.' ELSE '' END, CASE cte.is_primary_key WHEN 1 THEN 'PK.' ELSE '' END) as inf,
