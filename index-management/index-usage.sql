@@ -11,7 +11,7 @@ OPTION (RECOMPILE, MAXDOP 1);
 GO
 
 -------------------------------------------------------
-DECLARE @table_name sysname = 'smw_Transaction';
+DECLARE @table_name sysname = '%';
 DECLARE @index_id int = NULL;
 -------------------------------------------------------
 
