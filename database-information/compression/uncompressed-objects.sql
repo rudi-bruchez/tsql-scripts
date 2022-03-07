@@ -12,6 +12,7 @@ SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 GO
 
+DECLARE @table_name sysname = 'VueManagerProspection';
 DECLARE @compressionType varchar(10) = 'ROW';
 DECLARE @online bit = 1;
 DECLARE @resumable bit = 0;
@@ -30,6 +31,7 @@ DECLARE @maxdop tinyint = 2;
 		 END AS [Type]
 		,i.fill_factor as ff 
 		,p.partition_number AS [partition]
+		,p.data_compression_desc as [compression]
 		,FORMAT(P.rows, 'N0') as rows
 		,P.rows as rows_nb
 		,FORMAT(s.[used_page_count] * 8 / 1000, 'N0') AS MB
@@ -57,12 +59,15 @@ DECLARE @maxdop tinyint = 2;
 				char(13), char(10), 'GO', char(13), char(10)
 			) AS [cmd]
 	FROM [sys].[indexes] i
+	JOIN sys.objects o ON i.object_id = o.object_id
 	JOIN sys.partitions p ON i.object_id = p.object_id AND i.index_id = p.index_id
 	JOIN sys.dm_db_partition_stats AS s ON s.partition_id = p.partition_id 
-	WHERE p.data_compression_desc = 'NONE'
+	WHERE 1 = 1
+	AND p.data_compression_desc <> 'PAGE'
 	AND i.object_id NOT IN (SELECT object_id FROM sys.objects WHERE is_ms_shipped = 1)
+	AND o.name LIKE @table_name
 )
-SELECT [Table], IndexID, [Index], [Type], ff, [partition], rows, MB, keys, cmd  -- to see the result
+SELECT [Table], IndexID, [Index], [Type], ff, [partition], [compression], rows, MB, keys, cmd  -- to see the result
 --SELECT cmd  -- to generate the commands (choose "result as text" in SSMS)
 FROM cte
 ORDER BY [rows_nb] DESC
