@@ -13,6 +13,7 @@ GO
 -------------------------------------------------------
 DECLARE @table_name sysname = '%';
 DECLARE @index_id int = NULL;
+DECLARE @include_heaps_and_clustered bit = 1;
 -------------------------------------------------------
 
 ;WITH cte AS (
@@ -51,6 +52,7 @@ DECLARE @index_id int = NULL;
 	WHERE 
 		tn.[name] LIKE @table_name 
 		AND (ix.index_id = COALESCE(@index_id, ix.index_id))
+		AND (ix.index_id > 1 OR @include_heaps_and_clustered = 0 OR @index_id IS NOT NULL)
 	GROUP BY tn.object_id, ix.index_id
 )
 SELECT 
