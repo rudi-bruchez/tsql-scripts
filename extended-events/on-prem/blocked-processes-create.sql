@@ -25,5 +25,7 @@ GO
 
 -- start the session
 ALTER EVENT SESSION [blocked_processes] ON SERVER STATE=START;
--- stop the sesison
+-- stop the session
+/*
 ALTER EVENT SESSION [blocked_processes] ON SERVER STATE=STOP;
+*/
