@@ -1,4 +1,4 @@
-# tsql-scripts
+# ☯ tsql-scripts
 
 Transact-SQL scripts and gists for administration and [diagnostics](./diagnostics/).
 
