@@ -1,3 +1,10 @@
+-----------------------------------------------------------------
+-- Tracks a specifi stored procedure execution.
+-- change the procedure name : <PROCEDURE NAME>'
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+
 CREATE EVENT SESSION [procedure] ON SERVER 
 ADD EVENT sqlserver.rpc_completed(
     ACTION(
@@ -20,4 +27,9 @@ WITH (
 )
 GO
 
-
+-- start the session
+ALTER EVENT SESSION [procedure] ON SERVER STATE=START;
+-- stop the session
+/*
+ALTER EVENT SESSION [procedure] ON SERVER STATE=STOP;
+*/

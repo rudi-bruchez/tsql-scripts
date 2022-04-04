@@ -3,6 +3,8 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT 
 	r.session_id,
 	r.command,
@@ -31,3 +33,4 @@ WHERE s.is_user_process = 1
 AND r.total_elapsed_time > 30000 -- milliseconds
 AND COALESCE(r.last_wait_type, '') NOT IN ('SP_SERVER_DIAGNOSTICS_SLEEP' /* sp_server_diagnostics */)
 AND r.session_id <> @@SPID -- who knows ?
+OPTION (RECOMPILE, MAXDOP 1);

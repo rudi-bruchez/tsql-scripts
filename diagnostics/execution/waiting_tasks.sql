@@ -1,7 +1,12 @@
-------------------------------------------------------------
+-----------------------------------------------------------------
 -- retrieves the tasks in the waiting queue in SQL Server 
 -- rudi@babaluga.com, go ahead license
-------------------------------------------------------------
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT
 	s.session_id
    ,CAST(s.login_time AS DATETIME2(0)) AS login_time
@@ -41,4 +46,5 @@ AND wt.wait_type NOT IN (
     'DISPATCHER_QUEUE_SEMAPHORE'
     -- 'TRACEWRITE' -- to filter out profiler
 )
-ORDER BY s.session_id;
+ORDER BY s.session_id
+OPTION (RECOMPILE, MAXDOP 1);

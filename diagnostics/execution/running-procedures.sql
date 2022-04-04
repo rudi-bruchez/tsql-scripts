@@ -1,7 +1,9 @@
 -----------------------------------------------------------------
--- list currently running stored procedure
+-- list currently running stored procedures
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 SELECT
 	DB_NAME(er.database_id) AS [db], 
@@ -12,4 +14,5 @@ SELECT
 FROM sys.dm_exec_connections as qs
 JOIN sys.dm_exec_requests AS er ON qs.session_id = er.session_id AND qs.connection_id = er.connection_id
 CROSS APPLY sys.dm_exec_sql_text(qs.most_recent_sql_handle) st 
-OUTER APPLY sys.dm_exec_sql_text(er.plan_handle) detail;
+OUTER APPLY sys.dm_exec_sql_text(er.plan_handle) detail
+OPTION (RECOMPILE, MAXDOP 1);

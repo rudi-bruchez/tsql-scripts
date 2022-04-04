@@ -4,6 +4,8 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT 
 	r.command,
 	r.percent_complete,

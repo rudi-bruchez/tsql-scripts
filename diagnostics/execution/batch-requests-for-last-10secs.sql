@@ -1,3 +1,13 @@
+-----------------------------------------------------------------
+-- Using performance counters to get the number of batch requests 
+-- in 10 seconds, in average per second.
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+SET NOCOUNT ON;
+
 SELECT *
   FROM sys.dm_os_performance_counters
   WHERE counter_name IN('Batch Requests/sec', 'SQL Compilations/sec', 'SQL Re-Compilations/sec')
