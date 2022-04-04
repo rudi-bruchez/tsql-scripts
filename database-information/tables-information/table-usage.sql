@@ -1,5 +1,5 @@
 -----------------------------------------------------------------
--- Operationel stats on tables
+-- Operational stats on tables
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
