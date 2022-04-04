@@ -1,3 +1,11 @@
+-----------------------------------------------------------------
+-- Lists query store options in the current database,
+-- especially why the Query Store is read-only, if it is the case.
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+
+
 SELECT *,
 	CASE qso.readonly_reason
 		WHEN 1 THEN 'db is in read only'
@@ -8,3 +16,4 @@ SELECT *,
 		ELSE 'Azure db ?'
 	END
 FROM  sys.database_query_store_options qso
+OPTION (RECOMPILE, MAXDOP 1);

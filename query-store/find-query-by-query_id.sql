@@ -1,3 +1,9 @@
+-----------------------------------------------------------------
+-- Find a query in the Query Store when you know the query_id
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 DECLARE @query_id BIGINT = 1028;
