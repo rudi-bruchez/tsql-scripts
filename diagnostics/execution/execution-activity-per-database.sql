@@ -2,6 +2,7 @@
 -- execution activity per database
 -- rudi@babaluga.com, go ahead license
 -------------------------------------------------------
+
 SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 

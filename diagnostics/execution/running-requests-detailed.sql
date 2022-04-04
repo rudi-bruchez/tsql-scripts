@@ -1,9 +1,15 @@
--- list running requests with query text 
+-----------------------------------------------------------------
+-- lists running requests with query text
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
 
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 GO
 
-SELECT r.session_id, s.login_name, s.host_name, r.start_time, r.status, r.command, COALESCE(t.text, tqp.query_plan) as [text],
+SELECT 
+	r.session_id, s.login_name, s.host_name, r.start_time, r.status, r.command, 
+	COALESCE(t.text, tqp.query_plan) as [text],
 	DB_NAME(r.database_id) as db, r.wait_type, r.wait_time, r.last_wait_type,
 	r.open_resultset_count, r.cpu_time, r.total_elapsed_time,
 	r.reads, r.writes, r.logical_reads, r.row_count, r.granted_query_memory, r.blocking_session_id

@@ -2,6 +2,7 @@
 -- list all opened transactions with detail
 -- rudi@babaluga.com, go ahead license
 ----------------------------------------------------------
+
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
 SELECT  

@@ -1,4 +1,8 @@
--- short version
+-----------------------------------------------------------------
+-- lists running requests with query text, short version
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
 
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 

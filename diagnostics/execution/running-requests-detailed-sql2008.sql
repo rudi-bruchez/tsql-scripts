@@ -1,5 +1,12 @@
--- with full details, for SQL 2008
--- TODO : add sys.dm_exec_input_buffer for more recent versions
+-----------------------------------------------------------------
+-- lists running requests with query text, full details
+-- for SQL Server 2008
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT 
 	CAST(SYSDATETIME() as DATETIME2(3)) as [now]],
 	r.session_id as [session],

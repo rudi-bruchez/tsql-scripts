@@ -1,3 +1,9 @@
+-----------------------------------------------------------------
+-- Tracks exceptions (severity > 10)
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+
 CREATE EVENT SESSION [errors] ON SERVER 
 ADD EVENT sqlserver.error_reported(
     ACTION(
@@ -20,3 +26,10 @@ WITH (
     STARTUP_STATE=OFF
     )
 GO
+
+-- start the session
+ALTER EVENT SESSION [errors] ON SERVER STATE=START;
+-- stop the session
+/*
+ALTER EVENT SESSION [errors] ON SERVER STATE=STOP;
+*/
