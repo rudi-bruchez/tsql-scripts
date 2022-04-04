@@ -4,6 +4,8 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 ;WITH [rows] AS (
 	SELECT 
 		t.NAME AS TableName,

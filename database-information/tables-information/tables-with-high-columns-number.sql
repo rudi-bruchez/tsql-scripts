@@ -6,6 +6,8 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 ;WITH cte_partitions AS (
     SELECT p.object_id,
         SUM(p.rows) as rows,
