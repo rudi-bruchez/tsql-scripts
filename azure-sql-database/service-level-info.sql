@@ -1,3 +1,12 @@
+-----------------------------------------------------------------
+-- Gets service level information on Azure SQL Database
+-- using attributed resources.
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 -- CPU
 SELECT *
 FROM sys.dm_os_schedulers dos

@@ -1,3 +1,12 @@
+-----------------------------------------------------------------
+-- Wait stats on Azure SQL Database using the dedicated view
+-- sys.dm_db_wait_stats
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT *, 
 	CAST(1.0 * signal_wait_time_ms / waiting_tasks_count as decimal(10, 2)) as avg_signal
 FROM sys.dm_db_wait_stats
@@ -39,4 +48,4 @@ WHERE [wait_type] NOT IN (
         N'XE_DISPATCHER_WAIT', N'XE_LIVE_TARGET_TVF', N'XE_TIMER_EVENT')
 AND waiting_tasks_count > 0
 ORDER BY wait_time_ms DESC
-OPTION (RECOMPILE);
+OPTION (RECOMPILE, MAXDOP 1);
