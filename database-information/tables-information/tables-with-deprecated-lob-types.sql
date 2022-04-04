@@ -4,6 +4,8 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT DISTINCT
     t.NAME AS TableName,
 	STUFF((

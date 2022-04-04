@@ -4,6 +4,8 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 ;WITH [buffer] AS (
 	SELECT 
 		bd.allocation_unit_id,
