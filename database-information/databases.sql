@@ -41,5 +41,5 @@ SELECT
 FROM sys.databases
 WHERE database_id > 4
 ORDER BY 1
-OPTION (RECOMPILE);
+OPTION (RECOMPILE, MAXDOP 1);
 

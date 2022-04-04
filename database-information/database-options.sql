@@ -1,3 +1,10 @@
+-----------------------------------------------------------------
+-- Lists common database options.
+-- compatible with Azure SQL Database
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+
 SELECT
 	db.[name] AS db
    ,db.recovery_model_desc AS recovery_model
@@ -21,4 +28,4 @@ SELECT
    ,db.is_memory_optimized_elevate_to_snapshot_on
    ,db.delayed_durability_desc AS [delayed_durability]
 FROM sys.databases AS db WITH (READUNCOMMITTED)
-OPTION (RECOMPILE);
+OPTION (RECOMPILE, MAXDOP 1);
