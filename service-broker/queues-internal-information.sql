@@ -1,5 +1,5 @@
 -----------------------------------------------------------------
--- Get intenral info for Service Broker queues
+-- Get internal info for Service Broker queues
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
