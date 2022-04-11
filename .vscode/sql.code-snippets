@@ -25,7 +25,9 @@
 		  "-- rudi@babaluga.com, go ahead license",
 		  "-----------------------------------------------------------------",
 		  "",
-		  ""
+		  "SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;",
+		  "",
+		  "$2"
         ],
         "description": "Header for SQL file"
     },
