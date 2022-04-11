@@ -9,10 +9,11 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 SELECT DISTINCT
     t.NAME AS TableName,
 	STUFF((
-		SELECT CONCAT(', ', c. name, ' (', t.name, ')') as [text()]
+		SELECT CONCAT(', ', c. name, ' (', ty.name, ')') as [text()]
 		FROM sys.columns c
-		JOIN sys.types t ON c.system_type_id = t.system_type_id
-		WHERE t.name IN (N'text', N'image', N'ntext')
+		JOIN sys.types ty ON c.system_type_id = ty.system_type_id
+		WHERE ty.name IN (N'text', N'image', N'ntext')
+		AND c.object_id = t.object_id
 		FOR XML PATH('')
 	), 1, 2, '') as [columns],
     i.name as indexName,
