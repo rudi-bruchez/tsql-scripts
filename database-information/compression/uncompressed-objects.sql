@@ -12,7 +12,7 @@ SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 GO
 
-DECLARE @table_name sysname = 'VueManagerProspection';
+DECLARE @table_name sysname = '%';
 DECLARE @compressionType varchar(10) = 'ROW';
 DECLARE @online bit = 1;
 DECLARE @resumable bit = 0;
