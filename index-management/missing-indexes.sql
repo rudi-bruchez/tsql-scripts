@@ -21,11 +21,9 @@ SELECT
 	+ ' ON ' + statement + ' (' + COALESCE(equality_columns, inequality_columns) 
 	+ COALESCE(') INCLUDE (' + included_columns, '') + ') WITH (ONLINE = ON, DATA_COMPRESSION = ROW, SORT_IN_TEMPDB = ON)' as [DDL]
 FROM	sys.dm_db_missing_index_details d 
-INNER JOIN sys.dm_db_missing_index_groups g
-	ON	d.index_handle = g.index_handle
-INNER JOIN sys.dm_db_missing_index_group_stats s
-	ON	g.index_group_handle = s.group_handle
-WHERE	database_id = db_id()
+JOIN sys.dm_db_missing_index_groups g ON d.index_handle = g.index_handle
+JOIN sys.dm_db_missing_index_group_stats s ON g.index_group_handle = s.group_handle
+WHERE database_id = db_id()
 AND object_name(d.object_id) LIKE @table_name
 ORDER BY usage DESC, object_name(d.object_id), s.user_seeks DESC, d.object_id
 OPTION (RECOMPILE, MAXDOP 1);
