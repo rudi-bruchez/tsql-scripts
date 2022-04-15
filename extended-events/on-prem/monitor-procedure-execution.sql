@@ -1,11 +1,11 @@
 -----------------------------------------------------------------
--- Tracks a specifi stored procedure execution.
+-- Tracks a specific stored procedure execution.
 -- change the procedure name : <PROCEDURE NAME>'
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
-CREATE EVENT SESSION [procedure] ON SERVER 
+CREATE EVENT SESSION [stored_procedure] ON SERVER 
 ADD EVENT sqlserver.rpc_completed(
     ACTION(
 		sqlserver.client_app_name,
@@ -13,9 +13,21 @@ ADD EVENT sqlserver.rpc_completed(
 		sqlserver.sql_text,
 		sqlserver.username
 	)
+    WHERE ([object_name]=N'<PROCEDURE NAME>')),
+ADD EVENT sqlserver.query_post_execution_plan_profile( -- lightweight profiling on recent versions of SQL Server
     WHERE ([object_name]=N'<PROCEDURE NAME>'))
-	--WHERE ([object_name]<>N'sp_reset_connection'))
-ADD TARGET package0.ring_buffer
+	
+	-- uncomment if you want to tack statements inside de stored procedure
+	/*
+	, ADD EVENT sqlserver.sp_statement_completed(
+    	WHERE (
+			[object_name]=N'<PROCEDURE NAME>'
+			AND duration > 0 -- only relevant statements
+		)
+	)
+	*/
+-- ADD TARGET package0.ring_buffer
+ADD TARGET package0.event_file(SET filename=N'stored_procedure')
 WITH (
 	MAX_MEMORY=4096 KB,
 	EVENT_RETENTION_MODE=ALLOW_SINGLE_EVENT_LOSS,
@@ -28,8 +40,8 @@ WITH (
 GO
 
 -- start the session
-ALTER EVENT SESSION [procedure] ON SERVER STATE=START;
+ALTER EVENT SESSION [stored_procedure] ON SERVER STATE=START;
 -- stop the session
 /*
-ALTER EVENT SESSION [procedure] ON SERVER STATE=STOP;
+ALTER EVENT SESSION [stored_procedure] ON SERVER STATE=STOP;
 */

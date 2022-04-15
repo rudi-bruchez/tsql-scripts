@@ -12,7 +12,8 @@ SELECT TOP 100
 	qs.total_logical_reads / qs.execution_count as average_logical_reads,
 	CAST(qs.total_worker_time / qs.execution_count / 1000.0 as numeric(18, 2)) as avg_worker_time_ms,
 	qs.last_rows,
-	REPLACE(REPLACE(st.text, '-', ''), '*', '') as [text], -- some random cleaning. the sql text often starts with long comment lines.
+	-- REPLACE(REPLACE(st.text, '-', ''), '*', '') as [text], -- some random cleaning. the sql text often starts with long comment lines.
+	st.text,
 	qp.query_plan, 
 	CAST(qs.creation_time as datetime2(0)) as creation_time, 
 	CAST(qs.last_execution_time as datetime2(0)) as last_exec_time, 
