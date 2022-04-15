@@ -7,7 +7,7 @@ GO
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
-CREATE OR ALTER PROCEDURE sp_missing_indexes
+CREATE OR ALTER PROCEDURE dbo.sp_indexes_analysis
 	@table_name sysname = '%'
 AS BEGIN
 	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
@@ -36,7 +36,7 @@ AS BEGIN
 
 	-- 1. missing indexes
 	SELECT	
-		CONCAT(OBJECT_SCHEMA_NAME(d.object_id), '.', OBJECT_NAME(d.object_id)) as [table], 
+		CONCAT(OBJECT_SCHEMA_NAME(d.object_id), '.', OBJECT_NAME(d.object_id)) as [missing indexes], 
 		COALESCE(d.equality_columns + ', ' + d.inequality_columns, d.equality_columns, d.inequality_columns) as [key],
 		d.equality_columns,
 		d.inequality_columns,
@@ -64,7 +64,7 @@ AS BEGIN
 	-- 2. index usage
 	;WITH cte AS (
 		SELECT 
-			MIN(SCHEMA_NAME(tn.schema_id) + '.' + tn.name) as [table],
+			MIN(SCHEMA_NAME(tn.schema_id) + '.' + tn.name) as [existing indexes],
 			MIN(ix.name) AS idx,
 			MIN(ix.fill_factor) as fill_factor,
 			tn.object_id as object_id,
@@ -133,4 +133,4 @@ END;
 GO
 
 -- to enable the procedure to run in the current dtabase context
-EXEC sys.sp_MS_marksystemobject sp_missing_indexes
+EXEC sys.sp_MS_marksystemobject dbo.sp_indexes_analysis
