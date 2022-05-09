@@ -4,7 +4,9 @@
 -- rudi@babaluga.com, go ahead license
 ---------------------------------------------
 
-DECLARE @table_name sysname = '<TABLE_NAME>';
+DECLARE @table_name sysname = 'smw_Suivi_archive';
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 SELECT i.name
 	,i.index_id
@@ -35,10 +37,11 @@ SELECT i.name
 	,ps.index_depth
 	,ps.record_count as [rows]
 	,ps.compressed_page_count as compressed_pages
-	,ps.columnstore_delete_buffer_state_desc as columnstore_delete_buffer_state
+	--,ps.columnstore_delete_buffer_state_desc as columnstore_delete_buffer_state
 	,ops.*
 FROM sys.indexes i
 CROSS APPLY sys.dm_db_index_physical_stats(DB_ID(), i.object_id, i.index_id, NULL, N'DETAILED') ps
 CROSS APPLY sys.dm_db_index_operational_stats(DB_ID(), i.object_id, i.index_id, ps.partition_number) ops
-WHERE i.object_id = OBJECT_ID(@table_name)
-AND ps.page_count > 0;
+WHERE OBJECT_NAME(i.object_id) LIKE @table_name
+AND ps.page_count > 0
+OPTION (RECOMPILE, MAXDOP 1);
