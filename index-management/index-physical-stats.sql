@@ -4,13 +4,9 @@
 -- rudi@babaluga.com, go ahead license
 ---------------------------------------------
 
-<<<<<<< HEAD
 DECLARE @table_name sysname = '%';
-=======
-DECLARE @table_name sysname = 'smw_Suivi_archive';
 
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
->>>>>>> 2c8872959a6449bf6914fd60f3e4628f1a38bd92
 
 SELECT i.name
 	,i.index_id
@@ -47,11 +43,6 @@ FROM sys.indexes i
 JOIN sys.tables t ON i.object_id = t.object_id
 CROSS APPLY sys.dm_db_index_physical_stats(DB_ID(), i.object_id, i.index_id, NULL, N'DETAILED') ps
 CROSS APPLY sys.dm_db_index_operational_stats(DB_ID(), i.object_id, i.index_id, ps.partition_number) ops
-<<<<<<< HEAD
 WHERE t.name LIKE @table_name
-AND ps.page_count > 0;
-=======
-WHERE OBJECT_NAME(i.object_id) LIKE @table_name
 AND ps.page_count > 0
 OPTION (RECOMPILE, MAXDOP 1);
->>>>>>> 2c8872959a6449bf6914fd60f3e4628f1a38bd92
