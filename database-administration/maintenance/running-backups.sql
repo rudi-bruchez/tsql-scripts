@@ -16,5 +16,5 @@ select DB_NAME(s.database_id) as db,
 from sys.dm_exec_requests r
 join sys.dm_exec_sessions s ON r.session_id = s.session_id
 where s.session_id > 50
-and r.command IN ('BACKUP DATABASE')
+and r.command IN ('BACKUP DATABASE', 'RESTORE DATABASE')
 OPTION (RECOMPILE, MAXDOP 1);
