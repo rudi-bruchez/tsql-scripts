@@ -9,6 +9,7 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 select DB_NAME(s.database_id) as db, 
 	r.command,
 	CAST(r.start_time as DATETIME2(0)) as start_time,
+	DATEDIFF(minute, r.start_time, CURRENT_TIMESTAMP) as running_minutes,
 	r.last_wait_type,
 	r.wait_type,
 	r.wait_time,
