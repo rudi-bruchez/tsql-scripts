@@ -1,5 +1,5 @@
 -----------------------------------------------------------------
--- Lists synonyms in the current database, avec base object names
+-- Lists synonyms in the current database, with base object names
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
