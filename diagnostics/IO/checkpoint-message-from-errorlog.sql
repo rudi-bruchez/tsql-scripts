@@ -1,6 +1,11 @@
 -----------------------------------------------------------------
 -- get FlushCache long checkpoint message from the SQL Server
--- errorlog
+-- errorlog.
+-- some reference : https://techcommunity.microsoft.com/t5/sql-server-support-blog/how-it-works-when-is-the-flushcache-message-added-to-sql-server/ba-p/317038
+-- You can enable trace flag 3504 to get the message in the errorlog.
+-- SQL Server 2012 adds an additional condition ( is long checkpoint ) 
+-- If the trace flag is enabled or the checkpoint 'TRUE == IsLong', 
+-- the message is added to the SQL Server error log.
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
