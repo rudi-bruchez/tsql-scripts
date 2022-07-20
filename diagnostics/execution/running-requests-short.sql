@@ -11,6 +11,7 @@ SELECT
     t.text, 
     r.status, 
     DB_NAME(database_id) as db, 
+    r.total_elapsed_time as running_ms,
     COALESCE(wait_type, '') as wait_type,  -- easier to read than with NULL
     wait_time, 
     last_wait_type, 
