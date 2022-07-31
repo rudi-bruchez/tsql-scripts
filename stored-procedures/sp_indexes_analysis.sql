@@ -58,7 +58,7 @@ AS BEGIN
 	WHERE database_id = db_id()
 	--AND CONCAT(OBJECT_SCHEMA_NAME(d.object_id), '.', OBJECT_NAME(d.object_id)) LIKE @table_name
 	AND OBJECT_NAME(d.object_id) LIKE @table_name
-	ORDER BY usage DESC, [table], s.user_seeks DESC, d.object_id
+	ORDER BY usage DESC, [missing indexes], s.user_seeks DESC, d.object_id
 	OPTION (RECOMPILE, MAXDOP 1);
 
 	-- 2. index usage
@@ -100,7 +100,7 @@ AS BEGIN
 		GROUP BY tn.object_id, ix.index_id
 	)
 	SELECT 
-		cte.[table],
+		cte.[existing indexes],
 		cte.idx,
 		CASE cte.idxType
 			WHEN 'NONCLUSTERED' THEN 'NC'
@@ -119,13 +119,13 @@ AS BEGIN
 		CAST(ius.last_user_update as datetime2(0)) as last_update,
 		SUM(cte.IndexSizeMB) OVER () as TotalSizeMB
 		-- to generate compression code
-		,CONCAT('ALTER INDEX ', QUOTENAME(cte.idx), ' ON ', cte.[table], ' REBUILD WITH (ONLINE = ', IIF(CAST(SERVERPROPERTY('Edition') as nchar(10)) = 'Enterprise', 'ON', 'OFF'), ', DATA_COMPRESSION = ROW, SORT_IN_TEMPDB = ON)') as Compression_Code
+		,CONCAT('ALTER INDEX ', QUOTENAME(cte.idx), ' ON ', cte.[existing indexes], ' REBUILD WITH (ONLINE = ', IIF(CAST(SERVERPROPERTY('Edition') as nchar(10)) = 'Enterprise', 'ON', 'OFF'), ', DATA_COMPRESSION = ROW, SORT_IN_TEMPDB = ON)') as Compression_Code
 		-- to generate DROP code
-		,CONCAT('DROP INDEX ', QUOTENAME(cte.idx), ' ON ', cte.[table], ';') as Drop_Code
+		,CONCAT('DROP INDEX ', QUOTENAME(cte.idx), ' ON ', cte.[existing indexes], ';') as Drop_Code
 	FROM cte
 	LEFT JOIN sys.dm_db_index_usage_stats ius ON ius.object_id = cte.object_id AND ius.index_id = cte.index_id 
 		AND ius.database_id = DB_ID()
-	ORDER BY [table], [key]
+	ORDER BY [existing indexes], [key]
 	OPTION (RECOMPILE, MAXDOP 1);
 
 	SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
@@ -133,4 +133,5 @@ END;
 GO
 
 -- to enable the procedure to run in the current dtabase context
-EXEC sys.sp_MS_marksystemobject dbo.sp_indexes_analysis
+EXEC sys.sp_MS_marksystemobject 'dbo.sp_indexes_analysis'
+
