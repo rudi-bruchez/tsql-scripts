@@ -2,6 +2,9 @@
 -- AlwaysOn database replica states
 -- Rudi Bruchez - rudi@babaluga.com - 2020.07.02 - version 01
 -----------------------------------------------------------------
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT 
 	g.name as AG
    ,ar.replica_server_name as [Replica]
@@ -34,4 +37,5 @@ SELECT
    ,rs.secondary_lag_seconds
 FROM sys.dm_hadr_database_replica_states rs
 JOIN sys.availability_groups g ON rs.group_id = g.group_id
-JOIN sys.availability_replicas ar ON rs.replica_id = ar.replica_id;
+JOIN sys.availability_replicas ar ON rs.replica_id = ar.replica_id
+OPTION (RECOMPILE, MAXDOP 1);
