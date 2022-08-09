@@ -12,7 +12,7 @@ SELECT
 	CAST(redo_queue_size / 1024.00 as decimal(20, 2)) as redo_queue_size_mb, -- as long as the redo queue size is > 0, no log backup can be taken.
 	/*
 		Msg 35295, Level 16, State 1, Line 9
-		Log backup for database "xtsstg" on a secondary replica failed because the last backup LSN (0x00014e11:00003821:0001) 
+		Log backup for database "xxx" on a secondary replica failed because the last backup LSN (0x00014e11:00003821:0001) 
 		from the primary database is greater than the current local redo LSN (0x00014de4:00048108:003f). 
 		No log records need to be backed up at this time. Retry the log-backup operation later. 
 		Msg 3013, Level 16, State 1, Line 9

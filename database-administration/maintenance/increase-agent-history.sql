@@ -1,4 +1,8 @@
+-----------------------------------------------------------------
 -- increase agent job history to 10,000 rows, 500 max per job
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
 
 USE [msdb]
 GO
