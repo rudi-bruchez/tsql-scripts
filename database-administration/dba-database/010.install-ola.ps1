@@ -1,4 +1,4 @@
-# Install-Module dbatools
+# Install-Module dbatools -force
 
 $params = @{
   SqlInstance = 'SERVER'
@@ -6,7 +6,7 @@ $params = @{
   ReplaceExisting = $true
   InstallJobs = $false
   LogToTable = $true
-#   BackupLocation = 'C:\Data\Backup'
+  # BackupLocation = 'C:\Data\Backup'
   CleanupTime = 65
   Verbose = $true
 }
