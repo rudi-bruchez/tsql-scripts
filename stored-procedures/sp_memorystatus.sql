@@ -119,9 +119,9 @@ BEGIN
     SELECT TOP(20) 
         c.[type] AS [Clerk],
         MIN(n.NiceName) as [Description],
-    SUM(c.pages_kb) / 1024 AS [SizeMb],
-    SUM(c.virtual_memory_reserved_kb)  / 1024 as virtual_memory_reservedMB,
-    SUM(c.virtual_memory_committed_kb)  / 1024 as virtual_memory_committedMB
+    SUM(c.pages_kb) / 1024 AS [Size_Mb],
+    SUM(c.virtual_memory_reserved_kb)  / 1024 as virtual_memory_reserved_MB,
+    SUM(c.virtual_memory_committed_kb)  / 1024 as virtual_memory_committed_MB
     FROM sys.dm_os_memory_clerks c WITH (READUNCOMMITTED)
     LEFT JOIN @clecks n ON c.[type] = n.ClerkType
     GROUP BY c.[type]
