@@ -1,5 +1,5 @@
 -----------------------------------------------------------------
--- returne detailed usage of SQL Server memory
+-- returns detailed usage of SQL Server memory
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
