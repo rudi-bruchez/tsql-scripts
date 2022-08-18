@@ -10,6 +10,6 @@ SELECT
     is_auto_update_stats_on
 FROM sys.databases
 WHERE is_auto_close_on = 1
-OR is_auto_shrink_on= 1
+OR is_auto_shrink_on = 1
 OR is_auto_update_stats_on = 0
 ORDER BY name;
