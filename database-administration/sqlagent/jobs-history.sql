@@ -12,7 +12,7 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 		j.name as JobName,
 		h.step_name as step,
 		h.run_status,
-		msdb.dbo.agent_datetime(run_date, run_time) as RunDateTime,
+		CAST(msdb.dbo.agent_datetime(run_date, run_time) as datetime2(0)) as RunDateTime,
 		((run_duration/10000*3600 + (run_duration/100)%100*60 + run_duration%100 + 31 ) / 60) 
 		as RunDurationMinutes
 	FROM msdb.dbo.sysjobs j
