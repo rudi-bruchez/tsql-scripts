@@ -1,3 +1,13 @@
+-----------------------------------------------------------------
+-- get login timers from ring buffer 
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+GO
+
 ;WITH cte AS
 	(SELECT
 	x.value('(//Record/ConnectivityTraceRecord/RecordType)[1]', 'varchar(30)') AS [RecordType], 
@@ -22,4 +32,5 @@
 SELECT *
 FROM cte
 WHERE RecordType = 'LoginTimers'
-ORDER BY recordtime;
+ORDER BY recordtime
+OPTION (RECOMPILE, MAXDOP 1);

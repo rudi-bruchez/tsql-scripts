@@ -4,6 +4,9 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 ;WITH attr AS (
     SELECT plan_handle, pvt.set_options, pvt.sql_handle, pvt.date_format, pvt.date_first  
     FROM (  

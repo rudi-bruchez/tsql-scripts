@@ -4,6 +4,9 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT 
 	t.name,
 	t.create_date,

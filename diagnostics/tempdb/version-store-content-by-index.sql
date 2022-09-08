@@ -2,6 +2,10 @@
 -- row version details by index, for the current database
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
+
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT 
 	  DB_NAME(tvs.database_id) AS db
 	  ,MIN(transaction_sequence_num) AS min_trans

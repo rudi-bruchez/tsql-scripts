@@ -2,6 +2,10 @@
 -- row version details by objects, for the current database
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
+
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT 
 	   transaction_sequence_num
 	  ,version_sequence_num
