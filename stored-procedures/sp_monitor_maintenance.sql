@@ -1,10 +1,13 @@
 -----------------------------------------------------------------
--- 
+-- Monitor running maintenance operations
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
-CREATE OR ALTER PROCEDURE [admin].[MonitorRebuilds]
+USE Master;
+GO
+
+CREATE OR ALTER PROCEDURE [dbo].[sp_monitor_maintenance]
 AS BEGIN
     SET NOCOUNT ON;
 	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
@@ -37,28 +40,4 @@ AS BEGIN
 	WHEN N'ALTER TABLE' THEN 1 
 	ELSE 2 END, r.wait_time DESC
 
-	--SELECT *
-	--FROM xtsprod.sys.index_resumable_operations iro
-
-	--SELECT CAST(CAST(SYSDATETIME() AS DATETIME2(0)) AS SQL_VARIANT) AS [value], 'now' AS [label]
-	--UNION ALL
-	--SELECT DATEDIFF(MINUTE, der.start_time, CURRENT_TIMESTAMP), 'running_minutes'
-	--FROM sys.dm_exec_requests der WITH (NOLOCK)
-	--WHERE der.session_id = @session_id
-	--UNION ALL
-	/*
-	SELECT cntr_value, counter_name
-	FROM sys.dm_os_performance_counters
-	--WHERE instance_name = N'xtsprod'
-	WHERE instance_name = N'xbto'
-	AND counter_name IN(N'Percent Log Used', N'Log File(s) Size (KB)')
-	OPTION (RECOMPILE)
-	*/
-
-	EXEC sp_logspace 'xtsprod'
-
-	--USE [xtsprod]
-	--GO
-	--DBCC SHRINKFILE (N'xtsprodnew_log' , 10000)
-	--GO
 END
