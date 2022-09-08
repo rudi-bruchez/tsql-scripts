@@ -1,5 +1,5 @@
 -----------------------------------------------------------------
--- liste opened user sessions
+-- lists opened user sessions
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
