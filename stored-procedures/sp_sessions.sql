@@ -7,22 +7,31 @@
 USE Master;
 GO
 
-CREATE PROCEDURE sp_sessions
+CREATE OR ALTER PROCEDURE dbo.sp_sessions
 AS BEGIN
 	SET NOCOUNT ON;
 	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 	SELECT 
-		login_name, 
-		session_id, 
-		login_time, 
-		program_name, 
-		client_interface_name, 
-		status, 
-		last_request_end_time
-	FROM sys.dm_exec_sessions
-	WHERE is_user_process = 1
-	ORDER BY login_name, session_id
-	OPTION (MAXDOP 1, RECOMPILE);
+		s.login_name, 
+		s.session_id, 
+		CAST(s.login_time as datetime2(0)) as login_time, 
+		s.program_name, 
+		s.client_interface_name, 
+		s.status, 
+		CAST(s.last_request_end_time as datetime2(0)) as last_request_end_time,
+		COUNT(*) OVER (PARTITION BY s.login_name) as [cn #],
+		c.encrypt_option,
+		c.auth_scheme,
+		c.net_packet_size,
+		c.client_net_address,
+		ib.text as [inputbuffer]
+	FROM sys.dm_exec_sessions s
+	LEFT JOIN sys.dm_exec_connections c ON s.session_id = c.session_id
+	OUTER APPLY sys.dm_exec_sql_text(c.most_recent_sql_handle) AS ib
+	WHERE s.is_user_process = 1
+	ORDER BY s.login_name, s.session_id
+	OPTION (MAXDOP 1);
+
 END;
 GO

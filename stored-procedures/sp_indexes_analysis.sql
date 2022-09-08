@@ -59,7 +59,7 @@ AS BEGIN
 	--AND CONCAT(OBJECT_SCHEMA_NAME(d.object_id), '.', OBJECT_NAME(d.object_id)) LIKE @table_name
 	AND OBJECT_NAME(d.object_id) LIKE @table_name
 	ORDER BY usage DESC, [missing indexes], s.user_seeks DESC, d.object_id
-	OPTION (RECOMPILE, MAXDOP 1);
+	OPTION (MAXDOP 1);
 
 	-- 2. index usage
 	;WITH cte AS (
@@ -126,7 +126,7 @@ AS BEGIN
 	LEFT JOIN sys.dm_db_index_usage_stats ius ON ius.object_id = cte.object_id AND ius.index_id = cte.index_id 
 		AND ius.database_id = DB_ID()
 	ORDER BY [existing indexes], [key]
-	OPTION (RECOMPILE, MAXDOP 1);
+	OPTION (MAXDOP 1);
 
 	SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
 END;
