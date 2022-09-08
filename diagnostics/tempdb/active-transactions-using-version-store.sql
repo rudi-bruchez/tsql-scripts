@@ -1,6 +1,12 @@
---------------------------------------------------------------
---       active transactions using version store
---------------------------------------------------------------
+-----------------------------------------------------------------
+-- active transactions using version store
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT
 	t.transaction_id
    ,t.name
@@ -28,4 +34,5 @@ JOIN sys.dm_tran_active_snapshot_database_transactions s
 	ON t.transaction_id = s.transaction_id
 JOIN sys.dm_exec_sessions des
 	ON DES.session_id = s.session_id
-OUTER APPLY sys.dm_exec_input_buffer ( des.session_id , NULL ) AS ib;
+OUTER APPLY sys.dm_exec_input_buffer ( des.session_id , NULL ) AS ib
+OPTION (RECOMPILE, MAXDOP 1);

@@ -7,6 +7,10 @@
 -- adapted from
 -- https://dba.stackexchange.com/questions/263998/find-specific-query-in-query-store
 
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
+
 DECLARE @text_to_find NVARCHAR(2000) = N'your query text';
 
 SELECT 

@@ -35,12 +35,12 @@ AS BEGIN
 	AND (r.wait_type NOT IN (N'SP_SERVER_DIAGNOSTICS_SLEEP', N'XE_LIVE_TARGET_TVF')
 	OR r.wait_type  IS NULL)
 	AND r.session_id <> @@spid
-	AND r.command IN (
-		N'BACKUP LOG',
-		N'BACKUP DATABASE',
-		N'DBCC',
-		N'ALTER INDEX',
-		N'ALTER TABLE'
+	AND ( 
+		r.command LIKE N'%DBCC%' OR
+		r.command LIKE N'%BACKUP%' OR
+		r.command LIKE N'%RESTORE%' OR
+		r.command LIKE N'%CREATE%' OR
+		r.command LIKE N'%ALTER%'
 	)
 	ORDER BY r.wait_time DESC
 	OPTION (MAXDOP 1);

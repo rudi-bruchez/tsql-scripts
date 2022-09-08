@@ -1,4 +1,12 @@
+-----------------------------------------------------------------
 -- performance analysis of parallelized queries
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT TOP 100
 	DB_NAME(st.dbid) as db,
 	qs.execution_count,
@@ -27,4 +35,5 @@ WHERE qs.execution_count > 1
 --AND st.dbid IS NOT NULL AND st.dbid <> 32767 -- resource 
 AND st.dbid = DB_ID() -- only the current database
 AND qs.max_dop > 1
-ORDER BY qs.max_dop DESC, average_logical_reads DESC;
+ORDER BY qs.max_dop DESC, average_logical_reads DESC
+OPTION (RECOMPILE, MAXDOP 1);

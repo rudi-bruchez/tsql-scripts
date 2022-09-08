@@ -4,6 +4,10 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+GO
+
 ;WITH
     cte
     AS
@@ -57,4 +61,5 @@ SELECT
     *
     , DB_NAME(database_id) as [db]
 	, OBJECT_NAME(object_id, database_id) AS [table]
-FROM cte2;
+FROM cte2
+OPTION (RECOMPILE, MAXDOP 1);
