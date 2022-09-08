@@ -25,7 +25,7 @@ AS BEGIN
 		,CAST(r.estimated_completion_time / 1000.0 / 60 AS DECIMAL(10,2)) AS eta_min
 		--,r.row_count
 		,r.dop
-		,r.is_resumable AS [resumable]
+		,r.is_resumable AS [resumable]  -- comment if SQL Server version is < 140
 		,s.host_name
 		,s.program_name
 		,s.login_name
@@ -35,9 +35,14 @@ AS BEGIN
 	AND (r.wait_type NOT IN (N'SP_SERVER_DIAGNOSTICS_SLEEP', N'XE_LIVE_TARGET_TVF')
 	OR r.wait_type  IS NULL)
 	AND r.session_id <> @@spid
-	ORDER BY CASE r.command 
-	WHEN N'ALTER INDEX' THEN 1 
-	WHEN N'ALTER TABLE' THEN 1 
-	ELSE 2 END, r.wait_time DESC
+	AND r.command IN (
+		N'BACKUP LOG',
+		N'BACKUP DATABASE',
+		N'DBCC',
+		N'ALTER INDEX',
+		N'ALTER TABLE'
+	)
+	ORDER BY r.wait_time DESC
+	OPTION (MAXDOP 1);
 
 END
