@@ -11,17 +11,6 @@
 -----------------------------------------------------------------
 
 -----------------------------------------------------------------
--- 1. WSFC Cluster information
------------------------------------------------------------------
-
-
--- cluster networks
-SELECT *
-FROM sys.dm_hadr_cluster_networks
-
-
-
------------------------------------------------------------------
 -- 2. Endpoints information
 -----------------------------------------------------------------
 SELECT type_desc, port 
@@ -72,14 +61,3 @@ FROM sys.dm_hadr_database_replica_cluster_states rcs
 JOIN sys.availability_replicas ar ON rcs.replica_id = ar.replica_id
 JOIN sys.availability_groups g ON ar.group_id = g.group_id
 ORDER BY g.name, ar.replica_server_name, rcs.database_name;
-
--- pages auto-repaired ?
-SELECT 
-	DB_NAME(apr.database_id) as [database],
-	apr.file_id,
-	apr.page_id,
-	apr.error_type,
-	apr.page_status,
-	apr.modification_time
-FROM sys.dm_hadr_auto_page_repair apr
-ORDER BY [database];
