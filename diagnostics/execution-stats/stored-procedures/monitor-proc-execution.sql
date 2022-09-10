@@ -9,7 +9,8 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 DECLARE @proc TABLE (
 	ordre tinyint identity(1,1)  primary key,
 	procName sysname not null);
-	
+
+-- add the procedure names here	
 INSERT INTO @proc (procName)
 VALUES
 	('PROC_1'),
@@ -45,4 +46,4 @@ CROSS APPLY sys.dm_exec_query_plan(ps.plan_handle) AS qp
 WHERE ps.database_id = DB_ID()
 AND p.is_ms_shipped = 0
 ORDER BY pr.ordre
-OPTION (RECOMPILE);
+OPTION (RECOMPILE, MAXDOP 1);

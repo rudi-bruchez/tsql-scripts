@@ -75,7 +75,7 @@ AS BEGIN
     OUTER APPLY (SELECT COUNT(*) as vlf FROM sys.dm_db_log_info ( d.database_id ) ) li
     WHERE [db] LIKE @database
     ORDER BY [db] 
-    OPTION (RECOMPILE, MAXDOP 1);
+    OPTION (MAXDOP 1);
 
 END;
 GO

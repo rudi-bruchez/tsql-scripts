@@ -1,3 +1,12 @@
+-----------------------------------------------------------------
+-- Get TDS information from connectivity ring buffer
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 ;WITH cte AS
     (SELECT
     x.value('(//Record/ConnectivityTraceRecord/RecordType)[1]', 'varchar(30)') AS [RecordType], 
@@ -20,5 +29,6 @@
     WHERE ring_buffer_type = 'RING_BUFFER_CONNECTIVITY') AS R(x))
 SELECT *
 FROM cte
-where RecordType = 'Error'
-order by recordtime
+WHERE RecordType = 'Error'
+ORDER BY recordtime
+OPTION (RECOMPILE, MAXDOP 1);

@@ -1,5 +1,5 @@
 -----------------------------------------------------------------
--- 
+-- Returns databases with size information
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
@@ -30,6 +30,6 @@ AS BEGIN
     AND instance_name LIKE CONCAT('%', @namePattern, '%')
     GROUP BY instance_name
     ORDER BY instance_name
-    OPTION (RECOMPILE, MAXDOP 1);
+    OPTION (MAXDOP 1);
 
 END;
