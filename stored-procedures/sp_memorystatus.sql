@@ -85,7 +85,7 @@ BEGIN
         [value]
     FROM cte
     ORDER BY sort
-    OPTION (RECOMPILE, MAXDOP 1);
+    OPTION (MAXDOP 1);
 
     DECLARE @clecks TABLE (
         ClerkType nvarchar(60) not null primary key,
@@ -114,7 +114,7 @@ BEGIN
     (N'MEMORYCLERK_XTP', 'IN-MEMORY OLTP'),
     (N'MEMORYCLERK_SQLCONNECTIONPOOL', 'CONNECTION POOL'),
     (N'MEMORYCLERK_SQLOPTIMIZER', 'OPTIMIZER')
-    OPTION (RECOMPILE, MAXDOP 1);
+    OPTION (MAXDOP 1);
 
     SELECT TOP(20) 
         c.[type] AS [Clerk],
@@ -126,6 +126,6 @@ BEGIN
     LEFT JOIN @clecks n ON c.[type] = n.ClerkType
     GROUP BY c.[type]
     ORDER BY SUM(c.pages_kb) DESC
-    OPTION (RECOMPILE, MAXDOP 1);
+    OPTION (MAXDOP 1);
 END;
 GO

@@ -4,6 +4,9 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT
 	'total' as type,
 	CAST(SUM(CAST(cp.size_in_bytes as bigint)/1024.00) / 1024 as decimal(10, 2)) AS [Plan Size in MB]

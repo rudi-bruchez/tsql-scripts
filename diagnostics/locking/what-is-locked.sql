@@ -1,4 +1,12 @@
+-----------------------------------------------------------------
 -- adapted from https://stackoverflow.com/questions/7820907/how-to-find-out-what-table-a-page-lock-belongs-to
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+GO
 
 SELECT dm_tran_locks.request_session_id,
        dm_tran_locks.resource_database_id,
@@ -21,3 +29,4 @@ LEFT JOIN sys.indexes ON indexes.OBJECT_ID = partitions.OBJECT_ID AND indexes.in
 WHERE resource_associated_entity_id > 0
   AND resource_database_id = DB_ID()
 ORDER BY request_session_id, resource_associated_entity_id 
+OPTION (RECOMPILE, MAXDOP 1);

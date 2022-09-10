@@ -1,4 +1,11 @@
-SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+-----------------------------------------------------------------
+-- Get sessions from a specific host
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 DECLARE @hostname sysname = N'%';
 

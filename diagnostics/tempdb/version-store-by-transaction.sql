@@ -2,6 +2,10 @@
 -- row version details by transaction
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
+
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT db_name(spu.database_id) as database_name,
        at.transaction_begin_time as begin_time,
        case 
@@ -25,4 +29,5 @@ FROM sys.dm_tran_active_snapshot_database_transactions ast
   JOIN sys.dm_tran_active_transactions at on at.transaction_id = ast.transaction_id
   JOIN sys.dm_exec_sessions ses ON ses.session_id = ast.session_id
   JOIN sys.dm_db_session_space_usage spu ON spu.session_id = ses.session_id
-ORDER BY elapsed_time_seconds DESC;
+ORDER BY elapsed_time_seconds DESC
+OPTION (RECOMPILE, MAXDOP 1);

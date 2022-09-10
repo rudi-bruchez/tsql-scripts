@@ -87,5 +87,5 @@ AS BEGIN
 		OUTER APPLY sys.dm_exec_sql_text(cn.most_recent_sql_handle) AS inputbuffer
 	WHERE (se.session_id IS NOT NULL OR @all = 1)
 	ORDER BY t.transaction_begin_time
-	OPTION (RECOMPILE, MAXDOP 1);
+	OPTION (MAXDOP 1);
 END;

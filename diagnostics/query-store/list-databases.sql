@@ -1,16 +1,17 @@
 -----------------------------------------------------------------
--- Find a query in the Query Store when you know the query_id
+-- check is the query store is enabled on some databases.
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
-DECLARE @query_id BIGINT = 1028;
-
-SELECT
-	dest.text
-FROM sys.query_store_query qsq
-CROSS APPLY sys.dm_exec_sql_text(qsq.batch_sql_handle) dest
-WHERE qsq.query_id = @query_id
+SELECT 
+	d.name,
+	d.database_id,
+	d.create_date,
+	d.state_desc as [state]
+FROM sys.databases d
+WHERE d.is_query_store_on = 1
 OPTION (RECOMPILE, MAXDOP 1);

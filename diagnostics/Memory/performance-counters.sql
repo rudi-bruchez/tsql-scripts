@@ -4,6 +4,9 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT N'Buffer cache hit ratio' AS counter_name, CAST((ratio.cntr_value * 1.0 / base.cntr_value) * 100.0 AS NUMERIC(5, 2)) as [Value]
 FROM sys.dm_os_performance_counters ratio WITH (READUNCOMMITTED)
 JOIN sys.dm_os_performance_counters base  WITH (READUNCOMMITTED) 

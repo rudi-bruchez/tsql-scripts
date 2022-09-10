@@ -12,6 +12,7 @@
     https://docs.microsoft.com/en-us/sql/relational-databases/performance/query-profiling-infrastructure
 */
 
+SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 GO
 

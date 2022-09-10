@@ -16,21 +16,17 @@ IO related diagnostic queries.
 
 Locking and blocking related diagnostic queries.
 
-## 📝 [Optimizer](./optimizer/)
-
-Optimizer related diagnostic queries: column statistics.
-
 ## 📝 [Memory](./Memory/)
 
 Memory related diagnostic queries: buffer, plan cache, query memory.
 
+## 📝 [Query Store](./query-store/)
+
+Query Store Management and information.
+
 ## 📝 [Sessions](./sessions/)
 
 Lists and finds sessions: by host, in a specific database...
-
-## 📝 [Stored procedures](./stored-procedures/)
-
-Stored procedure related queries. Monitor execution, execution analysis, etc.
 
 ## 📝 [tempdb](./tempdb/)
 

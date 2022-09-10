@@ -3,6 +3,11 @@
 -- please refer to the original query!
 -- copied here for my own usage, selecting wait types I want to filter out.
 ---------------------------------------------------------------------------------------------------------
+
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+GO
+
 WITH [Waits] AS
     (SELECT
         [wait_type],

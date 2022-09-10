@@ -4,6 +4,7 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 SELECT TOP 100
@@ -46,6 +47,9 @@ WHERE qs.execution_count > 1
 
 -- queries executed on the last 24 hours
 AND qs.last_execution_time >= DATEADD(day, -1, CURRENT_TIMESTAMP)
+-- queries executed on the last hour
+-- AND qs.last_execution_time >= DATEADD(hour, -1, CURRENT_TIMESTAMP)
+
 
 -- *** only the current database ***
 --AND st.dbid = DB_ID()
