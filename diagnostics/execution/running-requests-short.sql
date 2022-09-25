@@ -22,5 +22,5 @@ FROM sys.dm_exec_requests r
 CROSS APPLY sys.dm_exec_sql_text(r.sql_handle) t
 OUTER APPLY sys.dm_exec_query_plan(r.plan_handle) p
 WHERE r.session_id > 50 AND r.session_id <> @@SPID
-AND last_wait_type NOT IN ('SP_SERVER_DIAGNOSTICS_SLEEP')
+AND last_wait_type NOT IN ('SP_SERVER_DIAGNOSTICS_SLEEP', 'XE_LIVE_TARGET_TVF')
 OPTION (RECOMPILE, MAXDOP 1);
