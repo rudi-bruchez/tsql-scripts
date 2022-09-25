@@ -35,5 +35,10 @@ SELECT
 FROM sys.dm_exec_sessions s
 WHERE host_name LIKE @hostname
 AND is_user_process = 1
+/* -- some filters
+AND s.program_name NOT LIKE 'Microsoft SQL Server Management Studio%'
+AND s.program_name NOT LIKE 'Telegraf%'
+AND s.program_name NOT LIKE 'SQLAgent%'
+*/
 ORDER BY host_name, login_time
 OPTION (RECOMPILE, MAXDOP 1);
