@@ -1,5 +1,5 @@
 -----------------------------------------------------------------
--- get listeners information
+-- get AG listeners information
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
@@ -23,4 +23,4 @@ FROM sys.availability_group_listeners agl
 JOIN sys.availability_group_listener_ip_addresses aglip ON agl.listener_id = aglip.listener_id
 JOIN sys.availability_groups g ON agl.group_id = g.group_id
 ORDER BY g.name, agl.dns_name
-OPTION (RECOMPILE, MAXDOP 1);
+OPTION (RECOMPILE, MAXDOP 2);
