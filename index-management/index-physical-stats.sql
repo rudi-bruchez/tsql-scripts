@@ -1,5 +1,6 @@
 ---------------------------------------------
--- look at index physical stats
+-- index physical stats, fragmentation
+-- analysis
 --
 -- rudi@babaluga.com, go ahead license
 ---------------------------------------------
@@ -8,12 +9,12 @@ DECLARE @table_name sysname = '%';
 
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
-SELECT i.name
+SELECT 
+     T.name AS [table]
+	,i.name AS [index]
 	,i.index_id
 	,i.fill_factor
-	,i.has_filter
-	,ps.partition_number
-	,ps.index_level
+	,ps.partition_number AS [partition]
 	,ps.page_count as pages
 	,ps.compressed_page_count as compressed_pages
 	,CAST(ps.avg_page_space_used_in_percent as decimal(5,2)) as [avg_pg_used_%]
@@ -36,13 +37,10 @@ SELECT i.name
 	,ps.version_ghost_record_count
 	,ps.index_depth
 	,ps.record_count as [rows]
-	,ps.compressed_page_count as compressed_pages
-	--,ps.columnstore_delete_buffer_state_desc as columnstore_delete_buffer_state
-	,ops.*
 FROM sys.indexes i
 JOIN sys.tables t ON i.object_id = t.object_id
-CROSS APPLY sys.dm_db_index_physical_stats(DB_ID(), i.object_id, i.index_id, NULL, N'DETAILED') ps
-CROSS APPLY sys.dm_db_index_operational_stats(DB_ID(), i.object_id, i.index_id, ps.partition_number) ops
+CROSS APPLY sys.dm_db_index_physical_stats(DB_ID(), i.object_id, i.index_id, NULL, N'LIMITED') ps
 WHERE t.name LIKE @table_name
 AND ps.page_count > 0
+ORDER BY [table], i.index_id
 OPTION (RECOMPILE, MAXDOP 1);
