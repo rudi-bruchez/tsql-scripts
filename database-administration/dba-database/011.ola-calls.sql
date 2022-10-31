@@ -12,7 +12,7 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 EXECUTE _dba.dbo.DatabaseBackup 
 	@Databases = 'USER_DATABASES',
-	@Directory = '\share\SQL\Backups',
+	@Directory = '\\share\SQL\Backups',
 	@BackupType = 'FULL',
 	@Compress = 'Y',
 	@Encrypt = 'Y',
