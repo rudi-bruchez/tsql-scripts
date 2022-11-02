@@ -11,24 +11,22 @@ SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 -------------------------------------------------
---           Full backups
+--        Full backups for AG databases
 -------------------------------------------------
 
 EXECUTE _dba.dbo.DatabaseBackup 
-	@Databases = 'USER_DATABASES',
+	@Databases = 'AVAILABILITY_GROUP_DATABASES',
 	@Directory = '\\backup-share\backups', -- change here
 	@BackupType = 'FULL',
+	@CopyOnly = 'Y',
 	@Compress = 'Y',
 	--@Encrypt = 'Y',
 	--@EncryptionAlgorithm = 'AES_256',
 	--@ServerCertificate = 'backup_cert', -- change here
-	--@CleanupTime = 24,
-	@DirectoryStructure = '{DatabaseName}{DirectorySeparator}{BackupType}{CopyOnly}',
-	@FileName = '{DatabaseName}_{BackupType}_{Year}{Month}{Day}_{Hour}{Minute}{Second}_{FileNumber}.{FileExtension}',
+	@CleanupTime = 24,
+	@AvailabilityGroupDirectoryStructure = '{AvailabilityGroupName}{DirectorySeparator}{DatabaseName}{DirectorySeparator}{BackupType}_{CopyOnly}',
 	@AvailabilityGroupFileName = '{DatabaseName}_{BackupType}_{Year}{Month}{Day}_{Hour}{Minute}{Second}_{FileNumber}.{FileExtension}',
-	@LogToTable = 'Y',
-	--@AvailabilityGroups = 'ALL_AVAILABILITY_GROUPS',
-	@CopyOnly = 'Y';
+	@LogToTable = 'Y';
 
 /* INFO :
 
@@ -52,6 +50,26 @@ So, don't remove this token.
 */
 
 -------------------------------------------------
+--        Full backups for other databases
+-------------------------------------------------
+
+EXECUTE _dba.dbo.DatabaseBackup 
+	@Databases = 'USER_DATABASES, -AVAILABILITY_GROUP_DATABASES',
+	@Directory = '\\backup-share\backups', -- change here
+	@BackupType = 'FULL',
+	@CopyOnly = 'N',
+	@Compress = 'Y',
+	--@Encrypt = 'Y',
+	--@EncryptionAlgorithm = 'AES_256',
+	--@ServerCertificate = 'backup_cert', -- change here
+	--@CleanupTime = 24,
+	@CleanupTime = 48,
+	@DirectoryStructure = '{ServerName}{DirectorySeparator}{DatabaseName}{DirectorySeparator}{BackupType}',
+	@FileName = '{DatabaseName}_{BackupType}_{Year}{Month}{Day}_{Hour}{Minute}{Second}_{FileNumber}.{FileExtension}',
+	@LogToTable = 'Y';
+
+
+-------------------------------------------------
 --           Log backups
 -------------------------------------------------
 
@@ -65,6 +83,8 @@ EXECUTE _dba.dbo.DatabaseBackup
 	--@ServerCertificate = 'backup_cert',
 	@CleanupTime = 24,
 	@DirectoryStructure = '{DatabaseName}{DirectorySeparator}{BackupType}',
+	@AvailabilityGroupDirectoryStructure = '{AvailabilityGroupName}{DirectorySeparator}{DatabaseName}{DirectorySeparator}{BackupType}_{CopyOnly}',
 	@FileName = '{DatabaseName}_{BackupType}_{Year}{Month}{Day}_{Hour}{Minute}{Second}_{FileNumber}.{FileExtension}',
 	@AvailabilityGroupFileName = '{DatabaseName}_{BackupType}_{Year}{Month}{Day}_{Hour}{Minute}{Second}_{FileNumber}.{FileExtension}',
 	@LogToTable = 'Y';
+
