@@ -1,0 +1,1238 @@
+--------------------------------------------------
+            DATABASE 
++
+xtsprod
+--------------------------------------------------
+
+----- Schema [archive] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+jg_berthier_ro  SELECT                   Grant dbo
+richad_idris_ro SELECT                   Grant dbo
+Reader_Orders   SELECT                   Grant dbo
+walton_comer_ro SELECT                   Grant dbo
+enzo_sadaoui_ro SELECT                   Grant dbo
+xbto_dev        SELECT                   Grant dbo
+pg_archive      DELETE                   Grant dbo
+pg_archive      SELECT                   Grant dbo
+
+
+----- Schema [archiving] -----
+
+Grantee    PermissionType PermissionState Grantor
+-------    -------------- --------------- -------
+pg_archive SELECT                   Grant dbo
+
+
+----- Schema [dbo] -----
+
+Grantee      PermissionType PermissionState Grantor
+-------      -------------- --------------- -------
+xbto_dev     SELECT                   Grant dbo
+mobo_ro      SELECT                   Grant dbo
+recontool_ro SELECT                   Grant dbo
+
+
+----- Schema [IndexOverlay] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+IndexOverlay_rw CONTROL                  Grant dbo
+
+
+----- Schema [InventoryAlgo] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+mobo    SELECT                   Grant kubot
+mobo_ro SELECT                   Grant kubot
+
+
+----- table [__DbInfo] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+richad_idris_ro SELECT                   Grant dbo
+
+
+----- table [__MigrationHistory] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+enzo_sadaoui_ro SELECT                   Grant dbo
+
+
+----- table [AppConfig] -----
+
+Grantee           PermissionType PermissionState Grantor
+-------           -------------- --------------- -------
+nicolas.genechesi INSERT                   Grant dbo
+nicolas.genechesi SELECT                   Grant dbo
+nicolas.genechesi UPDATE                   Grant dbo
+
+
+----- table [BitfinexMarginInfos] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [BitfinexWalletBalances] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [Blocks] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [BTCBalances] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [Bumblebee] -----
+
+Grantee           PermissionType PermissionState Grantor
+-------           -------------- --------------- -------
+nicolas.genechesi SELECT                   Grant dbo
+richad_idris_ro   SELECT                   Grant dbo
+Reader_Orders     SELECT                   Grant dbo
+walton_comer_ro   SELECT                   Grant dbo
+enzo_sadaoui_ro   SELECT                   Grant dbo
+xbto_dev          SELECT                   Grant dbo
+jhurrion_ro       SELECT                   Grant dbo
+jhurrion_rw       SELECT                   Grant dbo
+
+
+----- table [BumblebeeDataSeries] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+richad_idris_ro SELECT                   Grant dbo
+Reader_Orders   SELECT                   Grant dbo
+walton_comer_ro SELECT                   Grant dbo
+enzo_sadaoui_ro SELECT                   Grant dbo
+xbto_dev        SELECT                   Grant dbo
+XBTO\jhurrion   SELECT                   Grant dbo
+jhurrion_ro     SELECT                   Grant dbo
+jhurrion_rw     SELECT                   Grant dbo
+
+
+----- table [BumblebeeParamsAutomaticUpdate] -----
+
+Grantee       PermissionType PermissionState Grantor
+-------       -------------- --------------- -------
+Reader_Orders SELECT                   Grant dbo
+XBTO\jhurrion INSERT                   Grant dbo
+XBTO\jhurrion SELECT                   Grant dbo
+jhurrion_ro   SELECT                   Grant dbo
+jhurrion_rw   INSERT                   Grant dbo
+jhurrion_rw   SELECT                   Grant dbo
+
+
+----- table [CavirtexReportTrades] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [CavirtexReportTransactions] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [CoincheckBalance] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [DeltaBee] -----
+
+Grantee       PermissionType PermissionState Grantor
+-------       -------------- --------------- -------
+Reader_Orders SELECT                   Grant dbo
+xbto_dev      SELECT                   Grant dbo
+jhurrion_ro   SELECT                   Grant dbo
+jhurrion_rw   SELECT                   Grant dbo
+
+
+----- table [DeltaBeeByTerm] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [DeltaHedgerParam] -----
+
+Grantee      PermissionType PermissionState Grantor
+-------      -------------- --------------- -------
+backtests_ro SELECT                   Grant dbo
+alva_ro      SELECT                   Grant dbo
+
+
+----- table [ExchangeEntityAccountRelationships] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+enzo_sadaoui_ro SELECT                   Grant dbo
+
+
+----- table [ExchangeRequests] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+xts_dev SELECT                   Grant dbo
+
+
+----- table [Exchanges] -----
+
+Grantee          PermissionType PermissionState Grantor
+-------          -------------- --------------- -------
+greg_ro          SELECT                   Grant dbo
+bill_mayott_ro   SELECT                   Grant dbo
+hugues_dongmo_ro SELECT                   Grant dbo
+jg_berthier_ro   SELECT                   Grant dbo
+richad_idris_ro  SELECT                   Grant dbo
+mobo             SELECT                   Grant dbo
+Reader_Orders    SELECT                   Grant dbo
+walton_comer_ro  SELECT                   Grant dbo
+enzo_sadaoui_ro  SELECT                   Grant dbo
+xbto_dev         SELECT                   Grant dbo
+kubot_rw         INSERT                   Grant dbo
+kubot_rw         SELECT                   Grant dbo
+kubot_rw         UPDATE                   Grant dbo
+
+
+----- table [ExecutedOrders] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+greg_ro         SELECT                   Grant dbo
+bill_mayott_ro  SELECT                   Grant dbo
+jg_berthier_ro  SELECT                   Grant dbo
+richad_idris_ro SELECT                   Grant dbo
+mobo            SELECT                   Grant dbo
+Reader_Orders   SELECT                   Grant dbo
+walton_comer_ro SELECT                   Grant dbo
+enzo_sadaoui_ro SELECT                   Grant dbo
+xbto_dev        SELECT                   Grant dbo
+XBTO\jhurrion   SELECT                   Grant dbo
+jhurrion_ro     SELECT                   Grant dbo
+jhurrion_rw     SELECT                   Grant dbo
+
+
+----- table [Experiment] -----
+
+Grantee           PermissionType PermissionState Grantor
+-------           -------------- --------------- -------
+xts_dev           SELECT                   Grant dbo
+Reader_Experiment SELECT                   Grant dbo
+
+
+----- table [ExperimentOrder] -----
+
+Grantee           PermissionType PermissionState Grantor
+-------           -------------- --------------- -------
+xts_dev           SELECT                   Grant dbo
+Reader_Experiment SELECT                   Grant dbo
+
+
+----- table [ExperimentRun] -----
+
+Grantee           PermissionType PermissionState Grantor
+-------           -------------- --------------- -------
+xts_dev           SELECT                   Grant dbo
+Reader_Experiment SELECT                   Grant dbo
+
+
+----- table [ExperimentStrategy] -----
+
+Grantee           PermissionType PermissionState Grantor
+-------           -------------- --------------- -------
+xts_dev           SELECT                   Grant dbo
+Reader_Experiment SELECT                   Grant dbo
+
+
+----- table [Fees] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [FundingHistories] -----
+
+Grantee        PermissionType PermissionState Grantor
+-------        -------------- --------------- -------
+Funding_Reader SELECT                   Grant dbo
+
+
+----- table [FundingOffers] -----
+
+Grantee        PermissionType PermissionState Grantor
+-------        -------------- --------------- -------
+Funding_Reader SELECT                   Grant dbo
+
+
+----- table [FundingPayments] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+enzo_sadaoui_ro SELECT                   Grant dbo
+XBTO\esadaoui   SELECT                   Grant dbo
+
+
+----- table [FundingTrades] -----
+
+Grantee        PermissionType PermissionState Grantor
+-------        -------------- --------------- -------
+Funding_Reader SELECT                   Grant dbo
+
+
+----- table [FutureMarginManager] -----
+
+Grantee           PermissionType PermissionState Grantor
+-------           -------------- --------------- -------
+nicolas.genechesi SELECT                   Grant dbo
+richad_idris_ro   SELECT                   Grant dbo
+walton_comer_ro   SELECT                   Grant dbo
+enzo_sadaoui_ro   SELECT                   Grant dbo
+xbto_dev          SELECT                   Grant dbo
+
+
+----- table [FXHedge] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+richad_idris_ro SELECT                   Grant dbo
+walton_comer_ro SELECT                   Grant dbo
+enzo_sadaoui_ro SELECT                   Grant dbo
+xbto_dev        SELECT                   Grant dbo
+
+
+----- table [GatewayOrders] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+bill_mayott_ro  SELECT                   Grant dbo
+richad_idris_ro SELECT                   Grant dbo
+mobo            SELECT                   Grant dbo
+walton_comer_ro SELECT                   Grant dbo
+enzo_sadaoui_ro SELECT                   Grant dbo
+xbto_dev        SELECT                   Grant dbo
+
+
+----- table [GatewayOrdersSlim] -----
+
+Grantee          PermissionType PermissionState Grantor
+-------          -------------- --------------- -------
+greg_ro          SELECT                   Grant dbo
+hugues_dongmo_ro SELECT                   Grant dbo
+jg_berthier_ro   SELECT                   Grant dbo
+richad_idris_ro  SELECT                   Grant dbo
+Reader_Orders    SELECT                   Grant dbo
+enzo_sadaoui_ro  SELECT                   Grant dbo
+xbto_dev         SELECT                   Grant dbo
+mobo_ro          SELECT                   Grant dbo
+kubot_rw         INSERT                   Grant dbo
+kubot_rw         SELECT                   Grant dbo
+kubot_rw         UPDATE                   Grant dbo
+
+
+----- table [GeminiDataSeries] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [GeminiWalletBalances] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [IndexFundTwap] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [Instruments] -----
+
+Grantee             PermissionType PermissionState Grantor
+-------             -------------- --------------- -------
+nicolas.genechesi   SELECT                   Grant dbo
+greg_ro             SELECT                   Grant dbo
+bill_mayott_ro      SELECT                   Grant dbo
+hugues_dongmo_ro    SELECT                   Grant dbo
+jg_berthier_ro      SELECT                   Grant dbo
+richad_idris_ro     SELECT                   Grant dbo
+mobo                SELECT                   Grant dbo
+Reader_Orders       SELECT                   Grant dbo
+walton_comer_ro     SELECT                   Grant dbo
+enzo_sadaoui_ro     SELECT                   Grant dbo
+xbto_dev            SELECT                   Grant dbo
+XBTO\jhurrion       SELECT                   Grant dbo
+jhurrion_ro         SELECT                   Grant dbo
+kubot_rw            INSERT                   Grant dbo
+kubot_rw            SELECT                   Grant dbo
+kubot_rw            UPDATE                   Grant dbo
+XBTO\frasamoely     SELECT                   Grant dbo
+jhurrion_rw         SELECT                   Grant dbo
+Reader_CommonTables SELECT                   Grant dbo
+
+
+----- table [kvdbackup] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [MagellanBee] -----
+
+Grantee      PermissionType PermissionState Grantor
+-------      -------------- --------------- -------
+backtests_ro SELECT                   Grant dbo
+
+
+----- table [Minotaur] -----
+
+Grantee           PermissionType PermissionState Grantor
+-------           -------------- --------------- -------
+nicolas.genechesi SELECT                   Grant dbo
+richad_idris_ro   SELECT                   Grant dbo
+walton_comer_ro   SELECT                   Grant dbo
+enzo_sadaoui_ro   SELECT                   Grant dbo
+xbto_dev          SELECT                   Grant dbo
+
+
+----- table [MMBalances] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [MultiLegInstrumentLegs] -----
+
+Grantee      PermissionType PermissionState Grantor
+-------      -------------- --------------- -------
+backtests_ro SELECT                   Grant dbo
+alva_ro      SELECT                   Grant dbo
+
+
+----- table [NewBee] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+jg_berthier_ro  SELECT                   Grant dbo
+Reader_Orders   SELECT                   Grant dbo
+enzo_sadaoui_ro SELECT                   Grant dbo
+xbto_dev        SELECT                   Grant dbo
+
+
+----- table [NewBeeParamsHistoric] -----
+
+Grantee        PermissionType PermissionState Grantor
+-------        -------------- --------------- -------
+jg_berthier_ro SELECT                   Grant dbo
+Reader_Orders  SELECT                   Grant dbo
+xbto_dev       SELECT                   Grant dbo
+
+
+----- table [Nonces] -----
+
+Grantee           PermissionType PermissionState Grantor
+-------           -------------- --------------- -------
+nicolas.genechesi INSERT                   Grant dbo
+nicolas.genechesi SELECT                   Grant dbo
+nicolas.genechesi UPDATE                   Grant dbo
+richad_idris_ro   SELECT                   Grant dbo
+walton_comer_ro   SELECT                   Grant dbo
+enzo_sadaoui_ro   SELECT                   Grant dbo
+xbto_dev          SELECT                   Grant dbo
+
+
+----- table [OkcoinFilledLiquidationOrders] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [OptionsMonitoringDataSeries] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+richad_idris_ro SELECT                   Grant dbo
+walton_comer_ro SELECT                   Grant dbo
+enzo_sadaoui_ro SELECT                   Grant dbo
+xbto_dev        SELECT                   Grant dbo
+
+
+----- table [OrderEvents] -----
+
+Grantee           PermissionType PermissionState Grantor
+-------           -------------- --------------- -------
+nicolas.genechesi INSERT                   Grant dbo
+nicolas.genechesi SELECT                   Grant dbo
+nicolas.genechesi UPDATE                   Grant dbo
+greg_ro           SELECT                   Grant dbo
+richad_idris_ro   SELECT                   Grant dbo
+mobo              SELECT                   Grant dbo
+walton_comer_ro   SELECT                   Grant dbo
+enzo_sadaoui_ro   SELECT                   Grant dbo
+xbto_dev          SELECT                   Grant dbo
+
+
+----- table [Orders] -----
+
+Grantee           PermissionType PermissionState Grantor
+-------           -------------- --------------- -------
+nicolas.genechesi INSERT                   Grant dbo
+nicolas.genechesi SELECT                   Grant dbo
+nicolas.genechesi UPDATE                   Grant dbo
+kdbro             SELECT                   Grant dbo
+greg_ro           SELECT                   Grant dbo
+bill_mayott_ro    SELECT                   Grant dbo
+hugues_dongmo_ro  SELECT                   Grant dbo
+jg_berthier_ro    SELECT                   Grant dbo
+richad_idris_ro   SELECT                   Grant dbo
+mobo              SELECT                   Grant dbo
+Reader_Orders     SELECT                   Grant dbo
+walton_comer_ro   SELECT                   Grant dbo
+enzo_sadaoui_ro   SELECT                   Grant dbo
+xbto_dev          SELECT                   Grant dbo
+XBTO\jhurrion     SELECT                   Grant dbo
+jhurrion_ro       SELECT                   Grant dbo
+kubot_rw          INSERT                   Grant dbo
+kubot_rw          SELECT                   Grant dbo
+kubot_rw          UPDATE                   Grant dbo
+jhurrion_rw       SELECT                   Grant dbo
+
+
+----- table [OrderStatus] -----
+
+Grantee           PermissionType PermissionState Grantor
+-------           -------------- --------------- -------
+nicolas.genechesi INSERT                   Grant dbo
+nicolas.genechesi SELECT                   Grant dbo
+nicolas.genechesi UPDATE                   Grant dbo
+greg_ro           SELECT                   Grant dbo
+bill_mayott_ro    SELECT                   Grant dbo
+jg_berthier_ro    SELECT                   Grant dbo
+mobo              SELECT                   Grant dbo
+Reader_Orders     SELECT                   Grant dbo
+xbto_dev          SELECT                   Grant dbo
+mobo_ro           SELECT                   Grant dbo
+
+
+----- table [OrphanOrders] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+greg_ro  SELECT                   Grant dbo
+mobo     SELECT                   Grant dbo
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [OTCDeals] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [OTCSwaps] -----
+
+Grantee          PermissionType PermissionState Grantor
+-------          -------------- --------------- -------
+greg_ro          SELECT                   Grant dbo
+hugues_dongmo_ro SELECT                   Grant dbo
+richad_idris_ro  SELECT                   Grant dbo
+mobo             SELECT                   Grant dbo
+walton_comer_ro  SELECT                   Grant dbo
+enzo_sadaoui_ro  SELECT                   Grant dbo
+xbto_dev         SELECT                   Grant dbo
+
+
+----- table [RateLimits] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+enzo_sadaoui_ro SELECT                   Grant dbo
+xbto_dev        SELECT                   Grant dbo
+XBTO\esadaoui   SELECT                   Grant dbo
+
+
+----- table [RawData] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+richad_idris_ro SELECT                   Grant dbo
+walton_comer_ro SELECT                   Grant dbo
+enzo_sadaoui_ro SELECT                   Grant dbo
+xbto_dev        SELECT                   Grant dbo
+
+
+----- table [RejectionTypeSpecificLimit] -----
+
+Grantee      PermissionType PermissionState Grantor
+-------      -------------- --------------- -------
+backtests_ro SELECT                   Grant dbo
+alva_ro      SELECT                   Grant dbo
+
+
+----- table [RiskLimit] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+Reader_Orders   SELECT                   Grant dbo
+walton_comer_ro SELECT                   Grant dbo
+enzo_sadaoui_ro SELECT                   Grant dbo
+xbto_dev        SELECT                   Grant dbo
+jhurrion_ro     SELECT                   Grant dbo
+jhurrion_rw     SELECT                   Grant dbo
+
+
+----- table [ShiftForexOrders] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [SigmaBee] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [SigmaBeeByTerm] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [StrategyParams] -----
+
+Grantee           PermissionType PermissionState Grantor
+-------           -------------- --------------- -------
+nicolas.genechesi DELETE                   Grant dbo
+nicolas.genechesi INSERT                   Grant dbo
+nicolas.genechesi SELECT                   Grant dbo
+nicolas.genechesi UPDATE                   Grant dbo
+richad_idris_ro   SELECT                   Grant dbo
+walton_comer_ro   SELECT                   Grant dbo
+enzo_sadaoui_ro   SELECT                   Grant dbo
+xbto_dev          SELECT                   Grant dbo
+
+
+----- table [TargetBee] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+backtests_ro    SELECT                   Grant dbo
+enzo_sadaoui_ro SELECT                   Grant dbo
+jhurrion_ro     SELECT                   Grant dbo
+XBTO\esadaoui   SELECT                   Grant dbo
+
+
+----- table [TargetBeeParamsHistoric] -----
+
+Grantee     PermissionType PermissionState Grantor
+-------     -------------- --------------- -------
+jhurrion_ro SELECT                   Grant dbo
+
+
+----- table [TargetDeltaRequestOrderAssociations] -----
+
+Grantee      PermissionType PermissionState Grantor
+-------      -------------- --------------- -------
+backtests_ro SELECT                   Grant dbo
+alva_ro      SELECT                   Grant dbo
+
+
+----- table [TargetDeltaRequests] -----
+
+Grantee      PermissionType PermissionState Grantor
+-------      -------------- --------------- -------
+backtests_ro SELECT                   Grant dbo
+jhurrion_ro  SELECT                   Grant dbo
+alva_ro      SELECT                   Grant dbo
+
+
+----- table [Trades] -----
+
+Grantee          PermissionType PermissionState Grantor
+-------          -------------- --------------- -------
+greg_ro          SELECT                   Grant dbo
+bill_mayott_ro   SELECT                   Grant dbo
+hugues_dongmo_ro SELECT                   Grant dbo
+jg_berthier_ro   SELECT                   Grant dbo
+richad_idris_ro  SELECT                   Grant dbo
+mobo             SELECT                   Grant dbo
+Reader_Orders    SELECT                   Grant dbo
+walton_comer_ro  SELECT                   Grant dbo
+Reader_Trades    SELECT                   Grant dbo
+enzo_sadaoui_ro  SELECT                   Grant dbo
+xbto_dev         SELECT                   Grant dbo
+XBTO\jhurrion    SELECT                   Grant dbo
+jhurrion_ro      SELECT                   Grant dbo
+kubot_rw         INSERT                   Grant dbo
+kubot_rw         SELECT                   Grant dbo
+kubot_rw         UPDATE                   Grant dbo
+jhurrion_rw      SELECT                   Grant dbo
+
+
+----- table [TradesH] -----
+
+Grantee  PermissionType PermissionState Grantor
+-------  -------------- --------------- -------
+xbto_dev SELECT                   Grant dbo
+
+
+----- table [Transfers] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+enzo_sadaoui_ro SELECT                   Grant dbo
+
+
+----- table [TreasuryAlpha] -----
+
+Grantee           PermissionType PermissionState Grantor
+-------           -------------- --------------- -------
+nicolas.genechesi SELECT                   Grant dbo
+richad_idris_ro   SELECT                   Grant dbo
+walton_comer_ro   SELECT                   Grant dbo
+enzo_sadaoui_ro   SELECT                   Grant dbo
+xbto_dev          SELECT                   Grant dbo
+
+
+----- table [Twaps] -----
+
+Grantee           PermissionType PermissionState Grantor
+-------           -------------- --------------- -------
+nicolas.genechesi SELECT                   Grant dbo
+richad_idris_ro   SELECT                   Grant dbo
+walton_comer_ro   SELECT                   Grant dbo
+enzo_sadaoui_ro   SELECT                   Grant dbo
+xbto_dev          SELECT                   Grant dbo
+
+
+----- table [XmlConfig] -----
+
+Grantee           PermissionType PermissionState Grantor
+-------           -------------- --------------- -------
+nicolas.genechesi DELETE                   Grant dbo
+nicolas.genechesi INSERT                   Grant dbo
+nicolas.genechesi SELECT                   Grant dbo
+nicolas.genechesi UPDATE                   Grant dbo
+richad_idris_ro   SELECT                   Grant dbo
+walton_comer_ro   SELECT                   Grant dbo
+enzo_sadaoui_ro   SELECT                   Grant dbo
+
+
+----- table [ZombieOrders] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+richad_idris_ro SELECT                   Grant dbo
+walton_comer_ro SELECT                   Grant dbo
+enzo_sadaoui_ro SELECT                   Grant dbo
+xbto_dev        SELECT                   Grant dbo
+
+
+----- table [InventoryAlgoRiskLimit] -----
+
+Grantee        PermissionType PermissionState Grantor
+-------        -------------- --------------- -------
+jg_berthier_ro SELECT                   Grant kubot
+
+
+----- table [InventoryAlgoStrategy] -----
+
+Grantee        PermissionType PermissionState Grantor
+-------        -------------- --------------- -------
+jg_berthier_ro SELECT                   Grant kubot
+
+
+----- view [vBumblebee_Bitfinex] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+Reader_Bitfinex SELECT                   Grant dbo
+
+
+----- view [vBumblebeeDataSeries_IndexOverlay] -----
+
+Grantee        PermissionType PermissionState Grantor
+-------        -------------- --------------- -------
+XBTO\adebuisne SELECT                   Grant dbo
+
+
+----- view [vBumblebeeDataSeriesAt6Month] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+richad_idris_ro SELECT                   Grant dbo
+walton_comer_ro SELECT                   Grant dbo
+enzo_sadaoui_ro SELECT                   Grant dbo
+xbto_dev        SELECT                   Grant dbo
+
+
+----- view [vExchanges_StreamingMarkets] -----
+
+Grantee                 PermissionType PermissionState Grantor
+-------                 -------------- --------------- -------
+streamingmarkets_reader SELECT                   Grant dbo
+
+
+----- view [vExecutedOrders_Amplus] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vExecutedOrders_Anthem] -----
+
+Grantee       PermissionType PermissionState Grantor
+-------       -------------- --------------- -------
+Reader_Anthem SELECT                   Grant dbo
+
+
+----- view [vExecutedOrders_Artemis] -----
+
+Grantee        PermissionType PermissionState Grantor
+-------        -------------- --------------- -------
+Reader_Artemis SELECT                   Grant dbo
+
+
+----- view [vExecutedOrders_Artemis_ftx] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vExecutedOrders_Bitfinex] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+Reader_Bitfinex SELECT                   Grant dbo
+
+
+----- view [vExecutedOrders_kosta] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vExecutedOrders_Lagrange] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+alva_ro         SELECT                   Grant dbo
+Reader_Lagrange SELECT                   Grant dbo
+
+
+----- view [vExecutedOrders_Metabee] -----
+
+Grantee        PermissionType PermissionState Grantor
+-------        -------------- --------------- -------
+alva_ro        SELECT                   Grant dbo
+Reader_Metabee SELECT                   Grant dbo
+
+
+----- view [vExecutedOrders_Opus] -----
+
+Grantee     PermissionType PermissionState Grantor
+-------     -------------- --------------- -------
+Reader_Opus SELECT                   Grant dbo
+
+
+----- view [vExecutedOrders_Opus_FTX] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vExecutedOrders_Veritas] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vFundingPayments] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+enzo_sadaoui_ro SELECT                   Grant dbo
+alva_ro         SELECT                   Grant dbo
+XBTO\esadaoui   SELECT                   Grant dbo
+
+
+----- view [vHornet_StreamingMarkets] -----
+
+Grantee                 PermissionType PermissionState Grantor
+-------                 -------------- --------------- -------
+streamingmarkets_reader SELECT                   Grant dbo
+
+
+----- view [vHornetParamsHistoric_StreamingMarkets] -----
+
+Grantee                 PermissionType PermissionState Grantor
+-------                 -------------- --------------- -------
+streamingmarkets_reader SELECT                   Grant dbo
+
+
+----- view [vHornetTier_StreamingMarkets] -----
+
+Grantee                 PermissionType PermissionState Grantor
+-------                 -------------- --------------- -------
+streamingmarkets_reader SELECT                   Grant dbo
+
+
+----- view [vHornetTierHistoric_StreamingMarkets] -----
+
+Grantee                 PermissionType PermissionState Grantor
+-------                 -------------- --------------- -------
+streamingmarkets_reader SELECT                   Grant dbo
+
+
+----- view [vInstruments_Bitfinex] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+Reader_Bitfinex SELECT                   Grant dbo
+
+
+----- view [vInstruments_StreamingMarkets] -----
+
+Grantee                 PermissionType PermissionState Grantor
+-------                 -------------- --------------- -------
+streamingmarkets_reader SELECT                   Grant dbo
+
+
+----- view [vOrders_Amplus] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vOrders_Anthem] -----
+
+Grantee       PermissionType PermissionState Grantor
+-------       -------------- --------------- -------
+Reader_Anthem SELECT                   Grant dbo
+
+
+----- view [vOrders_Artemis] -----
+
+Grantee        PermissionType PermissionState Grantor
+-------        -------------- --------------- -------
+Reader_Artemis SELECT                   Grant dbo
+
+
+----- view [vOrders_Artemis_ftx] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vOrders_Bitfinex] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+Reader_Bitfinex SELECT                   Grant dbo
+
+
+----- view [vOrders_Cornerstone] -----
+
+Grantee            PermissionType PermissionState Grantor
+-------            -------------- --------------- -------
+Reader_Cornerstone SELECT                   Grant dbo
+
+
+----- view [vOrders_kosta] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vOrders_Lagrange] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vOrders_Metabee] -----
+
+Grantee        PermissionType PermissionState Grantor
+-------        -------------- --------------- -------
+alva_ro        SELECT                   Grant dbo
+Reader_Metabee SELECT                   Grant dbo
+
+
+----- view [vOrders_Opus] -----
+
+Grantee     PermissionType PermissionState Grantor
+-------     -------------- --------------- -------
+Reader_Opus SELECT                   Grant dbo
+
+
+----- view [vOrders_Opus_FTX] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vOrders_Reverse_hedge] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vOrders_StreamingMarkets] -----
+
+Grantee                 PermissionType PermissionState Grantor
+-------                 -------------- --------------- -------
+streamingmarkets_reader SELECT                   Grant dbo
+
+
+----- view [vOrders_veritas] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vOrdersAt6Month] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+jg_berthier_ro  SELECT                   Grant dbo
+richad_idris_ro SELECT                   Grant dbo
+Reader_Orders   SELECT                   Grant dbo
+walton_comer_ro SELECT                   Grant dbo
+enzo_sadaoui_ro SELECT                   Grant dbo
+xbto_dev        SELECT                   Grant dbo
+
+
+----- view [vTargetBee_Amplus] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vTargetBee_Anthem] -----
+
+Grantee       PermissionType PermissionState Grantor
+-------       -------------- --------------- -------
+Reader_Anthem SELECT                   Grant dbo
+
+
+----- view [vTargetBee_Artemis] -----
+
+Grantee        PermissionType PermissionState Grantor
+-------        -------------- --------------- -------
+Reader_Artemis SELECT                   Grant dbo
+
+
+----- view [vTargetBee_Artemis_ftx] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vTargetBee_Cornerstone] -----
+
+Grantee            PermissionType PermissionState Grantor
+-------            -------------- --------------- -------
+Reader_Cornerstone SELECT                   Grant dbo
+
+
+----- view [vTargetBee_kosta] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vTargetBee_Lagrange] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vTargetBee_Metabee] -----
+
+Grantee        PermissionType PermissionState Grantor
+-------        -------------- --------------- -------
+alva_ro        SELECT                   Grant dbo
+Reader_Metabee SELECT                   Grant dbo
+
+
+----- view [vTargetBee_Opus] -----
+
+Grantee     PermissionType PermissionState Grantor
+-------     -------------- --------------- -------
+Reader_Opus SELECT                   Grant dbo
+
+
+----- view [vTargetBee_Opus_FTX] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vTargetBee_Reverse_hedge] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vTargetBee_Veritas] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vTrades_Amplus] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vTrades_Anthem] -----
+
+Grantee       PermissionType PermissionState Grantor
+-------       -------------- --------------- -------
+Reader_Anthem SELECT                   Grant dbo
+
+
+----- view [vTrades_Artemis] -----
+
+Grantee        PermissionType PermissionState Grantor
+-------        -------------- --------------- -------
+Reader_Artemis SELECT                   Grant dbo
+
+
+----- view [vTrades_Artemis_ftx] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vTrades_Bitfinex] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+Reader_Bitfinex SELECT                   Grant dbo
+
+
+----- view [vTrades_Cornerstone] -----
+
+Grantee            PermissionType PermissionState Grantor
+-------            -------------- --------------- -------
+Reader_Cornerstone SELECT                   Grant dbo
+
+
+----- view [vTrades_kosta] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vTrades_Lagrange] -----
+
+Grantee         PermissionType PermissionState Grantor
+-------         -------------- --------------- -------
+alva_ro         SELECT                   Grant dbo
+Reader_Lagrange SELECT                   Grant dbo
+
+
+----- view [vTrades_Metabee] -----
+
+Grantee        PermissionType PermissionState Grantor
+-------        -------------- --------------- -------
+alva_ro        SELECT                   Grant dbo
+Reader_Metabee SELECT                   Grant dbo
+
+
+----- view [vTrades_Opus] -----
+
+Grantee     PermissionType PermissionState Grantor
+-------     -------------- --------------- -------
+Reader_Opus SELECT                   Grant dbo
+
+
+----- view [vTrades_Opus_FTX] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vTrades_Reverse_hedge] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
+
+----- view [vTrades_StreamingMarkets] -----
+
+Grantee                 PermissionType PermissionState Grantor
+-------                 -------------- --------------- -------
+streamingmarkets_reader SELECT                   Grant dbo
+
+
+----- view [vTrades_Veritas] -----
+
+Grantee PermissionType PermissionState Grantor
+------- -------------- --------------- -------
+alva_ro SELECT                   Grant dbo
+
