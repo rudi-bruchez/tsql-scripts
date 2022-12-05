@@ -2,6 +2,7 @@
 -- Analyze REDO waits using Extended Events
 --
 -- replace <database_name> placeholder.
+-- You can use CTRL-SHIFT-M in SSMS to assing the value
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
@@ -15,7 +16,7 @@ SELECT
 	session_id 
 FROM sys.dm_exec_requests
 WHERE command IN ('PARALLEL REDO HELP TASK', 'PARALLEL REDO TASK', 'DB STARTUP')
-AND database_id = db_id('<database_name>')
+AND database_id = db_id('<database_name, sysname, >')
 ORDER BY session_id;
 
 -- use the session_id found for the following filter ...
