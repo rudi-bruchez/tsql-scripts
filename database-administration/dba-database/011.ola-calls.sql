@@ -59,6 +59,21 @@ EXECUTE _dba.dbo.IndexOptimize
 	@OnlyModifiedStatistics = 'Y',
 	@StatisticsSample = 100 -- FULL SCAN
 
+-------------------------------------------------
+--      Statistics only maintenance
+-------------------------------------------------
+
+EXECUTE _dba.dbo.IndexOptimize 
+	@Databases = 'USER_DATABASES',
+	@FragmentationLow = NULL,
+	@FragmentationMedium = NULL,
+	@FragmentationHigh = NULL,
+	@MaxDOP = 2,
+	@LogToTable = 'Y',
+	@UpdateStatistics = 'ALL',
+	@OnlyModifiedStatistics = 'Y'
+	--,@StatisticsSample = 100 -- FULL SCAN
+
 
 -------------------------------------------------
 --         Clean commandLog table
