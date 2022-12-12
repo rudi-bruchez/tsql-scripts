@@ -1,8 +1,4 @@
 # ☯ tsql-scripts
-[![licence badge]][licence]
-[![stars badge]][stars]
-[![forks badge]][forks]
-[![issues badge]][issues]
 
 Transact-SQL scripts and gists for administration and [diagnostics](./diagnostics/).
 
