@@ -1,5 +1,5 @@
 -----------------------------------------------------------------
--- Database files and filegroups
+-- Files and filegroups in the current database
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
