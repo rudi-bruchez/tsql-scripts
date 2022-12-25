@@ -73,7 +73,7 @@ AS BEGIN
     JOIN sys.master_files mf ON d.database_id = mf.database_id AND mf.[type] = 1 -- log
     LEFT JOIN backuplog b ON pvt.instance_name = b.db
     OUTER APPLY (SELECT COUNT(*) as vlf FROM sys.dm_db_log_info ( d.database_id ) ) li
-    WHERE [db] LIKE @database
+    WHERE pvt.instance_name LIKE @database
     ORDER BY [db] 
     OPTION (MAXDOP 1);
 
