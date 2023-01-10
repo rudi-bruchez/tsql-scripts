@@ -34,7 +34,7 @@ BEGIN
     END TRY
     BEGIN CATCH
         -- it will not work if the user owns any object in the database ...
-        PRINT CONCAT('Error dropping ', QUOTENAME(@username), ' : ', ERROR_MESSAGE)
+        PRINT CONCAT('Error dropping ', QUOTENAME(@username), ' : ', ERROR_MESSAGE())
     END CATCH
 
 	FETCH NEXT FROM cur INTO @username
