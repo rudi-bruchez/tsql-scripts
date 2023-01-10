@@ -3,6 +3,8 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+DECLARE @ForCurrentDbOnly BIT = 1; -- 0 = all databases, 1 = current database
+
 SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
@@ -33,5 +35,6 @@ SELECT
    ,qp.query_plan
 FROM sys.dm_exec_trigger_stats ts
 CROSS APPLY sys.dm_exec_query_plan(ts.plan_handle) qp
+WHERE (ts.database_id = DB_ID() OR @ForCurrentDbOnly = 0)
 ORDER BY [database], [trigger]
 OPTION (RECOMPILE, MAXDOP 1);
