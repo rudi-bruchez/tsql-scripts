@@ -3,7 +3,7 @@ GO
 
 -----------------------------------------------------------------
 -- sp_logspace, replaces DBCC SQLPERF (LOGSPACE) with more
--- information 
+-- information
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
@@ -13,17 +13,17 @@ AS BEGIN
     SET NOCOUNT ON;
 
     ;WITH backuplog AS (
-        SELECT 
+        SELECT
             database_name AS [db],
             MAX(bs.backup_finish_date) AS LastBackupTime
         FROM msdb.dbo.backupset bs WITH (READUNCOMMITTED)
         WHERE bs.type = 'L'
         GROUP BY bs.database_name
     )
-    SELECT 
+    SELECT
         pvt.instance_name as [db],
-        [Log File(s) Size (KB)] / 1024 as log_size_MB, 
-        [Log File(s) Used Size (KB)] / 1024 as log_used_MB, 
+        [Log File(s) Size (KB)] / 1024 as log_size_MB,
+        [Log File(s) Used Size (KB)] / 1024 as log_used_MB,
         [Percent Log Used] as [% used],
         NULLIF(d.log_reuse_wait_desc, N'NOTHING') as log_reuse_wait,
         d.recovery_model_desc as recovery_model,
@@ -39,7 +39,7 @@ AS BEGIN
         END AS [max],
         CASE mf.growth
             WHEN 0 THEN 'Fixed'
-            ELSE 
+            ELSE
                 CASE mf.is_percent_growth
                     WHEN 1 THEN CONCAT(growth, '%')
                     ELSE CONCAT((mf.growth * 8) / 1024, ' MB')
@@ -47,18 +47,18 @@ AS BEGIN
         END AS [growth],
         li.vlf
     FROM (
-        SELECT 
+        SELECT
             pc.counter_name,
             pc.instance_name,
             pc.cntr_value
         FROM sys.dm_os_performance_counters pc
         WHERE object_name LIKE N'%:Databases%'
         AND pc.counter_name IN (
-            N'Log File(s) Size (KB)'                                                                                                    
-            ,N'Log File(s) Used Size (KB)'                                                                                                    
+            N'Log File(s) Size (KB)'
+            ,N'Log File(s) Used Size (KB)'
             ,N'Percent Log Used'
         )
-        AND pc.instance_name NOT IN 
+        AND pc.instance_name NOT IN
         (
             N'_Total'
             ,N'master'
@@ -73,8 +73,8 @@ AS BEGIN
     JOIN sys.master_files mf ON d.database_id = mf.database_id AND mf.[type] = 1 -- log
     LEFT JOIN backuplog b ON pvt.instance_name = b.db
     OUTER APPLY (SELECT COUNT(*) as vlf FROM sys.dm_db_log_info ( d.database_id ) ) li
-    WHERE [db] LIKE @database
-    ORDER BY [db] 
+    WHERE pvt.instance_name LIKE @database
+    ORDER BY [db]
     OPTION (MAXDOP 1);
 
 END;
