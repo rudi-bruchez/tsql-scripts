@@ -8,7 +8,8 @@ DECLARE @tablename sysname = '%';
 DECLARE @onlyAuto bit = 0; -- analyze only auto statistics
 
 SELECT 
-	OBJECT_NAME(stat.object_id) as tbl,
+	CONCAT(QUOTENAME(SCHEMA_NAME(o.schema_id)), '.', 
+		QUOTENAME(OBJECT_NAME(stat.object_id))) as tbl,
 	stat.object_id,
 	stat.name,
 	c.name as column_name,
