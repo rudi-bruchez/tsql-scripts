@@ -13,38 +13,38 @@ AS BEGIN
 	SET NOCOUNT ON;
 	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
-	SELECT  
+	SELECT
 		t.transaction_id,
 		t.name,
 		CAST(t.transaction_begin_time as datetime2(0)) as begin_time,
 		DATEDIFF(SECOND, t.transaction_begin_time, CURRENT_TIMESTAMP) as tran_elapsed_time_seconds,
-		 CASE t.transaction_type   
-			  WHEN 1 THEN 'Read/Write'   
-			  WHEN 2 THEN 'Read-Only'    
-			  WHEN 3 THEN 'System'   
-			  WHEN 4 THEN 'Distributed'  
-			  ELSE CONCAT('Unknown - ', transaction_type)     
-		 END AS [type],    
-		 CASE t.transaction_state 
-			  WHEN 0 THEN 'Uninitialized' 
-			  WHEN 1 THEN 'Not Yet Started' 
-			  WHEN 2 THEN 'Active' 
-			  WHEN 3 THEN 'Ended (Read-Only)' 
-			  WHEN 4 THEN 'Committing' 
-			  WHEN 5 THEN 'Prepared' 
-			  WHEN 6 THEN 'Committed' 
-			  WHEN 7 THEN 'Rolling Back' 
-			  when 8 THEN 'Rolled Back' 
-			  ELSE CONCAT('Unknown - ', transaction_state) 
-		 END AS [state], 
-		 case t.dtc_state 
-			  WHEN 0 THEN NULL 
-			  WHEN 1 THEN 'Active' 
-			  WHEN 2 THEN 'Prepared' 
-			  WHEN 3 THEN 'Committed' 
-			  WHEN 4 THEN 'Aborted' 
-			  WHEN 5 THEN 'Recovered' 
-			  ELSE CONCAT('Unknown - ', dtc_state) 
+		 CASE t.transaction_type
+			  WHEN 1 THEN 'Read/Write'
+			  WHEN 2 THEN 'Read-Only'
+			  WHEN 3 THEN 'System'
+			  WHEN 4 THEN 'Distributed'
+			  ELSE CONCAT('Unknown - ', transaction_type)
+		 END AS [type],
+		 CASE t.transaction_state
+			  WHEN 0 THEN 'Uninitialized'
+			  WHEN 1 THEN 'Not Yet Started'
+			  WHEN 2 THEN 'Active'
+			  WHEN 3 THEN 'Ended (Read-Only)'
+			  WHEN 4 THEN 'Committing'
+			  WHEN 5 THEN 'Prepared'
+			  WHEN 6 THEN 'Committed'
+			  WHEN 7 THEN 'Rolling Back'
+			  when 8 THEN 'Rolled Back'
+			  ELSE CONCAT('Unknown - ', transaction_state)
+		 END AS [state],
+		 case t.dtc_state
+			  WHEN 0 THEN NULL
+			  WHEN 1 THEN 'Active'
+			  WHEN 2 THEN 'Prepared'
+			  WHEN 3 THEN 'Committed'
+			  WHEN 4 THEN 'Aborted'
+			  WHEN 5 THEN 'Recovered'
+			  ELSE CONCAT('Unknown - ', dtc_state)
 		 END AS [dtc state],
 		 db.name as db,
 		 db.log_reuse_wait_desc as log_reuse_wait,
@@ -76,6 +76,7 @@ AS BEGIN
 		 END as isolation_level
 	FROM sys.dm_tran_active_transactions t
 	JOIN sys.dm_tran_database_transactions dt ON t.transaction_id = dt.transaction_id
+		AND dt.database_transaction_type = 1
 	JOIN sys.databases db ON dt.database_id = db.database_id
 	LEFT JOIN sys.dm_os_performance_counters logSize ON db.name = logSize.instance_name
 		AND logSize.object_name LIKE '%:Databases' AND logSize.counter_name = 'Log File(s) Size (KB)'
