@@ -49,7 +49,7 @@ AS BEGIN
     FROM (
         SELECT
             pc.counter_name,
-            pc.instance_name,
+            RTRIM(pc.instance_name) as instance_name,
             pc.cntr_value
         FROM sys.dm_os_performance_counters pc
         WHERE object_name LIKE N'%:Databases%'
