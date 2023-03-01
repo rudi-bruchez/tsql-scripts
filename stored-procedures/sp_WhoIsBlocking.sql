@@ -1,6 +1,7 @@
 -----------------------------------------------------------------
 -- get blocking information, 
 -- wrapper around sp_whoisactive
+-- so, sp_whoisactive must be installed (http://whoisactive.com/)
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
@@ -19,7 +20,7 @@ BEGIN
 		@sort_order = '[blocked_session_count] DESC',
 		@get_task_info = 2,
 		@get_additional_info = 1,
-		@get_transaction_info = 1
+		@get_transaction_info = 1;
 
 END
 GO
