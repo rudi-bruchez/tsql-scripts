@@ -14,7 +14,7 @@ SELECT
     CAST(pss.database_size_bytes / 1024.0 / 1024 AS DECIMAL(10, 2)) AS database_size_MB, 
     CAST(1.0 * pss.transferred_size_bytes / pss.database_size_bytes * 100 as numeric(5, 2)) as [%],
     DATEADD(mi, DATEDIFF(mi, GETUTCDATE(), GETDATE()), pss.start_time_utc) as start_time,
-    DATEDIFF(mi, pss.start_time_utc, COALESCE(GETUTCDATE(), pss.end_time_utc)) as minutes_elapsed,
+    DATEDIFF(mi, pss.start_time_utc, COALESCE(pss.end_time_utc, GETUTCDATE())) as minutes_elapsed,
     DATEADD(mi, DATEDIFF(mi, GETUTCDATE(), GETDATE()), pss.end_time_utc) as end_time,
     DATEADD(mi, DATEDIFF(mi, GETUTCDATE(), GETDATE()), pss.estimate_time_complete_utc) as estimate_time_complete, 
     pss.total_disk_io_wait_time_ms, 
