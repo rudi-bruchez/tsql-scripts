@@ -12,23 +12,31 @@ CREATE OR ALTER PROCEDURE sp_logspace
 AS BEGIN
     SET NOCOUNT ON;
 
-    ;WITH backuplog AS (
-        SELECT
-            database_name AS [db],
-            MAX(bs.backup_finish_date) AS LastBackupTime
-        FROM msdb.dbo.backupset bs WITH (READUNCOMMITTED)
-        WHERE bs.type = 'L'
-        GROUP BY bs.database_name
-    )
+	;WITH cte_vlf AS (
+		SELECT 
+			ROW_NUMBER() OVER(PARTITION BY d.database_id ORDER BY li.vlf_begin_offset) AS vlfid,
+			CAST(PERCENT_RANK() OVER(PARTITION BY d.database_id ORDER BY li.vlf_begin_offset) * 100 as DECIMAL(5,2)) AS pr,
+			d.name AS db, 
+			li.vlf_sequence_number, 
+			li.vlf_active, 
+			li.vlf_begin_offset, 
+			li.vlf_size_mb
+		FROM sys.databases d 
+		CROSS APPLY sys.dm_db_log_info(d.database_id) li ),
+	cte_active_vlf AS (
+		SELECT db, 
+			MAX(pr) as [pos]
+		FROM cte_vlf
+		WHERE vlf_active = 1
+		GROUP BY db)
     SELECT
-        pvt.instance_name as [db],
-        [Log File(s) Size (KB)] / 1024 as log_size_MB,
-        [Log File(s) Used Size (KB)] / 1024 as log_used_MB,
-        [Percent Log Used] as [% used],
+        d.name as [db],
+		CEILING(ls.total_log_size_mb) as log_size_MB,
+		CEILING(ls.active_log_size_mb) as log_used_MB,
+		CEILING(ls.active_log_size_mb / NULLIF(ls.total_log_size_mb, 0) * 100) as [% used],
         NULLIF(d.log_reuse_wait_desc, N'NOTHING') as log_reuse_wait,
         d.recovery_model_desc as recovery_model,
-        --CAST(b.LastBackupTime as datetime2(0)) as last_translog_backup
-        FORMAT(b.LastBackupTime, 'G') as last_translog_backup,
+        NULLIF(CAST(ls.log_backup_time as datetime2(0)), '1900-01-01 00:00:00') as last_translog_backup,
         mf.name,
         mf.physical_name,
         CASE mf.max_size
@@ -45,36 +53,19 @@ AS BEGIN
                     ELSE CONCAT((mf.growth * 8) / 1024, ' MB')
                 END
         END AS [growth],
-        li.vlf
-    FROM (
-        SELECT
-            pc.counter_name,
-            RTRIM(pc.instance_name) as instance_name,
-            pc.cntr_value
-        FROM sys.dm_os_performance_counters pc
-        WHERE object_name LIKE N'%:Databases%'
-        AND pc.counter_name IN (
-            N'Log File(s) Size (KB)'
-            ,N'Log File(s) Used Size (KB)'
-            ,N'Percent Log Used'
-        )
-        AND pc.instance_name NOT IN
-        (
-            N'_Total'
-            ,N'master'
-            ,N'model'
-            ,N'mssqlsystemresource                                                                                                             '
-        )
-        ) t
-    PIVOT (MIN(t.cntr_value)
-    FOR t.counter_name IN ([Log File(s) Size (KB)], [Log File(s) Used Size (KB)], [Percent Log Used])
-    ) AS pvt
-    JOIN sys.databases d ON d.name = pvt.instance_name
+		ls.total_vlf_count as vlf,
+		CAST(ls.log_since_last_checkpoint_mb as decimal(38, 2)) as since_last_checkpoint_mb,
+		CAST(ls.log_since_last_log_backup_mb as decimal(38, 2)) as since_last_log_backup_mb,
+		CAST(ls.log_recovery_size_mb as decimal(38, 2)) as recovery_size_mb,
+		av.pos as [% active position]
+    FROM sys.databases d
     JOIN sys.master_files mf ON d.database_id = mf.database_id AND mf.[type] = 1 -- log
         AND mf.state <> 6 -- OFFLINE
-    LEFT JOIN backuplog b ON pvt.instance_name = b.db
-    OUTER APPLY (SELECT COUNT(*) as vlf FROM sys.dm_db_log_info ( d.database_id ) ) li
-    WHERE pvt.instance_name LIKE @database
+    --OUTER APPLY (SELECT COUNT(*) as vlf FROM sys.dm_db_log_info ( d.database_id ) ) li
+	CROSS APPLY sys.dm_db_log_stats( d.database_id ) ls
+	LEFT JOIN cte_active_vlf av ON av.db = d.name
+    WHERE d.name LIKE @database
+	AND d.name NOT IN (N'master', N'model')
     ORDER BY [db]
     OPTION (MAXDOP 1);
 
