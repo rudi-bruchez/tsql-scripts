@@ -1,5 +1,5 @@
 -----------------------------------------------------------------
--- Remove a specific stored proecdure plan from SQL Server cache
+-- Remove a specific stored procedure plan from SQL Server cache
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
