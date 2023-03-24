@@ -2,6 +2,8 @@
 -- Estimate compression savings for all index on a table
 -- code adapted from Glenn Gerry : 
 -- https://www.sqlskills.com/blogs/glenn/estimating-data-compression-savings-in-sql-server-2012/
+-- 
+-- Use compression NONE to get the size of the table if it were not compressed.
 
 -- rudi@babaluga.com, go ahead license
 ---------------------------------------------------------------------------------------------------

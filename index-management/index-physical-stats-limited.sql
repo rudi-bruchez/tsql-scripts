@@ -33,10 +33,7 @@ SELECT
 	,ps.avg_record_size_in_bytes as avg_row_byte
 	,ps.forwarded_record_count as forwarded_rec
 	,ps.fragment_count as fragments
-	,ps.ghost_record_count
-	,ps.version_ghost_record_count
 	,ps.index_depth
-	,ps.record_count as [rows]
 FROM sys.indexes i
 JOIN sys.tables t ON i.object_id = t.object_id
 CROSS APPLY sys.dm_db_index_physical_stats(DB_ID(), i.object_id, i.index_id, NULL, N'LIMITED') ps
