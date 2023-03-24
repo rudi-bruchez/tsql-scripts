@@ -10,9 +10,6 @@ SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 SET STATISTICS IO OFF;
 
-DECLARE @Schema sysname = N'dbo';
-DECLARE @Table sysname = N'table_name';
-
 DECLARE @CompressionType nvarchar(60) = N'PAGE'; -- desired data compression type (PAGE, ROW, or NONE)
 
 IF OBJECT_ID('tempdb..#compression_savings') IS NOT NULL

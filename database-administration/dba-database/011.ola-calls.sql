@@ -76,7 +76,7 @@ EXECUTE _dba.dbo.IndexOptimize
 
 
 -------------------------------------------------
---         Clean commandLog table
+--         Clean up commandLog table
 -------------------------------------------------
 
 DELETE FROM _dba.dbo.CommandLog 
