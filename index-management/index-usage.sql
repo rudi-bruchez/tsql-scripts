@@ -14,6 +14,7 @@ GO
 DECLARE @table_name sysname = '%';
 DECLARE @index_id int = NULL;
 DECLARE @include_heaps_and_clustered bit = 1;
+DECLARE @only_uncompressed bit = O;
 -------------------------------------------------------
 
 ;WITH cte AS (
@@ -53,6 +54,7 @@ DECLARE @include_heaps_and_clustered bit = 1;
 		tn.[name] LIKE @table_name 
 		AND (ix.index_id = COALESCE(@index_id, ix.index_id))
 		AND (ix.index_id > 1 OR @include_heaps_and_clustered = 1 OR @index_id IS NOT NULL)
+		AND (p.data_compression_desc = N'NONE' OR @only_uncompressed = 0)
 	GROUP BY tn.object_id, ix.index_id
 )
 SELECT 
