@@ -14,7 +14,7 @@ GO
 DECLARE @table_name sysname = '%';
 DECLARE @index_id int = NULL;
 DECLARE @include_heaps_and_clustered bit = 1;
-DECLARE @only_uncompressed bit = O;
+DECLARE @only_uncompressed bit = 0;
 -------------------------------------------------------
 
 ;WITH cte AS (
