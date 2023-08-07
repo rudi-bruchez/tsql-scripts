@@ -78,7 +78,8 @@ WITH [Waits] AS
         N'XE_DISPATCHER_JOIN',
         N'XE_DISPATCHER_WAIT',
         N'XE_TIMER_EVENT',
-        N'XE_LIVE_TARGET_TVF' -- xevents target
+        N'XE_LIVE_TARGET_TVF', -- xevents target
+        N'CXCONSUMER' -- Just the consumer of exchange events in //
         )
 	AND [wait_type] NOT IN ( -- mirroring
         
