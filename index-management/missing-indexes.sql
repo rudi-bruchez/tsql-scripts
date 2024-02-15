@@ -26,7 +26,7 @@ SELECT
 	, REPLACE(REPLACE(REPLACE(COALESCE(equality_columns + ', ' + inequality_columns, equality_columns, inequality_columns), ']', ''), '[', ''), ', ', '_')
 	, ' ON ', statement, ' (', COALESCE(equality_columns + ', ' + inequality_columns, equality_columns, inequality_columns) 
 	, COALESCE(') INCLUDE (' + included_columns, '')
-	, ') WITH (', IIF(@online = 1, 'ONLINE = ON', ''), ', DATA_COMPRESSION = ', @compressionType, ', SORT_IN_TEMPDB = ON)') as [DDL]
+	, ') WITH (', IIF(@online = 1, 'ONLINE = ON, ', ''), 'DATA_COMPRESSION = ', @compressionType, ', SORT_IN_TEMPDB = ON)') as [DDL]
 
 FROM	sys.dm_db_missing_index_details d 
 JOIN sys.dm_db_missing_index_groups g ON d.index_handle = g.index_handle
