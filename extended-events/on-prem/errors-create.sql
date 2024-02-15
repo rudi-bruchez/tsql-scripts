@@ -26,5 +26,5 @@ GO
 
 -- start the session
 ALTER EVENT SESSION [errors] ON SERVER STATE=START;
--- stop the sesison
+-- stop the session
 ALTER EVENT SESSION [errors] ON SERVER STATE=STOP;
