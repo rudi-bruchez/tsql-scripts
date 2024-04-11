@@ -36,7 +36,7 @@ SELECT name, value
 FROM sys.configurations
 WHERE configuration_id = 1538
 UNION ALL
-SELECT counter_name, cntr_value
+SELECT RTRIM(counter_name), cntr_value
 FROM sys.dm_os_performance_counters WITH (READUNCOMMITTED)
 WHERE counter_name = 'Page life expectancy'
 AND object_name LIKE '%Buffer Manager%'
