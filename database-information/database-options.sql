@@ -5,6 +5,9 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT
 	db.[name] AS db
    ,db.recovery_model_desc AS recovery_model
@@ -27,5 +30,6 @@ SELECT
    ,db.replica_id
    ,db.is_memory_optimized_elevate_to_snapshot_on
    ,db.delayed_durability_desc AS [delayed_durability]
-FROM sys.databases AS db WITH (READUNCOMMITTED)
+FROM sys.databases AS db
+ORDER BY db.[name]
 OPTION (RECOMPILE, MAXDOP 1);

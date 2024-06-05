@@ -7,8 +7,6 @@
 SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
-
-
 DECLARE @results TABLE (
 	[object_name] sysname,
 	[schema_name] sysname,
@@ -66,4 +64,5 @@ SELECT *,
 	SUM(current_mb - compressed_mb) OVER () as total_saved_mb,
 	CAST(AVG(gain_percent) OVER () as decimal(5,2)) as avg_gain_percent
 FROM cte
-ORDER BY [gain_percent] DESC;
+ORDER BY [gain_percent] DESC
+OPTION (RECOMPILE, MAXDOP 1);

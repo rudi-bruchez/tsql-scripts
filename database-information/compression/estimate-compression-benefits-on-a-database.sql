@@ -32,7 +32,7 @@ FOR
         i.index_id, 
         p.partition_number,
         OBJECT_NAME(t.[object_id]),
-        SCHEMA_NAME(t.Schema_id)
+        SCHEMA_NAME(t.schema_id)
     FROM sys.indexes i
     JOIN sys.tables t ON i.[object_id] = t.[object_id]
 	JOIN sys.partitions p ON i.object_id = p.object_id AND i.index_id = p.index_id
@@ -50,7 +50,7 @@ FETCH NEXT FROM cur INTO @idx, @part, @Table, @Schema;
 WHILE @@FETCH_STATUS = 0
     BEGIN
         INSERT INTO #compression_savings
-        EXEC sp_estimate_data_compression_savings @Schema, @Table, @Idx, @part, @CompressionType;
+        EXEC sp_estimate_data_compression_savings @Schema, @Table, @idx, @part, @CompressionType;
 
         FETCH NEXT FROM cur INTO @idx, @part, @Table, @Schema;
     END

@@ -1,5 +1,11 @@
--- heaps
-SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+-----------------------------------------------------------------
+-- Analyze heaps fragmentation
+--
+-- rudi@babaluga.com, go ahead license
+-----------------------------------------------------------------
+
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 --DECLARE @mode NVARCHAR(20) = N'SAMPLED'
 DECLARE @mode NVARCHAR(20) = N'DETAILED'
