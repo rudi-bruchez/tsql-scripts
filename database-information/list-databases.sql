@@ -3,6 +3,9 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
+SET NOCOUNT ON;
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
 SELECT 
 	name as db, database_id, 
 	SUSER_SNAME(owner_sid) as [owner],

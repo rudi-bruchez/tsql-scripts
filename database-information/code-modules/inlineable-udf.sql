@@ -1,5 +1,5 @@
 -----------------------------------------------------------------
--- liste inlineable and non inlineable scalar UDF
+-- list inlineable and non inlineable scalar UDF
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------

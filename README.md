@@ -10,7 +10,7 @@ Feel free to use them and copy them. If you have significant improvements to pro
 
 You'll find here the following folders :
 
-- [azure-sql-database](./azure-sql-database/) &mdash; queries for Azure SQL Database administration and diagonstics. Those queries use specific Azure SQL Database views and metadata. Some Extended events for Azure can also be found in [extended-events/azure-sql-database](./extended-events/azure-sql-database/).
+- [Azure](./azure/) &mdash; queries for [Azure SQL Database](./azure/azure-sql-database/) and Azure Managed Instances administration and diagnostics. Those queries use specific Azure views and metadata. Some Extended events for Azure SQL Database can also be found in [extended-events/azure-sql-database](./extended-events/azure-sql-database/).
 - [database-administration](./database-administration/) &mdash; queries for [database maintenance](./database-administration/maintenance/), [DDL generation](./database-administration/ddl-generation/), informations about [security principals and privileges](./database-administration/security/), [SQL Server Agent](./database-administration/sqlagent/), [alerts](./database-administration/alerts/) and code to [create the `_dba` database](./database-administration/dba-database/) I use for some customers.
 - [database-information](./database-information/) &mdash; metadata about databases : [size](./database-information/size-and-allocation/), [compression](./database-information/compression/), [transaction log](./database-information/transaction-log/), etc.
 - [diagnostics](./diagnostics/) &mdash; diagnostics queries.
