@@ -10,7 +10,7 @@ DECLARE @table_name sysname = '%';
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 SELECT 
-     T.name AS [table]
+     t.name AS [table]
 	,i.name AS [index]
 	,i.index_id
 	,i.fill_factor
