@@ -21,7 +21,7 @@ DECLARE @file nvarchar(max) = (SELECT (CONVERT(xml, target_data)).value('(/Event
 		[XMLData].value('(/event/action[@name=''username'']/value)[1]','sysname')          AS [username],
 		[XMLData].value('(/event/action[@name=''database_name'']/value)[1]','sysname')     AS [db],
 		[XMLData].value('(/event/action[@name=''client_hostname'']/value)[1]','sysname')   AS [hostname],
-		[XMLData].value('(/event/action[@name=''client_app_name"'']/value)[1]','sysname')  AS [app],
+		[XMLData].value('(/event/action[@name=''client_app_name'']/value)[1]','sysname')  AS [app],
 		[XMLData].value('(/event/action[@name=''sql_text'']/value)[1]','nvarchar(max)')    AS [Statement]
 	FROM (SELECT
 		OBJECT_NAME              AS [Event],
