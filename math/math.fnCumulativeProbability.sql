@@ -13,13 +13,13 @@ CREATE OR ALTER FUNCTION math.fnCumulativeProbability(@x float)
 RETURNS FLOAT
 WITH RETURNS NULL ON NULL INPUT
 AS BEGIN
-	--DECLARE @dev float = @x - mean; -- par d�faut le mean = 0
-	if (ABS(@x) > 40 /* * standardDeviation (par d�faut 1) */)
+	--DECLARE @dev float = @x - mean; -- default mean = 0
+	if (ABS(@x) > 40 /* * standardDeviation (default 1) */)
 	begin
         return @x;
     end
 
-	if (ABS(@x) >= 6.5 /* * standardDeviation (par d�faut 1) */)
+	if (ABS(@x) >= 6.5 /* * standardDeviation (default 1) */)
 	begin
         return 1;
     end else if ABS(@x) >= 6.0 begin

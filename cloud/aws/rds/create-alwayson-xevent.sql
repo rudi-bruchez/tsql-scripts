@@ -7,7 +7,15 @@
 
 SET NOCOUNT ON;
 
-CREATE EVENT SESSION [rds_AlwaysOn_health] ON SERVER 
+
+/*
+We cannot named it rds_*
+Msg 50000, Level 16, State 1, Procedure rds_extended_events_trigger, Line 172
+Unable to create/alter extended events session: Extended events session names 
+starting with "RDS_" are reserved for RDS, please use a different name
+
+*/
+CREATE EVENT SESSION [urds_AlwaysOn_health] ON SERVER 
     ADD EVENT sqlserver.alwayson_ddl_executed,
     ADD EVENT sqlserver.availability_group_lease_expired,
     ADD EVENT sqlserver.availability_replica_automatic_failover_validation,
@@ -22,10 +30,10 @@ CREATE EVENT SESSION [rds_AlwaysOn_health] ON SERVER
     ADD EVENT sqlserver.sp_server_diagnostics_component_result(SET collect_data=(1)
         WHERE ([state]=(3))),
     ADD EVENT ucs.ucs_connection_setup
-    ADD TARGET package0.event_file(SET filename=N'D:\rdsdbdata\Log\rds_AlwaysOn_health.xel',max_file_size=(100),max_rollover_files=(5))
+    ADD TARGET package0.event_file(SET filename=N'D:\rdsdbdata\Log\urds_AlwaysOn_health.xel',max_file_size=(100),max_rollover_files=(5))
     WITH (MAX_MEMORY=4096 KB,EVENT_RETENTION_MODE=ALLOW_SINGLE_EVENT_LOSS,MAX_DISPATCH_LATENCY=30 SECONDS,MAX_EVENT_SIZE=0 KB,MEMORY_PARTITION_MODE=NONE,
     TRACK_CAUSALITY=OFF,STARTUP_STATE=ON)
 GO
 
-ALTER EVENT SESSION rds_AlwaysOn_health ON SERVER
+ALTER EVENT SESSION urds_AlwaysOn_health ON SERVER
 STATE = START;
