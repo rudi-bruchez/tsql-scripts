@@ -3,12 +3,10 @@
 -- Returns the synchronization lag in seconds between the primary 
 -- and secondary replicas of an availability group
 --
--- code adapted from https://dba.stackexchange.com/questions/60624/check-the-data-latency-between-two-always-on-availability-group-servers-in-async
+-- code adapted from 
+-- https://www.sqlshack.com/measuring-availability-group-synchronization-lag/
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
-
-SET NOCOUNT ON;
-SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 USE master;
 -- USE _dba;
