@@ -7,8 +7,9 @@
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 SELECT 
-    OBJECT_NAME(p.object_id) AS [table], 
-    SUM(p.Rows) AS [Rows], 
+    CONCAT(OBJECT_SCHEMA_NAME(p.object_id), '.', 
+	    OBJECT_NAME(p.object_id)) AS [table], 
+    FORMAT(SUM(p.Rows), 'N0') AS [Rows], 
     p.data_compression_desc AS [Compression],
     MIN(au.type_desc) as allocation_type,
     SUM(au.data_pages) as data_pages,
