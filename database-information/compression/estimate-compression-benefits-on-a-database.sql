@@ -49,8 +49,13 @@ FETCH NEXT FROM cur INTO @idx, @part, @Table, @Schema;
 
 WHILE @@FETCH_STATUS = 0
     BEGIN
-        INSERT INTO #compression_savings
-        EXEC sp_estimate_data_compression_savings @Schema, @Table, @idx, @part, @CompressionType;
+        BEGIN TRY
+            INSERT INTO #compression_savings
+            EXEC sp_estimate_data_compression_savings @Schema, @Table, @idx, @part, @CompressionType;
+        END TRY
+        BEGIN CATCH
+            PRINT 'Error estimating compression savings for ' + QUOTENAME(@Schema) + '.' + QUOTENAME(@Table) + ' index ' + @idx + ' partition ' + @part + ': ' + ERROR_MESSAGE();
+        END CATCH
 
         FETCH NEXT FROM cur INTO @idx, @part, @Table, @Schema;
     END
