@@ -107,6 +107,9 @@ WITH [Waits] AS
         N'PREEMPTIVE_SP_SERVER_DIAGNOSTICS',
         N'PREEMPTIVE_XE_DISPATCHER'
     )
+    AND [wait_type] NOT IN ( -- 2019
+        N'PWAIT_EXTENSIBILITY_CLEANUP_TASK'
+    )
     AND [waiting_tasks_count] > 0
     )
 SELECT
