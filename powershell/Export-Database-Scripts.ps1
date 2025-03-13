@@ -55,10 +55,10 @@ foreach ($db in $srv.Databases) {
 				$sp.Script($so)
 			} # if (!$tbl.IsSystemObject)
 		} # foreach $sp
-		if (!(Test-Path -path ($localPath+"vues/"))) { Mkdir ($localPath+"vues/") }
+		if (!(Test-Path -path ($localPath+"views/"))) { Mkdir ($localPath+"views/") }
 		foreach ($vw in $db.Views) {
 			if (!$vw.IsSystemObject) {
-				$so.FileName = $localPath+"vues/"+$vw.Schema+"."+$vw.Name+".view.sql"
+				$so.FileName = $localPath+"views/"+$vw.Schema+"."+$vw.Name+".view.sql"
 				$so.FileName
 				$vw.Script($so)
 			} # if (!$tbl.IsSystemObject)
