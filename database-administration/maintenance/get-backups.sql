@@ -21,6 +21,7 @@ SELECT
 			WHEN 'Q' THEN 'Partial Diff'
 			ELSE [type]
 	END as [type],
+	bs.is_copy_only as [copy_only],
 	DATEDIFF(minute, bs.backup_start_date, bs.backup_finish_date) as duration_in_minutes,
 	FORMAT(ROUND(bs.backup_size / 1024 / 1024.00, 2), 'n2') as backup_size_MB,
 	FORMAT(ROUND(bs.compressed_backup_size / 1024 / 1024.00, 2), 'n2') as compressed_backup_size_MB,
