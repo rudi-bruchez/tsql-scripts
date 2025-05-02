@@ -15,7 +15,8 @@ ADD EVENT sqlserver.rpc_completed(
 		sqlserver.database_name,
 		sqlserver.username)
     WHERE ([sqlserver].[is_system] = 0
-	AND [package0].[greater_than_equal_uint64]([duration],(10000)))
+	AND [package0].[greater_than_equal_uint64]([duration],(10000))
+	AND [connection_reset_option] = 0)
 	),
 ADD EVENT sqlserver.sql_batch_completed(
     ACTION(
