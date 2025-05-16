@@ -9,9 +9,8 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 DECLARE @query_id BIGINT = 1028;
 
-SELECT
-	COALESCE(dest.text, 'NULL: is the QS read-only?') as query_text
+SELECT qst.query_sql_text
 FROM sys.query_store_query qsq
-OUTER APPLY sys.dm_exec_sql_text(qsq.batch_sql_handle) dest
+JOIN sys.query_store_query_text qst ON qst.query_text_id = qsq.query_text_id
 WHERE qsq.query_id = @query_id
 OPTION (RECOMPILE, MAXDOP 1);
