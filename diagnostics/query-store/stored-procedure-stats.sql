@@ -7,31 +7,17 @@
 SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
-DECLARE @procedure_name SYSNAME = 'dbo.procedure_name'
+DECLARE @procedure_name SYSNAME = 'dbo.ps_CountTiersEncaissement'
 
 SELECT
     q.query_id
-   --,q.batch_sql_handle
-   ,q.query_hash
+   --,q.query_hash
    --,q.query_parameterization_type
    ,q.query_parameterization_type_desc AS parameterization_type
-   ,q.initial_compile_start_time
-   ,q.last_compile_start_time
    ,q.last_execution_time
-   ,q.last_compile_batch_sql_handle
-   ,q.last_compile_batch_offset_start
-   ,q.last_compile_batch_offset_end
    ,q.count_compiles
    ,q.avg_compile_duration
    ,q.last_compile_duration
-   ,q.avg_bind_duration
-   ,q.last_bind_duration
-   ,q.avg_bind_cpu_time
-   ,q.last_bind_cpu_time
-   ,q.avg_optimize_duration
-   ,q.last_optimize_duration
-   ,q.avg_optimize_cpu_time
-   ,q.last_optimize_cpu_time
    ,q.avg_compile_memory_kb
    ,q.last_compile_memory_kb
    ,q.max_compile_memory_kb
@@ -115,12 +101,6 @@ SELECT
    ,qsrs.min_tempdb_space_used
    ,qsrs.max_tempdb_space_used
    ,qsrs.stdev_tempdb_space_used
-   ,qsrs.avg_page_server_io_reads
-   ,qsrs.last_page_server_io_reads
-   ,qsrs.min_page_server_io_reads
-   ,qsrs.max_page_server_io_reads
-   ,qsrs.stdev_page_server_io_reads
-   ,qsrs.replica_group_id
    ,qsrsi.runtime_stats_interval_id
    ,qsrsi.start_time
    ,qsrsi.end_time
@@ -134,7 +114,6 @@ SELECT
    ,qsp.is_forced_plan
    ,qsp.is_natively_compiled
    ,qsp.force_failure_count
-   ,qsp.last_force_failure_reason
    ,qsp.last_force_failure_reason_desc
    ,qsp.count_compiles
    ,qsp.initial_compile_start_time
@@ -142,11 +121,7 @@ SELECT
    ,qsp.last_execution_time
    ,qsp.avg_compile_duration
    ,qsp.last_compile_duration
-   ,qsp.plan_forcing_type
    ,qsp.plan_forcing_type_desc
-   ,qsp.has_compile_replay_script
-   ,qsp.is_optimized_plan_forcing_disabled
-   ,qsp.plan_type_desc
     --qt.*
 FROM sys.query_store_query_text AS qt
 JOIN sys.query_store_query AS q
