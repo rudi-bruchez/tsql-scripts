@@ -11,6 +11,7 @@ SELECT
 	ar.replica_server_name,
 	ar.availability_mode_desc as [availability_mode],
 	ar.failover_mode_desc as [failover_mode],
+	ar.seeding_mode_desc as [seeding_mode],
 	ar.session_timeout,
 	ar.primary_role_allow_connections_desc as [primary_role_allow_connections],
 	ar.secondary_role_allow_connections_desc as [secondary_role_allow_connections],
