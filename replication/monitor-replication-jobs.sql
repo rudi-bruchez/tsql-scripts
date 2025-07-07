@@ -20,9 +20,7 @@ WITH LastError AS (
     INNER JOIN msdb.dbo.syscategories c ON j.category_id = c.category_id
     INNER JOIN msdb.dbo.sysjobhistory jh ON j.job_id = jh.job_id
     WHERE c.name IN ('REPL-Distribution', 'REPL-LogReader', 'REPL-Snapshot')
-      AND jh.run_status = 0 -- 0 = Failed
-      AND jh.step_id = 0   -- 0 = Overall job outcome
-	  AND j.enabled = 1
+    AND j.enabled = 1
 )
 SELECT
     job_id,
@@ -33,5 +31,6 @@ SELECT
     message
 FROM LastError
 WHERE rn = 1
+AND jh.run_status = 0 -- 0 = Failed
 ORDER BY run_date DESC, run_time DESC
 OPTION (RECOMPILE, MAXDOP 1);
