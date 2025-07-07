@@ -26,11 +26,18 @@ SELECT
     job_id,
     JobName,
     run_status,
+    CASE
+        WHEN run_status = 0 THEN 'Failed'
+        WHEN run_status = 1 THEN 'Success'
+        WHEN run_status = 2 THEN 'Retry'
+        WHEN run_status = 3 THEN 'Cancelled'
+        WHEN run_status = 4 THEN 'In Progress'
+        ELSE 'Unknown'
+    END AS run_status_desc,
     run_date,
     run_time,
     message
 FROM LastError
 WHERE rn = 1
-AND jh.run_status = 0 -- 0 = Failed
 ORDER BY run_date DESC, run_time DESC
 OPTION (RECOMPILE, MAXDOP 1);
