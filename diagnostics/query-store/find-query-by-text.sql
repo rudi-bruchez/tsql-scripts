@@ -22,4 +22,5 @@ JOIN sys.query_store_query_text qsqt
     ON qsq.query_text_id = qsqt.query_text_id
 WHERE
     qsqt.query_sql_text LIKE CONCAT('%', TRIM(@text_to_find), '%')
+    AND qsqt.query_sql_text NOT LIKE N'%query_store%'
 OPTION (RECOMPILE, MAXDOP 1);
