@@ -22,6 +22,11 @@
                 "scope": "markdown",
 		"prefix": "---",
 		"body": "—"
+	},
+	"sql": {
+		"scope": "markdown",
+		"prefix": "sql",
+		"body": "```sql\n$1\n```"
 	}
 
 }
