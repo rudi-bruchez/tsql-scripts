@@ -1,9 +1,11 @@
------------------------------------------------------------------
+----------------------------------------------------------------------
 -- Tracks a specific stored procedure execution.
--- change the procedure name : <PROCEDURE NAME>'
+-- change the procedure name : <procedure name, sysname, >
+-- you can use template parameters in SSMS to make it easier to change
+-- with CTRL+SHIFT+M
 --
 -- rudi@babaluga.com, go ahead license
------------------------------------------------------------------
+----------------------------------------------------------------------
 
 CREATE EVENT SESSION [stored_procedure] ON SERVER 
 ADD EVENT sqlserver.rpc_completed(
@@ -13,15 +15,15 @@ ADD EVENT sqlserver.rpc_completed(
 		sqlserver.sql_text,
 		sqlserver.username
 	)
-    WHERE ([object_name]=N'<PROCEDURE NAME>')),
-ADD EVENT sqlserver.query_post_execution_plan_profile( -- lightweight profiling on recent versions of SQL Server
-    WHERE ([object_name]=N'<PROCEDURE NAME>'))
-	
-	-- uncomment if you want to tack statements inside de stored procedure
+    WHERE ([object_name]=N'<procedure name, sysname, >'))
+,ADD EVENT sqlserver.query_post_execution_plan_profile( -- lightweight profiling on recent versions of SQL Server
+    WHERE ([object_name]=N'<procedure name, sysname, >'))
+
+	-- uncomment if you want to tack statements inside the stored procedure
 	/*
 	, ADD EVENT sqlserver.sp_statement_completed(
     	WHERE (
-			[object_name]=N'<PROCEDURE NAME>'
+			[object_name]=N'<procedure name, sysname, >'
 			AND duration > 0 -- only relevant statements
 		)
 	)
