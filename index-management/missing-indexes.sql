@@ -10,16 +10,16 @@ DECLARE @compressionType varchar(10) = 'ROW';
 DECLARE @online bit = 1;
 -------------------------------------------------------
 
-SELECT	
-	object_name(d.object_id) as [table], 
+SELECT
+	object_name(d.object_id) as [table],
 	COALESCE(d.equality_columns + ', ' + d.inequality_columns, d.equality_columns, d.inequality_columns) as [key],
 	d.equality_columns,
 	d.inequality_columns,
 	d.included_columns,
-	CAST(s.avg_total_user_cost as decimal(8,2)) as avg_total_user_cost,
+	TRY_CAST(s.avg_total_user_cost as decimal(8,2)) as avg_total_user_cost,
 	s.avg_user_impact,
 	s.user_seeks + s.user_scans as usage,
-	CAST(COALESCE(s.last_user_seek, s.last_user_scan) as datetime2(0)) as last_usage,
+	TRY_CAST(COALESCE(s.last_user_seek, s.last_user_scan) as datetime2(0)) as last_usage,
 
 	-- DDL to create the index
 	CONCAT('CREATE INDEX nix$', lower(object_name(object_id)), '$' 

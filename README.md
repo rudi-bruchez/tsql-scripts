@@ -1,5 +1,10 @@
 # ☯ tsql-scripts
 
+[![SQL Server](https://img.shields.io/badge/SQL%20Server-2014%2B-0078D4.svg)](https://learn.microsoft.com/en-us/sql/sql-server)
+[![Azure SQL DB](https://img.shields.io/badge/Azure%20SQL-Database-0078D4.svg)](https://learn.microsoft.com/en-us/azure/azure-sql/database/sql-database-paas-overview)
+[![Azure SQL MI](https://img.shields.io/badge/Azure%20SQL-Managed%20Instance-0078D4.svg)](https://learn.microsoft.com/en-us/azure/azure-sql/managed-instance/sql-managed-instance-paas-overview)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
 Transact-SQL scripts and gists for administration and [diagnostics](./diagnostics/).
 
 You'll also find some [management stored procedures](./stored-procedures/)
