@@ -10,8 +10,8 @@ DECLARE @compressionType varchar(10) = 'ROW';
 DECLARE @online bit = 1;
 -------------------------------------------------------
 
-SELECT
-	object_name(d.object_id) as [table],
+SELECT	
+	object_name(d.object_id) as [table], 
 	COALESCE(d.equality_columns + ', ' + d.inequality_columns, d.equality_columns, d.inequality_columns) as [key],
 	d.equality_columns,
 	d.inequality_columns,
@@ -28,7 +28,7 @@ SELECT
 	, COALESCE(') INCLUDE (' + included_columns, '')
 	, ') WITH (', IIF(@online = 1, 'ONLINE = ON, ', ''), 'DATA_COMPRESSION = ', @compressionType, ', SORT_IN_TEMPDB = ON)') as [DDL]
 
-FROM	sys.dm_db_missing_index_details d 
+FROM sys.dm_db_missing_index_details d 
 JOIN sys.dm_db_missing_index_groups g ON d.index_handle = g.index_handle
 JOIN sys.dm_db_missing_index_group_stats s ON g.index_group_handle = s.group_handle
 WHERE database_id = db_id()
