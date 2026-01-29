@@ -32,8 +32,8 @@ DECLARE @maxdop tinyint = 2;
 		,i.fill_factor as ff 
 		,p.partition_number AS [partition]
 		,p.data_compression_desc as [compression]
-		,FORMAT(P.rows, 'N0') as rows
-		,P.rows as rows_nb
+		,FORMAT(p.rows, 'N0') as rows
+		,p.rows as rows_nb
 		,FORMAT(s.[used_page_count] * 8 / 1000, 'N0') AS MB
 		,STUFF((SELECT ', ' + CONCAT(c.name, ' (', t.name, 
 				IIF(t.name IN ('char', 'nchar', 'varchar', 'nvarchar', 'datetime2', 'decimal', 'numeric'), CONCAT(' ', t.max_length), '') , ')') 
