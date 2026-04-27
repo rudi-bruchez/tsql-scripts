@@ -76,6 +76,18 @@ EXECUTE _dba.dbo.IndexOptimize
 
 
 -------------------------------------------------
+--         Integrity check
+-------------------------------------------------
+
+EXECUTE _dba.dbo.DatabaseIntegrityCheck
+	@Databases = 'USER_DATABASES',
+	@CheckCommands = 'CHECKDB',
+	@PhysicalOnly = 'Y',
+	@LogToTable = 'Y',
+	@AvailabilityGroupReplicas = 'PRIMARY',
+	@MaxDOP = 2
+
+-------------------------------------------------
 --         Clean up commandLog table
 -------------------------------------------------
 
