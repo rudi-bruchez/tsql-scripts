@@ -8,13 +8,9 @@
 SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
-
-
 DECLARE @indexName sysname = '';
 
 SET @indexName = CONCAT('//Object[@Index = "', @indexName, '"]')
-
-SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 
 ;WITH XMLNAMESPACES (
     DEFAULT 'http://schemas.microsoft.com/sqlserver/2004/07/showplan'
