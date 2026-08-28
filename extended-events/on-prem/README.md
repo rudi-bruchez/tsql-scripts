@@ -18,7 +18,10 @@ A more complete query to identify file targets name is [available here](./metada
 
 See the individual .sql files in this directory for various Extended Events sessions including:
 - auto-stats-create.sql - Track auto statistics updates
-- blocked-processes-create/read.sql - Capture blocking events
+- blocked-processes-create.sql - Set the blocked process threshold, create and start the blocking capture
+- blocked-processes-read.sql - Read the blocking events of the session running on this instance
+- blocked-processes-read-file.sql - Read .xel blocking files collected on another instance
+- blocked-processes-cleanup.sql - Stop, drop the session and reset the threshold
 - errors-create/read.sql - Monitor SQL Server errors
 - implicit-conversion-create.sql - Track implicit conversions
 - long-running-queries-create.sql - Capture slow queries

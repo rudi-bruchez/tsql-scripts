@@ -1,46 +1,34 @@
 -----------------------------------------------------------------
--- read the blocked process report event session
--- from the event_file target of the running session
+-- read blocked process report .xel files collected elsewhere
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
--- To read .xel files collected on another instance, use
--- blocked-processes-read-file.sql instead.
+-- Use this to analyse files sent by a customer, on your own
+-- instance. To read the files of a session running on the local
+-- instance, use blocked-processes-read.sql instead.
+--
+-- Unzip the files in a directory readable by the SQL Server
+-- service account of the instance you are running this on.
+--
+-- database_id and object_id are NOT resolved, since the metadata
+-- belongs to the source instance. Use the report XML and the
+-- database_id / object_id columns, or run the resolution on the
+-- source instance.
 -----------------------------------------------------------------
 
 SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
-DECLARE @last int = 100;
+-------------------------------------------------------------
+-- SET THE PATH TO THE .xel FILES HERE (wildcard is supported)
+DECLARE @file nvarchar(max) = N'C:\temp\blocked_processes*.xel';
+-------------------------------------------------------------
 
--- resolve the file name pattern configured on the session,
--- so that all rollover files are read, running or not
-DECLARE @configured nvarchar(1000) = (
-    SELECT CAST(f.value AS nvarchar(1000))
-    FROM sys.server_event_sessions AS s
-    JOIN sys.server_event_session_targets AS t
-        ON t.event_session_id = s.event_session_id AND t.name = N'event_file'
-    JOIN sys.server_event_session_fields AS f
-        ON f.event_session_id = t.event_session_id AND f.object_id = t.target_id AND f.name = N'filename'
-    WHERE s.name = N'blocked_processes');
+DECLARE @last int = 500;
 
-IF @configured IS NULL
-BEGIN
-    RAISERROR(N'The blocked_processes session does not exist, or has no event_file target.', 16, 1);
-    RETURN;
-END
-
-DECLARE @file nvarchar(max) =
-    CASE WHEN @configured LIKE N'%.xel' THEN REPLACE(@configured, N'.xel', N'*.xel')
-         ELSE CONCAT(@configured, N'*.xel')
-    END;
-
--- a relative file name lands in the SQL Server error log directory
-IF CHARINDEX(CHAR(92), @file) = 0
-    SET @file = CONCAT(
-        LEFT(CAST(SERVERPROPERTY('ErrorLogFileName') AS nvarchar(max)),
-             LEN(CAST(SERVERPROPERTY('ErrorLogFileName') AS nvarchar(max))) - LEN('ERRORLOG')),
-        @file);
+-- the timestamps below are UTC, as recorded on the source
+-- instance; set the offset of the source server to convert them
+DECLARE @utc_offset_hours int = 0;
 
 ;WITH xe AS (
     SELECT ts_utc,
@@ -53,17 +41,13 @@ IF CHARINDEX(CHAR(92), @file) = 0
     ) AS src
 )
 SELECT TOP (@last)
-       DATEADD(MINUTE, DATEDIFF(MINUTE, GETUTCDATE(), GETDATE()), xe.ts_utc) AS [local_time],
+       DATEADD(HOUR, @utc_offset_hours, xe.ts_utc)                                    AS [source_time],
        xe.XMLData.value('(/event/data[@name="duration"]/value)[1]', 'bigint') / 1000000 AS duration_sec,
-       xe.XMLData.value('(/event/data[@name="lock_mode"]/text)[1]', 'varchar(20)')      AS lock_mode,
-       DB_NAME(xe.XMLData.value('(/event/data[@name="database_id"]/value)[1]', 'smallint')) AS [database],
-       CONCAT(QUOTENAME(OBJECT_SCHEMA_NAME(
-                  xe.XMLData.value('(/event/data[@name="object_id"]/value)[1]', 'int'),
-                  xe.XMLData.value('(/event/data[@name="database_id"]/value)[1]', 'smallint')), N'.',
-              QUOTENAME(OBJECT_NAME(
-                  xe.XMLData.value('(/event/data[@name="object_id"]/value)[1]', 'int'),
-                  xe.XMLData.value('(/event/data[@name="database_id"]/value)[1]', 'smallint')))) AS [object],
+       xe.XMLData.value('(/event/data[@name="lock_mode"]/text)[1]', 'varchar(20)')    AS lock_mode,
+       xe.XMLData.value('(/event/data[@name="database_id"]/value)[1]', 'smallint')    AS database_id,
+       xe.XMLData.value('(/event/data[@name="object_id"]/value)[1]', 'int')           AS object_id,
        xe.XMLData.value('(/event/data[@name="index_id"]/value)[1]', 'int')            AS index_id,
+       xe.report.value('(blocked-process/process/@currentdbname)[1]', 'nvarchar(128)') AS blocked_database,
        -- victim
        xe.report.value('(blocked-process/process/@spid)[1]', 'int')                   AS blocked_spid,
        xe.report.value('(blocked-process/process/@waittime)[1]', 'bigint') / 1000     AS blocked_wait_sec,
