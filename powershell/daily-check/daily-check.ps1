@@ -42,9 +42,9 @@ if (-not (Test-Path $sqlFilePath)) {
     exit 2
 }
 
-Import-Module (Join-Path $basepath "modules\sql.psm1") -Force
-. (Join-Path $basepath "modules\stylesheet.ps1")
-. (Join-Path $basepath "modules\smtp.ps1")
+Import-Module (Join-Path $basepath "..\modules\sql.psm1") -Force
+. (Join-Path $basepath "..\modules\stylesheet.ps1")
+. (Join-Path $basepath "..\modules\smtp.ps1")
 
 $instances = if ($Instance) { @($Instance) } else { Get-Content (Join-Path $basepath $cfg.InstancesFile) | Where-Object { $_ -match '\S' } }
 $jobsQueryRaw = Get-Content $sqlFilePath -Raw
