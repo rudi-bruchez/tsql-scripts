@@ -3,3 +3,4 @@ sqltools_*.log
 debug.log
 *~
 powershell/daily-check/docs/
+config.psd1
