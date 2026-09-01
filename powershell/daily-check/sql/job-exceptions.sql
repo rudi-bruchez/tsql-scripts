@@ -34,7 +34,7 @@ SELECT
     j.name AS JobName,
     ISNULL(h.step_name, 'Job Outcome') AS StepName,
     CASE h.run_status WHEN 0 THEN 'Failed' WHEN 1 THEN 'Succeeded' WHEN 3 THEN 'Canceled' ELSE 'Unknown' END AS Status,
-    DATETIMEFROMPARTS(h.run_date/10000, (h.run_date%10000)/100, h.run_date%100, h.run_time/10000, (h.run_time%10000)/100, h.run_time%100, 0) AS RunDateTime,
+    CASE WHEN h.run_date > 0 THEN DATETIMEFROMPARTS(h.run_date/10000, (h.run_date%10000)/100, h.run_date%100, h.run_time/10000, (h.run_time%10000)/100, h.run_time%100, 0) ELSE NULL END AS RunDateTime,
     ((h.run_duration/10000)*3600 + ((h.run_duration%10000)/100)*60 + (h.run_duration%100)) AS ActualDurationSeconds,
     a.AvgDurationSeconds,
     a.SampleCount,
@@ -42,7 +42,7 @@ SELECT
 FROM msdb.dbo.sysjobhistory h
 JOIN msdb.dbo.sysjobs j ON h.job_id = j.job_id
 LEFT JOIN JobAverages a ON h.job_id = a.job_id
-WHERE (h.run_date > @StartDate OR (h.run_date = @StartDate AND h.run_time >= @StartTime))
+WHERE h.run_date > 0 AND (h.run_date > @StartDate OR (h.run_date = @StartDate AND h.run_time >= @StartTime))
 AND (
     (h.run_status IN (0, 3))
     OR 

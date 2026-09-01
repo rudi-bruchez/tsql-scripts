@@ -14,7 +14,7 @@ Audits privileges at the database level.
 
 Cleans SQL Server ERRORLOG files by filtering out routine backup and CHECKDB success messages. Creates cleaned versions of log files with ".cleaned" extension for easier troubleshooting.
 
-## 📝 [daily-check](./daily-check.ps1)
+## 📝 [daily-check](./daily-check/daily-check.ps1)
 
 Daily health check script that queries multiple SQL Server instances for database information: owner, recovery mode, auto-shrink setting, growth type, state, last backup, and file location analysis. Generates HTML report and emails it.
 
@@ -63,6 +63,10 @@ Audits Windows server power settings. SQL Server best practice requires "High Pe
 Starts the SQL Server Agent service.
 
 ## Subdirectories
+
+### 📁 [daily-check](./daily-check/)
+
+Directory containing the daily check module and configuration.
 
 ### 📁 [modules](./modules/)
 

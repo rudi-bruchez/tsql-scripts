@@ -1,4 +1,4 @@
-function Send-DailyCheckReport ($emailFrom, $emailTo, $subject, $body, $smtpServer, $smtpPort = 25) {
+function Send-DailyCheckReport ($emailFrom, $emailTo, $subject, $body, $smtpServer, $smtpPort = 25, $enableSsl = $false, $credential = $null) {
     $mail = $null
     $smtp = $null
     try {
@@ -12,10 +12,16 @@ function Send-DailyCheckReport ($emailFrom, $emailTo, $subject, $body, $smtpServ
         $mail.SubjectEncoding = [System.Text.Encoding]::UTF8
         
         $smtp = New-Object System.Net.Mail.SmtpClient($smtpServer, $smtpPort)
+        $smtp.EnableSsl = [bool]$enableSsl
+        if ($null -ne $credential) {
+            $smtp.UseDefaultCredentials = $false
+            $smtp.Credentials = $credential.GetNetworkCredential()
+        } else {
+            $smtp.UseDefaultCredentials = $true
+        }
         $smtp.Send($mail)
     } catch {
-        $Host.UI.WriteErrorLine("Failed to send email: $_")
-        exit 2
+        throw "Failed to send email: $_"
     } finally {
         if ($null -ne $mail) { $mail.Dispose() }
         if ($null -ne $smtp) { $smtp.Dispose() }
