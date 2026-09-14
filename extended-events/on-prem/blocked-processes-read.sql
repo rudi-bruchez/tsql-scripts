@@ -59,7 +59,7 @@ SELECT TOP (@last)
        DB_NAME(xe.XMLData.value('(/event/data[@name="database_id"]/value)[1]', 'smallint')) AS [database],
        CONCAT(QUOTENAME(OBJECT_SCHEMA_NAME(
                   xe.XMLData.value('(/event/data[@name="object_id"]/value)[1]', 'int'),
-                  xe.XMLData.value('(/event/data[@name="database_id"]/value)[1]', 'smallint')), N'.',
+                  xe.XMLData.value('(/event/data[@name="database_id"]/value)[1]', 'smallint'))), N'.',
               QUOTENAME(OBJECT_NAME(
                   xe.XMLData.value('(/event/data[@name="object_id"]/value)[1]', 'int'),
                   xe.XMLData.value('(/event/data[@name="database_id"]/value)[1]', 'smallint')))) AS [object],
