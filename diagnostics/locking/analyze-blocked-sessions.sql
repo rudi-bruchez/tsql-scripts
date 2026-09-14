@@ -20,12 +20,13 @@ GO
             ws1.resource_description,
             CHARINDEX('objid=',ws1.resource_description) + 6 AS resource_description_start,
             der.command,
-            CASE 
-            WHEN der.statement_start_offset > 0 AND der.statement_end_offset > 0 THEN 
-                SUBSTRING(txt.text, 
-                    der.statement_start_offset / 2, 
-                    (der.statement_end_offset - der.statement_start_offset) / 2) 
-            ELSE txt.text END as text_offset,
+            -- offsets are in bytes of nvarchar text, starting at 0; -1 means end of batch
+            SUBSTRING(txt.text,
+                (der.statement_start_offset / 2) + 1,
+                ((CASE der.statement_end_offset
+                    WHEN -1 THEN DATALENGTH(txt.text)
+                    ELSE der.statement_end_offset
+                  END - der.statement_start_offset) / 2) + 1) as text_offset,
             OBJECT_NAME(txt.objectid, der.database_id) as [proc],
             der.database_id
         FROM sys.dm_os_waiting_tasks ws1
