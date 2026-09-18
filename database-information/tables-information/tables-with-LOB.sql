@@ -9,7 +9,7 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 ;WITH [buffer] AS (
 	SELECT 
 		bd.allocation_unit_id,
-		AVG(bd.free_space_in_bytes) as avg_free_space_in_pages,
+		AVG(bd.free_space_in_bytes) as avg_free_space_in_bytes,
 		AVG(bd.row_count) as avg_row_count,
 		COUNT(*) as pages_in_buffer
 	FROM sys.dm_os_buffer_descriptors bd

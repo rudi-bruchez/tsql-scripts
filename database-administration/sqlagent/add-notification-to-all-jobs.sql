@@ -12,7 +12,7 @@ GO
 
 DECLARE @operator sysname = 
 (
-	SELECT TOP 1 name, *
+	SELECT TOP 1 name
 	FROM msdb.dbo.sysoperators
 	WHERE enabled = 1
 	AND email_address IS NOT NULL
@@ -41,7 +41,7 @@ BEGIN
 			@notify_level_page=2, 
 			@notify_email_operator_name = @operator
 	END
-	FETCH NEXT FROM cur INTO @name
+	FETCH NEXT FROM cur INTO @jobname
 END
 
 CLOSE cur
