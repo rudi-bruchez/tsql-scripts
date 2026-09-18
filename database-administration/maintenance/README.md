@@ -10,9 +10,9 @@ Cleans up backup files older than a configurable number of days from a specified
 
 Lists all backup history for the current database showing backup type, duration, sizes (compressed and uncompressed), LSNs, and recovery model.
 
-## 📝 [rebuild-heaps](./rebuild-heaps.sql)
+## 📝 [rebuild-heaps-forwarded-records](./rebuild-heaps-forwarded-records.sql)
 
-Comprehensive stored procedure to identify fragmented heaps across databases and generate/execute ALTER TABLE REBUILD commands based on fragmentation thresholds.
+Rebuilds heaps of the current database having more than a given number of forwarded records, worst first. List-only mode, time limit, lock timeout per table, and a final error if any rebuild failed so a SQL Agent job reports it. For fragmentation/free-space based heap rebuilds across databases, see [015.rebuild_heaps](../dba-database/015.rebuild_heaps.sql).
 
 ## 📝 [running-agent-jobs](./running-agent-jobs.sql)
 
