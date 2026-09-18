@@ -36,4 +36,4 @@ You'll find here the following folders :
 - [replication](./replication/) &mdash; Replication related queries.
 - [server-information](./server-information/) &mdash; queries to get server / instance information.
 - [service-broker](./service-broker/) &mdash; Service Broker related queries
-- [stored-procedures](./stored-procedures/) &mdash; Stored procedure for quick info in your database, like getting active transactions, database information, memory status or [sp_logspace](./stored-procedures/sp_logspace.sql), a replacement for `DBCC SQLPERF (LOGSPACE)`.
+- [stored-procedures](./stored-procedures/) &mdash; Stored procedure for quick info in your database, like getting active transactions, database information, memory status or [sp_logspace](./stored-procedures/sp_logspace.sql), a replacement for `DBCC SQLPERF (LOGSPACE)`. Also maintenance procedures, like [RebuildHeaps](./stored-procedures/RebuildHeaps.sql) for heaps with forwarded records.

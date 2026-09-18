@@ -12,7 +12,7 @@ Lists all backup history for the current database showing backup type, duration,
 
 ## 📝 [rebuild-heaps-forwarded-records](./rebuild-heaps-forwarded-records.sql)
 
-Rebuilds heaps of the current database having more than a given number of forwarded records, worst first. List-only mode, time limit, lock timeout per table, and a final error if any rebuild failed so a SQL Agent job reports it. For fragmentation/free-space based heap rebuilds across databases, see [015.rebuild_heaps](../dba-database/015.rebuild_heaps.sql).
+Rebuilds heaps of the current database having more than a given number of forwarded records, worst first. List-only mode, time limit, lock timeout per table, and a final error if any rebuild failed so a SQL Agent job reports it. For fragmentation/free-space based heap rebuilds across databases, see [015.rebuild_heaps](../dba-database/015.rebuild_heaps.sql). Also available as a stored procedure working on several databases: [RebuildHeaps](../../stored-procedures/RebuildHeaps.sql).
 
 ## 📝 [running-agent-jobs](./running-agent-jobs.sql)
 
