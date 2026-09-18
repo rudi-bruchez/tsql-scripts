@@ -6,3 +6,7 @@ powershell/daily-check/docs/
 powershell/daily-check/logs/
 powershell/daily-check/*.html
 /powershell/daily-check/config.psd1
+# local agent / tool working files
+.superpowers/
+.agents/
+.claude/settings.local.json
