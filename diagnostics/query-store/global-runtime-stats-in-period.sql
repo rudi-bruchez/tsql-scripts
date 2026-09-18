@@ -19,7 +19,7 @@ SELECT
     ROUND(CONVERT(float, SUM(rs.avg_logical_io_reads*rs.count_executions))*8,2) as total_logical_io_reads,
     DATEADD(d, ((DATEDIFF(d, 0, rs.last_execution_time))),0 ) as bucket_start,
     DATEADD(d, (1 + (DATEDIFF(d, 0, rs.last_execution_time))), 0) as bucket_end
-FROM MyDatabase.sys.query_store_runtime_stats rs
+FROM sys.query_store_runtime_stats rs
 WHERE NOT (rs.first_execution_time > @interval_end_time OR rs.last_execution_time < @interval_start_time)
 GROUP BY DATEDIFF(d, 0, rs.last_execution_time)
 ORDER BY bucket_start

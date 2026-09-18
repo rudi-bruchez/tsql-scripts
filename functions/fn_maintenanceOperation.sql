@@ -24,6 +24,6 @@ AS BEGIN
 		FROM sys.dm_exec_requests r
 		JOIN sys.dm_exec_sessions s ON r.session_id = s.session_id
 		WHERE command IN (N'UPDATE STATISTICS', N'DBCC')
-		AND s.database_id = DB_ID(N'MyDatabase')
+		AND s.database_id = DB_ID(@database_name)
 	)
 END;
