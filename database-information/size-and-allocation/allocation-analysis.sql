@@ -14,6 +14,6 @@ SELECT
        p.data_compression_desc as [compression]
 FROM sys.partitions p
 JOIN sys.indexes i ON p.object_id = i.object_id AND p.index_id = i.index_id
-JOIN sys.allocation_units au ON au.container_id = P.partition_id
-WHERE P.object_id = OBJECT_ID('<TABLE NAME>')
+JOIN sys.allocation_units au ON au.container_id = p.partition_id
+WHERE p.object_id = OBJECT_ID('<TABLE NAME>')
 ORDER BY i.index_id, partition_number;

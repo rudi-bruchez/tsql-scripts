@@ -50,7 +50,7 @@ FETCH NEXT FROM cur INTO @idx, @part;
 WHILE @@FETCH_STATUS = 0
     BEGIN
         INSERT INTO #compression_savings
-        EXEC sp_estimate_data_compression_savings @Schema, @Table, @Idx, @part, @CompressionType;
+        EXEC sp_estimate_data_compression_savings @Schema, @Table, @idx, @part, @CompressionType;
 
         FETCH NEXT FROM cur INTO @idx, @part;
     END

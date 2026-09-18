@@ -4,7 +4,7 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
-USE Master;
+USE master;
 GO
 
 CREATE OR ALTER PROCEDURE sp_memorystatus
@@ -19,7 +19,7 @@ BEGIN
     ;WITH cte AS (
         SELECT 
             'Physical OS memory (MB)' AS [counter],
-            total_physical_memory_kb / 1024 AS [Value],
+            total_physical_memory_kb / 1024 AS [value],
             10 as sort
         FROM sys.dm_os_sys_memory
 
@@ -32,7 +32,7 @@ BEGIN
         UNION ALL 
 
         SELECT N'Buffer cache hit ratio' AS [counter], 
-            CAST((ratio.cntr_value * 1.0 / base.cntr_value) * 100.0 AS NUMERIC(5, 2)) as [Value],
+            CAST((ratio.cntr_value * 1.0 / base.cntr_value) * 100.0 AS NUMERIC(5, 2)) as [value],
             30 as sort
         FROM sys.dm_os_performance_counters ratio WITH (READUNCOMMITTED)
         JOIN sys.dm_os_performance_counters base  WITH (READUNCOMMITTED) 

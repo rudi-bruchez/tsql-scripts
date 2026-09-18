@@ -32,5 +32,5 @@ GO
 SELECT *
 FROM cte
 WHERE RecordType = 'LoginTimers'
-ORDER BY recordtime
+ORDER BY RecordTime
 OPTION (RECOMPILE, MAXDOP 1);

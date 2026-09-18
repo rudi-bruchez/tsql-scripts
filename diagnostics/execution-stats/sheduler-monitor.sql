@@ -19,7 +19,7 @@ OPTION (RECOMPILE);
 
 ;WITH ring_buffer AS (
 	SELECT
-		CAST(DATEADD(millisecond, -1 * (@ts - [timestamp]), CURRENT_TIMESTAMP) as datetime2(0)) AS [Time],
+		CAST(DATEADD(millisecond, -1 * (@ts - [timestamp]), CURRENT_TIMESTAMP) as datetime2(0)) AS [time],
 		CAST(record as XML) as record
 	FROM sys.dm_os_ring_buffers
 	WHERE ring_buffer_type = N'RING_BUFFER_SCHEDULER_MONITOR'

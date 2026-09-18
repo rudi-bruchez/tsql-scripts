@@ -30,8 +30,8 @@
 	FROM sys.indexes i
 	JOIN sys.tables t ON i.object_id = t.object_id
 	WHERE i.index_id > 0
-	AND T.type = 'U'
-	AND T.is_ms_shipped = 0
+	AND t.type = 'U'
+	AND t.is_ms_shipped = 0
 )
 SELECT *,
 	CONCAT('EXEC sp_rename N''', [table], '.', name, ''', N''', NewName, ''', N''INDEX'';') AS [go]

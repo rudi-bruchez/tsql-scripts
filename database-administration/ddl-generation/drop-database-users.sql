@@ -30,7 +30,7 @@ BEGIN
 	PRINT @sql
 
     BEGIN TRY
-        EXEC (@SQL) 
+        EXEC (@sql) 
     END TRY
     BEGIN CATCH
         -- it will not work if the user owns any object in the database ...

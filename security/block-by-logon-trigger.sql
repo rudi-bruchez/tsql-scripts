@@ -32,7 +32,7 @@ BEGIN
 		PRINT '';
 	END ELSE BEGIN 
         ROLLBACK;
-		INSERT INTO Master.dbo.BadLogonLog (IP)
+		INSERT INTO master.dbo.BadLogonLog (IP)
 		SELECT client_net_address FROM sys.dm_exec_connections WHERE session_id = @@SPID;
     END
 END

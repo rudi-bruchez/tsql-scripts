@@ -4,7 +4,7 @@
 -- rudi@babaluga.com, go ahead license
 -------------------------------------------------------------------
 
-USE Master
+USE master
 GO
 
 CREATE OR ALTER PROCEDURE sp_MonitorMaintenance

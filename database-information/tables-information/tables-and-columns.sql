@@ -9,7 +9,7 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 ;WITH [rows] AS (
 	SELECT 
 		t.NAME AS TableName,
-		p.[Rows]
+		p.[rows]
 	FROM sys.tables t
 	JOIN  sys.partitions p ON t.object_id = p.OBJECT_ID
 	WHERE p.index_id < 2

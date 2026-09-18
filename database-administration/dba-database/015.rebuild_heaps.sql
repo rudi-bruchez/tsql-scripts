@@ -6,7 +6,7 @@
 -- integration.
 -----------------------------------------------------------------
 
-USE [_DBA]
+USE [_dba]
 GO
 
 CREATE OR ALTER PROC [dbo].[rebuild_heaps]

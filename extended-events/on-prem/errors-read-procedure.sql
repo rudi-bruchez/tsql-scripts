@@ -1,4 +1,4 @@
-USE Master;
+USE master;
 GO
 
 CREATE OR ALTER PROCEDURE [dbo].[ReadErrorsXEvent]

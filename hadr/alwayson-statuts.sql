@@ -28,9 +28,9 @@ FROM sys.database_mirroring_endpoints;
 SELECT 
 	e.name, 
 	sp.state,   
-	SUSER_NAME(SP.grantor_principal_id) as grantor,
+	SUSER_NAME(sp.grantor_principal_id) as grantor,
 	sp.type as permission,  
-	SUSER_NAME(SP.grantee_principal_id) as grantee   
+	SUSER_NAME(sp.grantee_principal_id) as grantee   
 FROM sys.server_permissions sp
 JOIN sys.endpoints e ON sp.major_id = e.endpoint_id  
 WHERE e.type_desc = 'DATABASE_MIRRORING'

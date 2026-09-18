@@ -33,6 +33,6 @@ FROM sys.dm_tran_active_transactions t
 JOIN sys.dm_tran_active_snapshot_database_transactions s
 	ON t.transaction_id = s.transaction_id
 JOIN sys.dm_exec_sessions des
-	ON DES.session_id = s.session_id
+	ON des.session_id = s.session_id
 OUTER APPLY sys.dm_exec_input_buffer ( des.session_id , NULL ) AS ib
 OPTION (RECOMPILE, MAXDOP 1);

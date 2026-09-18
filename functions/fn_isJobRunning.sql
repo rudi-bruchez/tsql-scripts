@@ -5,7 +5,7 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
-USE Master;
+USE master;
 GO
 
 CREATE OR ALTER FUNCTION dbo.fn_isJobRunning

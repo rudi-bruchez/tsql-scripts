@@ -5,7 +5,7 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
-SELECT 'REVOKE EXEC ON [' + SCHEMA_NAME(p.schema_id) + '].[' + P.name + '] TO [' + dp.name + ']'
+SELECT 'REVOKE EXEC ON [' + SCHEMA_NAME(p.schema_id) + '].[' + p.name + '] TO [' + dp.name + ']'
 FROM sys.procedures p
 CROSS JOIN sys.database_principals dp
 WHERE p.type IN ('P', 'PC')

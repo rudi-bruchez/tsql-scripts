@@ -2,7 +2,7 @@
 
 $params = @{
   SqlInstance = 'SERVER'
-  Database = '_DBA'
+  Database = '_dba'
   ReplaceExisting = $true
   InstallJobs = $false
   LogToTable = $true

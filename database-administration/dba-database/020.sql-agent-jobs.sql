@@ -128,7 +128,7 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'IndexOpt
 		@retry_attempts=0, 
 		@retry_interval=0, 
 		@os_run_priority=0, @subsystem=N'TSQL', 
-		@command=N'EXECUTE _DBA.dbo.IndexOptimize
+		@command=N'EXECUTE _dba.dbo.IndexOptimize
     @Databases = ''USER_DATABASES'',
     @FragmentationLow = NULL,
     @FragmentationMedium = ''INDEX_REORGANIZE,INDEX_REBUILD_OFFLINE'',
@@ -139,7 +139,7 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'IndexOpt
     @StatisticsSample = 100, -- FULLSCAN
     @OnlyModifiedStatistics = ''Y'',
     @LogToTable = ''Y''', 
-		@database_name=N'_DBA', 
+		@database_name=N'_dba', 
 		@flags=0
 
 IF (@@ERROR <> 0 OR @ReturnCode <> 0) GOTO QuitWithRollback
@@ -154,7 +154,7 @@ EXEC @ReturnCode = msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'rebuild_
 		@retry_attempts=0, 
 		@retry_interval=0, 
 		@os_run_priority=0, @subsystem=N'TSQL', 
-		@command=N'EXEC _DBA.dbo.rebuild_heaps
+		@command=N'EXEC _dba.dbo.rebuild_heaps
 	 @report_type = ''fragmented_only''
 	,@print_sql_commands = 0
 	,@exec_sql_commands = 1

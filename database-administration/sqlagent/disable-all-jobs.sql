@@ -8,5 +8,5 @@ SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 UPDATE msdb.dbo.sysjobs
-SET Enabled = 0
-WHERE Enabled = 1;
+SET enabled = 0
+WHERE enabled = 1;
