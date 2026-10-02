@@ -17,7 +17,7 @@ EXECUTE _dba.dbo.DatabaseBackup
 	@Compress = 'Y',
 	@Encrypt = 'Y',
 	@EncryptionAlgorithm = 'AES_256',
-	@ServerCertificate = 'sauvegardes',
+	@ServerCertificate = 'backups_cert',
 	@CleanupTime = 48,
 	@DirectoryStructure = '{DatabaseName}{DirectorySeparator}{BackupType}',
 	@FileName = '{DatabaseName}_{BackupType}_{Year}{Month}{Day}_{Hour}{Minute}{Second}_{FileNumber}.{FileExtension}',
@@ -29,7 +29,7 @@ EXECUTE _dba.dbo.DatabaseBackup
 
 EXECUTE _dba.dbo.DatabaseBackup 
 	@Databases = 'USER_DATABASES',
-	@Directory = '\share\SQL\Backups',
+	@Directory = '\\share\SQL\Backups',
 	@BackupType = 'LOG',
 	@Compress = 'Y',
 	@Encrypt = 'Y',
