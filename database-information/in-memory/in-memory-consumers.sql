@@ -8,7 +8,7 @@ SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 -- In-Memory OLTP memory consumers in the current database
-SELECT CONVERT(CHAR(10), OBJECT_NAME(object_id)) AS Name,
+SELECT OBJECT_NAME(object_id) AS Name,
     memory_consumer_type_desc,
     memory_consumer_desc,
     object_id,

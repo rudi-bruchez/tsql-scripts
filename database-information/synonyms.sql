@@ -12,5 +12,5 @@ SELECT
 	base_object_name
 FROM sys.synonyms
 WHERE is_ms_shipped = 0
-ORDER BY Name
+ORDER BY name
 OPTION (RECOMPILE, MAXDOP 1);

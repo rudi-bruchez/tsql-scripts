@@ -58,7 +58,7 @@ GO
 3 – page header plus detailed per-row interpretation
 */
 
--- and GAM ?
+-- and the PFS page ? (page 1:1 is the PFS, the GAM is page 1:2, the SGAM page 1:3)
 DBCC PAGE (PachadataFormation, 1, 1, 3);
 GO 
 
@@ -80,6 +80,6 @@ SELECT
 	,next_page_page_id AS NextPagePID
 	,previous_page_file_id AS PrevPageFID
 	,previous_page_page_id AS PrevPagePID
-FROM sys.dm_db_database_page_allocations(DB_ID(), OBJECT_ID('Person.Person'), 1, NULL, 'DETAILED')
+FROM sys.dm_db_database_page_allocations(DB_ID(), OBJECT_ID('Contact.Contact'), 1, NULL, 'DETAILED')
 WHERE is_allocated = 1;
 GO

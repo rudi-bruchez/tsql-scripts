@@ -8,7 +8,7 @@ SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 SELECT 
-	tr.Name,
+	tr.name,
 	CASE tr.is_instead_of_trigger WHEN 1 THEN 'INSTEAD OF' ELSE 'AFTER' END as [type],
 	CONCAT(QUOTENAME(SCHEMA_NAME(o.schema_id)), '.', QUOTENAME(o.name)) as [on],
 	CASE o.type_desc 

@@ -20,4 +20,4 @@ Estimates compression savings for a specific table's indexes by comparing curren
 
 ## 📝 [uncompressed-objects](./uncompressed-objects.sql)
 
-Identifies indexes and heaps that are not PAGE compressed and generates the ALTER ... REBUILD statements to compress them, with configurable compression type (ROW by default), table name filter, ONLINE, RESUMABLE, MAXDOP and an optional `BACKUP LOG` to NUL between commands. The statements are only generated, not executed.
+Identifies rowstore indexes and heaps whose partitions are not compressed (or only ROW compressed when the target is PAGE) and generates the ALTER ... REBUILD statements to compress them, with `PARTITION = n` on partitioned objects. Columnstore indexes, memory-optimized tables and tables with sparse columns are skipped. Configurable compression type (ROW by default), table name filter, ONLINE, RESUMABLE, MAXDOP and an optional `BACKUP LOG` to NUL between commands. The statements are only generated, not executed.

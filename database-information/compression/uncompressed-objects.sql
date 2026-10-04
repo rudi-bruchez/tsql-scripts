@@ -34,13 +34,13 @@ DECLARE @maxdop tinyint = 2;
 		,p.data_compression_desc as [compression]
 		,FORMAT(p.rows, 'N0') as rows
 		,p.rows as rows_nb
-		,FORMAT(s.[used_page_count] * 8 / 1000, 'N0') AS MB
+		,FORMAT(s.[used_page_count] * 8 / 1024.0, 'N1') AS MB
 		,STUFF((SELECT ', ' + CONCAT(c.name, ' (', t.name, 
-				IIF(t.name IN ('char', 'nchar', 'varchar', 'nvarchar', 'datetime2', 'decimal', 'numeric'), CONCAT(' ', t.max_length), '') , ')') 
+				IIF(t.name IN ('char', 'nchar', 'varchar', 'nvarchar', 'datetime2', 'decimal', 'numeric'), CONCAT(' ', c.max_length), '') , ')') 
 					AS [text()]
 				FROM sys.index_columns ic
 				JOIN sys.columns c ON ic.object_id = c.object_id AND ic.column_id = c.column_id
-				JOIN sys.types t ON c.system_type_id = t.system_type_id
+				JOIN sys.types t ON c.user_type_id = t.user_type_id
 				WHERE ic.is_included_column = 0
 				AND ic.object_id = i.object_id
 				AND ic.index_id = i.index_id
@@ -49,10 +49,12 @@ DECLARE @maxdop tinyint = 2;
 			), 1, 2, '') AS keys
 		,CONCAT('ALTER ', IIF(i.[type_desc] = N'HEAP', 'TABLE ', CONCAT('INDEX ', QUOTENAME(i.[name]), ' ON ')), 
 			QUOTENAME(OBJECT_SCHEMA_NAME(i.[object_id])), '.', QUOTENAME(OBJECT_NAME(i.[object_id])),
-			' REBUILD WITH (', IIF(@online = 1, 'ONLINE = ON, ', ''),
+			' REBUILD', IIF(ds.[type] = 'PS', CONCAT(' PARTITION = ', p.partition_number), ''),
+			' WITH (', IIF(@online = 1, 'ONLINE = ON, ', ''),
 			IIF(@online = 1 AND @resumable = 1, 'RESUMABLE = ON, ', ''),
-			IIF(i.fill_factor NOT IN (0, 100) AND i.[index_id] = 1, 'FILLFACTOR = 100, ', ''),
-			IIF(i.fill_factor NOT IN (0, 100) AND i.[index_id] > 1, 'FILLFACTOR = 95, ', ''),
+			-- FILLFACTOR is not allowed when rebuilding a single partition
+			IIF(i.fill_factor NOT IN (0, 100) AND i.[index_id] = 1 AND ds.[type] <> 'PS', 'FILLFACTOR = 100, ', ''),
+			IIF(i.fill_factor NOT IN (0, 100) AND i.[index_id] > 1 AND ds.[type] <> 'PS', 'FILLFACTOR = 95, ', ''),
 			'DATA_COMPRESSION = ', @compressionType , ', MAXDOP = ', @maxdop ,')',
 			IIF(@backuplog = 1, CONCAT(char(13), char(10), 'GO', char(13), char(10), 
 				'BACKUP LOG ', QUOTENAME(DB_NAME()) , ' TO DISK = ''NUL'';'),''),
@@ -62,9 +64,13 @@ DECLARE @maxdop tinyint = 2;
 	JOIN sys.objects o ON i.object_id = o.object_id
 	JOIN sys.partitions p ON i.object_id = p.object_id AND i.index_id = p.index_id
 	JOIN sys.dm_db_partition_stats AS s ON s.partition_id = p.partition_id 
+	JOIN sys.data_spaces ds ON i.data_space_id = ds.data_space_id -- also skips memory-optimized tables (data_space_id 0)
 	WHERE 1 = 1
-	AND p.data_compression_desc <> 'PAGE'
+	-- not compressed yet, or ROW to be upgraded to PAGE (columnstore excluded)
+	AND (p.data_compression_desc = 'NONE' OR (p.data_compression_desc = 'ROW' AND @compressionType = 'PAGE'))
 	AND i.object_id NOT IN (SELECT object_id FROM sys.objects WHERE is_ms_shipped = 1)
+	-- compression is not supported on tables with sparse columns or a column set
+	AND NOT EXISTS (SELECT 1 FROM sys.columns sc WHERE sc.object_id = i.object_id AND (sc.is_sparse = 1 OR sc.is_column_set = 1))
 	AND o.name LIKE @table_name
 )
 SELECT [Table], IndexID, [Index], [Type], ff, [partition], [compression], rows, MB, keys, cmd  -- to see the result

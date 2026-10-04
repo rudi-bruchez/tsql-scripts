@@ -10,7 +10,7 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 SELECT 
 	SCHEMA_NAME(o.schema_id) + '.' + OBJECT_NAME(i.object_id) AS [object]
-	,FORMAT((SUM(p.rows) * 8.0) / 1024, 'n') AS [rows]
+	,FORMAT(SUM(IIF(au.[type] = 1, p.rows, 0)), 'N0') AS [rows] -- one IN_ROW_DATA unit per partition, other units would count rows again
 	,FORMAT((SUM(au.total_pages) * 8.0) / 1024, 'n') AS mb_total
 	,FORMAT((SUM(au.used_pages) * 8.0) / 1024, 'n') AS mb_used
 	,CASE i.index_id

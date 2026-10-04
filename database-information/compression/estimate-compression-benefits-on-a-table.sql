@@ -39,7 +39,7 @@ FOR
     WHERE t.type_desc = N'USER_TABLE'
 	AND t.is_ms_shipped = 0
     AND OBJECT_NAME(t.[object_id]) = @Table
-    AND SCHEMA_NAME(t.Schema_id) = @Schema
+    AND SCHEMA_NAME(t.schema_id) = @Schema
     ORDER BY i.index_id;
 
 OPEN cur;

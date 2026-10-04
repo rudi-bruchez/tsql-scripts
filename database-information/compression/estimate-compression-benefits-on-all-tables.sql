@@ -54,11 +54,11 @@ DEALLOCATE table_cursor
 			WHEN 'NONCLUSTERED' THEN 'NC'
 			ELSE i.type_desc
 		END as [type], 
-		r.[size_with_current_compression_setting(KB)] / 1000 as current_mb, 
-		r.[size_with_requested_compression_setting(KB)] / 1000 as compressed_mb,
+		CAST(r.[size_with_current_compression_setting(KB)] / 1024.0 as decimal(20,2)) as current_mb, 
+		CAST(r.[size_with_requested_compression_setting(KB)] / 1024.0 as decimal(20,2)) as compressed_mb,
 		100 - CAST((r.[size_with_requested_compression_setting(KB)] * 1.0 / NULLIF(r.[size_with_current_compression_setting(KB)], 0)) * 100 as decimal(5,2)) as [gain_percent]
 	FROM @results r
-	JOIN sys.indexes i ON OBJECT_ID(r.schema_name + '.' + r.object_name) = i.object_id AND r.index_id = i.index_id
+	JOIN sys.indexes i ON OBJECT_ID(QUOTENAME(r.schema_name) + '.' + QUOTENAME(r.object_name)) = i.object_id AND r.index_id = i.index_id
 )
 SELECT *,
 	SUM(current_mb - compressed_mb) OVER () as total_saved_mb,

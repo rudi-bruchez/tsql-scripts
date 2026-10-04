@@ -32,7 +32,7 @@ Summarizes file count and total size per database and file type (ROWS/LOG) for a
 
 ## 📝 [objects-in-filegroups](./objects-in-filegroups.sql)
 
-Maps objects and indexes to filegroups showing which physical files contain specific table/index data.
+Maps objects and indexes to filegroups showing which physical files contain specific table/index data. An index on a partition scheme is listed once per filegroup of the scheme. Same query as tables-allocation.
 
 ## 📝 [partition-information](./partition-information.sql)
 
@@ -40,15 +40,15 @@ Detailed partition analysis for partitioned objects showing partition boundaries
 
 ## 📝 [partitioned-objects-by-partition-function](./partitioned-objects-by-partition-function.sql)
 
-Lists all objects partitioned on a specific partition function with row counts, size, and compression details per partition.
+Lists all objects partitioned on a specific partition function with row counts, size, and compression details per index (all partitions summed).
 
 ## 📝 [table-sizes](./table-sizes.sql)
 
-Reports table sizes showing row counts, compression type, data pages, and size in MB for storage capacity planning.
+Reports table sizes per allocation unit type (IN_ROW_DATA, LOB_DATA, ROW_OVERFLOW_DATA), showing row counts, compression type, used pages, and size in MB for storage capacity planning.
 
 ## 📝 [tables-allocation](./tables-allocation.sql)
 
-Displays table allocation details including filegroup placement and file names for storage analysis.
+Displays table allocation details including filegroup placement and file names for storage analysis. An index on a partition scheme is listed once per filegroup of the scheme. Same query as objects-in-filegroups.
 
 ## 📝 [used-space-in-current-db](./used-space-in-current-db.sql)
 

@@ -7,7 +7,7 @@ SELECT
 	max_wait_time_ms
 FROM sys.dm_db_wait_stats WITH (READUNCOMMITTED)
 WHERE [wait_type] IN (
-    N'BPSORT', -- acces to batch hash table
+    N'BPSORT', -- batch mode sort
 	N'HTMEMO',
 	N'HTDELETE',
 	N'HTBUILD',
