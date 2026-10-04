@@ -42,8 +42,8 @@ auto_stats AS (
 	AND NOT EXISTS ( -- forget about multi-columns stats
 		SELECT * 
 		FROM sys.stats_columns sc2 
-		WHERE stat.object_id = sc.object_id 
-		AND stat.stats_id = sc2.stats_id
+		WHERE sc2.object_id = stat.object_id
+		AND sc2.stats_id = stat.stats_id
 		AND sc2.stats_column_id > 1
 	)
 )
