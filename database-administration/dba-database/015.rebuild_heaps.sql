@@ -1,9 +1,17 @@
 -----------------------------------------------------------------
--- Rebulds fragmented heaps to remove fragmentation and
--- forwarded records. Procedure written by Tibor Karaszi
+-- Rebuilds fragmented heaps. Procedure written by Tibor Karaszi
 -- https://karaszi.com/rebuild-all-fragmented-heaps
 -- and copied here because I added an option and for _dba
 -- integration.
+--
+-- A heap is rebuilt when its avg_fragmentation_in_percent reaches
+-- @fragmentation_level or its free space reaches @free_space_level.
+-- Forwarded records are reported (forwarded_rows_percent) but do not
+-- trigger a rebuild; a rebuild removes them anyway. To rebuild on
+-- forwarded records, see maintenance/rebuild-heaps-forwarded-records.sql.
+--
+-- The report is kept in a local temporary table, so that two
+-- executions at the same time do not drop each other's report.
 -----------------------------------------------------------------
 
 USE [_dba]
@@ -73,8 +81,8 @@ AS BEGIN
 	SET @version= CAST(LEFT(CAST(SERVERPROPERTY('ProductVersion') AS nvarchar(max)),CHARINDEX('.',CAST(SERVERPROPERTY('ProductVersion') AS nvarchar(max))) - 1) + '.' + REPLACE(RIGHT(CAST(SERVERPROPERTY('ProductVersion') AS nvarchar(max)), LEN(CAST(SERVERPROPERTY('ProductVersion') AS nvarchar(max))) - CHARINDEX('.',CAST(SERVERPROPERTY('ProductVersion') AS nvarchar(max)))),'.','') AS numeric(18,10))
 
 	--Table to output fragmentation report, if requested
-	EXEC('IF OBJECT_ID(''tempdb..##frag_report'') IS NOT NULL DROP TABLE ##frag_report')
-	CREATE TABLE ##frag_report --Global, so we can SELECT from other connection while executing
+	--Local: a global ##frag_report was dropped by any other execution running at the same time
+	CREATE TABLE #frag_report
 	(id bigint IDENTITY(1,1) PRIMARY KEY
 	,database_name sysname
 	,schema_name sysname
@@ -83,7 +91,7 @@ AS BEGIN
 	,pages bigint
 	,rows_ bigint
 	,forwarded_rows bigint
-	,fragmentation_level tinyint
+	,forwarded_rows_percent tinyint
 	,avg_page_space_used_in_percent tinyint
 	,Max_Page_Space_Perc decimal(10,2)
 	,Page_Space_Dev decimal(10,2)
@@ -224,7 +232,7 @@ AS BEGIN
 			--Insert fragmentation statistics, if we are supposed to
 			IF @report_type = 'all'
 			BEGIN
-				INSERT INTO ##frag_report(database_name, schema_name, table_name, size_in_mb, pages, rows_, forwarded_rows, fragmentation_level, avg_page_space_used_in_percent, Max_Page_Space_Perc, Page_Space_Dev, avg_fragmentation_in_percent)
+				INSERT INTO #frag_report(database_name, schema_name, table_name, size_in_mb, pages, rows_, forwarded_rows, forwarded_rows_percent, avg_page_space_used_in_percent, Max_Page_Space_Perc, Page_Space_Dev, avg_fragmentation_in_percent)
 				VALUES(@db_name, @schema_name, @table_name, @heap_size_mb, @page_count, @record_count, @forwarded_record_count, @fwd_rows_percentage, @avg_page_space_used_in_percent, @Max_Page_Space_Perc, @Page_Space_Dev, @avg_fragmentation_in_percent)
 			END
 
@@ -235,7 +243,7 @@ AS BEGIN
 				--Insert fragmentation statistics, if we are supposed to
 				IF @report_type = 'fragmented_only'
 				BEGIN
-					INSERT INTO ##frag_report(database_name, schema_name, table_name, size_in_mb, pages, rows_, forwarded_rows, fragmentation_level, avg_page_space_used_in_percent, Max_Page_Space_Perc, Page_Space_Dev, avg_fragmentation_in_percent)
+					INSERT INTO #frag_report(database_name, schema_name, table_name, size_in_mb, pages, rows_, forwarded_rows, forwarded_rows_percent, avg_page_space_used_in_percent, Max_Page_Space_Perc, Page_Space_Dev, avg_fragmentation_in_percent)
 					VALUES(@db_name, @schema_name, @table_name, @heap_size_mb, @page_count, @record_count, @forwarded_record_count, @fwd_rows_percentage, @avg_page_space_used_in_percent, @Max_Page_Space_Perc, @Page_Space_Dev, @avg_fragmentation_in_percent)
 				END
 
@@ -274,7 +282,7 @@ AS BEGIN
 	DEALLOCATE databases
 
 	IF @report_type IN('all', 'fragmented_only')
-		SELECT database_name, schema_name, table_name, size_in_mb, pages, rows_, forwarded_rows, fragmentation_level, avg_page_space_used_in_percent, Max_Page_Space_Perc, Page_Space_Dev, avg_fragmentation_in_percent FROM ##frag_report
+		SELECT database_name, schema_name, table_name, size_in_mb, pages, rows_, forwarded_rows, forwarded_rows_percent, avg_page_space_used_in_percent, Max_Page_Space_Perc, Page_Space_Dev, avg_fragmentation_in_percent FROM #frag_report
 END
 
 GO

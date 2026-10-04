@@ -1,5 +1,6 @@
 -----------------------------------------------------------------
 -- Get perf counter in prtg format
+-- Works on a default instance (SQLServer:) and a named one (MSSQL$<name>:)
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
@@ -14,24 +15,24 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 	FROM sys.dm_os_performance_counters
 	WHERE 
 	(
-		(Object_name = N'SQLServer:Batch Resp Statistics' AND counter_name = N'Batches >=100000ms') OR
-		(Object_name = N'SQLServer:Buffer Manager' AND counter_name IN (N'Buffer cache hit ratio', N'Buffer cache hit ratio base', N'Page life expectancy')) OR
-		(Object_name = N'SQLServer:Databases' AND counter_name IN (N'Active Transactions', N'Data File(s) Size (KB)', N'Log File(s) Used Size (KB)', N'Log Growths', N'Percent Log Used', N'Transactions/sec')) OR
-		(Object_name = N'SQLServer:General Statistics' AND counter_name IN (N'Active Temp Tables', N'Processes blocked', N'User Connections')) OR
-		(Object_name = N'SQLServer:Memory Manager' AND counter_name IN (N'Memory Grants Pending')) OR
-		(Object_name = N'SQLServer:SQL Errors' AND counter_name = N'Errors/sec' AND instance_name = N'User Errors') OR
-		(Object_name = N'SQLServer:SQL Statistics' AND counter_name = N'Batch Requests/sec') OR
-		(Object_name = N'SQLServer:Wait Statistics' AND counter_name IN (N'Memory grant queue waits', N'Lock waits') AND instance_name = N'Waits in progress')
+		(RTRIM(object_name) LIKE N'%:Batch Resp Statistics' AND counter_name = N'Batches >=100000ms') OR
+		(RTRIM(object_name) LIKE N'%:Buffer Manager' AND counter_name IN (N'Buffer cache hit ratio', N'Buffer cache hit ratio base', N'Page life expectancy')) OR
+		(RTRIM(object_name) LIKE N'%:Databases' AND counter_name IN (N'Active Transactions', N'Data File(s) Size (KB)', N'Log File(s) Used Size (KB)', N'Log Growths', N'Percent Log Used', N'Transactions/sec')) OR
+		(RTRIM(object_name) LIKE N'%:General Statistics' AND counter_name IN (N'Active Temp Tables', N'Processes blocked', N'User Connections')) OR
+		(RTRIM(object_name) LIKE N'%:Memory Manager' AND counter_name IN (N'Memory Grants Pending')) OR
+		(RTRIM(object_name) LIKE N'%:SQL Errors' AND counter_name = N'Errors/sec' AND instance_name = N'User Errors') OR
+		(RTRIM(object_name) LIKE N'%:SQL Statistics' AND counter_name = N'Batch Requests/sec') OR
+		(RTRIM(object_name) LIKE N'%:Wait Statistics' AND counter_name IN (N'Memory grant queue waits', N'Lock waits') AND instance_name = N'Waits in progress')
 	)
 	AND instance_name NOT IN (N'master', N'model', N'msdb', N'mssqlsystemresource', N'_Total')
 )
 SELECT *,
 	CASE 
-		WHEN prtg LIKE '\SQLServer:Batch Resp Statistics%'
-		  OR prtg LIKE '\SQLServer:Databases(%)\Log Growths'
-		  OR prtg LIKE '\SQLServer:Databases(%)\Transactions/sec'
-		  OR prtg =    '\SQLServer:SQL Errors(User Errors)\Errors/sec'
-		  OR prtg =    '\SQLServer:SQL Statistics\Batch Requests/sec'
+		WHEN prtg LIKE '\%:Batch Resp Statistics%'
+		  OR prtg LIKE '\%:Databases(%)\Log Growths'
+		  OR prtg LIKE '\%:Databases(%)\Transactions/sec'
+		  OR prtg LIKE '\%:SQL Errors(User Errors)\Errors/sec'
+		  OR prtg LIKE '\%:SQL Statistics\Batch Requests/sec'
 		THEN 1 ELSE 0 
 	END as cumulative
 FROM cte

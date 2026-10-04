@@ -20,7 +20,7 @@ Configures Ola Hallengren backup procedures specifically for AlwaysOn Availabili
 
 ## 📝 [015.rebuild_heaps](./015.rebuild_heaps.sql)
 
-Stored procedure to identify and rebuild fragmented heaps across all online user databases, with support for AlwaysOn and database mirroring scenarios.
+Stored procedure to identify and rebuild fragmented heaps across all online user databases, with support for AlwaysOn and database mirroring scenarios. A heap is rebuilt on its fragmentation (`@fragmentation_level`) or its free space (`@free_space_level`); forwarded records are reported in `forwarded_rows_percent` but do not trigger a rebuild (see [rebuild-heaps-forwarded-records](../maintenance/rebuild-heaps-forwarded-records.sql) for that).
 
 ## 📝 [016.purge-msdb](./016.purge-msdb.sql)
 

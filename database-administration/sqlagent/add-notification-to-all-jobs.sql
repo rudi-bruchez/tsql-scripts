@@ -16,7 +16,16 @@ DECLARE @operator sysname =
 	FROM msdb.dbo.sysoperators
 	WHERE enabled = 1
 	AND email_address IS NOT NULL
+	ORDER BY id
 )
+
+IF @operator IS NULL
+BEGIN
+	RAISERROR('No enabled operator with an email address: nothing changed.', 16, 1);
+	RETURN;
+END
+
+PRINT CONCAT('notifying operator ', QUOTENAME(@operator));
 
 DECLARE cur CURSOR
 FAST_FORWARD

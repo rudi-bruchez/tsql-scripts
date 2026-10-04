@@ -12,7 +12,7 @@ SELECT
 	cntr_value
 FROM sys.dm_os_performance_counters
 WHERE
-Object_name = N'SQLServer:Deprecated Features'
+RTRIM(object_name) LIKE N'%:Deprecated Features' -- SQLServer: or MSSQL$<name>:
 AND cntr_value > 0
 ORDER BY [feature]
 OPTION (RECOMPILE, MAXDOP 1);

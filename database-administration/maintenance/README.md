@@ -32,4 +32,4 @@ Retrieves currently executing backup and restore operations with start time, dur
 
 ## 📝 [transaction-log-restore-performances](./transaction-log-restore-performances.sql)
 
-Analyzes restore history showing backup size, restore dates, and duration between consecutive restore operations for performance analysis.
+Analyzes restore history showing, for each destination database, backup size, restore dates, and duration between consecutive restore operations of that database, for performance analysis.

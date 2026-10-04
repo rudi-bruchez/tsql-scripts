@@ -20,7 +20,7 @@ SELECT
    ,[vfs].[num_of_writes]
    ,[vfs].[size_on_disk_bytes] / 1024 / 1024 AS [size_on_disk_MB]
    ,[df].[physical_name] AS file_name
-FROM [sys].[dm_io_virtual_file_stats](NULL, NULL) AS vfs
+FROM [sys].[dm_io_virtual_file_stats](DB_ID(), NULL) AS vfs
 JOIN sys.database_files AS df
 	ON vfs.[file_id] = df.[file_id]
 WHERE DB_NAME([vfs].[database_id]) NOT IN (N'master', N'model')

@@ -4,7 +4,7 @@ Scripts that generate DDL statements for database schema changes.
 
 ## 📝 [change-collation](./change-collation.sql)
 
-Generates ALTER TABLE statements to change column collation to a specified collation for all columns not matching it in the current database.
+Generates ALTER TABLE statements to change column collation to a specified collation for all columns of base tables not matching it in the current database, keeping their length and nullability. Computed columns are skipped; a column used by an index, a constraint or a computed column must be freed first.
 
 ## 📝 [change-database-owner](./change-database-owner.sql)
 
@@ -20,7 +20,7 @@ Generates DISABLE and REBUILD commands for nonclustered indexes on specified tab
 
 ## 📝 [drop-database-users](./drop-database-users.sql)
 
-Iterates through all database users and principals and generates DROP USER commands with error handling for dependencies.
+Prints a DROP USER command for every user of the current database. Runs in listing mode by default; set `@execute = 1` to run the commands, with error handling for users that own objects.
 
 ## 📝 [move-tempdb-files](./move-tempdb-files.sql)
 

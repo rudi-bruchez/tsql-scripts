@@ -8,7 +8,7 @@ Wait statistics for Azure SQL Database using the dedicated `sys.dm_db_wait_stats
 
 ## 📝 [disk-usage-by-top-tables](./disk-usage-by-top-tables.sql)
 
-Shows disk usage by table including row counts, compression type, allocation type, data pages, and size in MB. Ordered by row count descending.
+Shows disk usage by table including row counts, compression type, allocation type (in-row, LOB and row-overflow units on separate rows), used pages and size in MB. Ordered by row count descending.
 
 ## 📝 [dm_db_resource_stats](./dm_db_resource_stats.sql)
 
@@ -16,7 +16,7 @@ Returns Azure SQL Database resource statistics including DTU/CPU limits, CPU per
 
 ## 📝 [io-file-stats](./io-file-stats.sql)
 
-IO statistics per database file using `sys.dm_io_virtual_file_stats`. Shows read/write latency, average bytes per operation, and file sizes. Useful for identifying IO bottlenecks.
+IO statistics per file of the current database using `sys.dm_io_virtual_file_stats`. Shows read/write latency, average bytes per operation, and file sizes. Useful for identifying IO bottlenecks.
 
 ## 📝 [service-level-info](./service-level-info.sql)
 

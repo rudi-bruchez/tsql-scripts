@@ -52,7 +52,7 @@ FOR
 	SELECT
 		CASE
 			WHEN max_size = 0 THEN 1 -- no groth allowed
-			WHEN max_size = 1 THEN 0 -- unlimited
+			WHEN max_size = -1 THEN 0 -- unlimited
 			WHEN (CAST(max_size as bigint) * 8192 / 1048576) < sum_fg_MB THEN 1
 			ELSE 0
 		END AS ok,
