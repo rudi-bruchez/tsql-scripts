@@ -31,7 +31,7 @@ SELECT
 	REPLACE(frag.alloc_unit_type_desc, '_DATA', '') as [alloc],
 	CAST(frag.avg_fragmentation_in_percent as DECIMAL(5, 2)) as [frag %],
 	frag.page_count as [pages],
-	REPLACE(b.page_type, '_PAGE', '') as [pages],
+	REPLACE(b.page_type, '_PAGE', '') as [page_type],
 	b.avg_free_space,
 	b.avg_rows_in_page
 FROM sys.indexes i

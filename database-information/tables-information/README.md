@@ -26,7 +26,7 @@ Searches columns in tables, by their name and generate sql to inspect column con
 
 ## 📝 [Tables and columns](./tables-and-columns.sql)
 
-Simply lists tables and columns.
+Lists the columns of every table with their definition (type, length, nullability, default) and the table row count, largest tables first. A commented `WHERE DATA_TYPE IN (...)` filter restricts the list to some data types.
 
 ## 📝 [Tables with deprecated LOB types](./tables-with-deprecated-lob-types.sql)
 

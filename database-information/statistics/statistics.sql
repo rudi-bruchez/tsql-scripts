@@ -22,7 +22,7 @@ SELECT
 	sp.unfiltered_rows, 
 	sp.modification_counter,
 	CONCAT('UPDATE STATISTICS ', QUOTENAME(SCHEMA_NAME(o.schema_id)), '.', QUOTENAME(o.name),
-        ' ', stat.name, ' WITH FULLSCAN'
+        ' ', QUOTENAME(stat.name), ' WITH FULLSCAN'
     ) as update_ddl,
 	CONCAT('DROP STATISTICS ', QUOTENAME(SCHEMA_NAME(o.schema_id)), '.', QUOTENAME(o.name),
         '.', QUOTENAME(stat.name), ';'

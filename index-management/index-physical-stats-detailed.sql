@@ -29,7 +29,6 @@ SELECT
 		WHEN 'IN_ROW_DATA' THEN 'IN_ROW'
 		ELSE ps.alloc_unit_type_desc
 	END as [alloc]
-	,p.partition_number as [partition]
 	--,CAST(ps.avg_fragment_size_in_pages as decimal(18,2)) as avg_fragment_size_in_pages
 	,CAST(ps.avg_fragmentation_in_percent as decimal(5,2)) as [avg_frag_%]
 	,ps.avg_record_size_in_bytes as avg_row_byte

@@ -25,7 +25,7 @@ SELECT
 	mf.physical_name,
 	CASE mf.max_size
 		WHEN 0 THEN 'Fixed'
-		WHEN -1 THEN 'Illimited'
+		WHEN -1 THEN 'Unlimited'
 		WHEN 268435456 THEN '2 TB'
 		ELSE CONCAT((mf.max_size * 8) / 1024, ' MB')
 	END AS [max],

@@ -16,4 +16,4 @@ Legacy statistics analysis for SQL Server pre-2012 using sysindexes DMV, showing
 
 ## 📝 [user-created-statistics](./user-created-statistics.sql)
 
-Lists user-created (manual) statistics with columns, last update time, and DDL for dropping unused statistics.
+Lists user-created (manual) statistics with their columns, in the statistics key order, and the `DROP STATISTICS` DDL for each one.

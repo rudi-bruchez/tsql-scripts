@@ -8,13 +8,15 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 ;WITH [rows] AS (
 	SELECT 
+		SCHEMA_NAME(t.schema_id) AS SchemaName,
 		t.NAME AS TableName,
-		p.[rows]
+		SUM(p.[rows]) AS [rows]
 	FROM sys.tables t
 	JOIN  sys.partitions p ON t.object_id = p.OBJECT_ID
 	WHERE p.index_id < 2
+	GROUP BY t.schema_id, t.NAME
 )
-SELECT TABLE_NAME as tbl,
+SELECT CONCAT(c.TABLE_SCHEMA, '.', c.TABLE_NAME) as tbl,
           '  ['+column_name+'] ' 
           +  data_type 
           + case data_type
@@ -38,7 +40,9 @@ SELECT TABLE_NAME as tbl,
         ORDINAL_POSITION as Pos,
 		r.[rows]
 FROM INFORMATION_SCHEMA.COLUMNS c
-JOIN [rows] r ON c.TABLE_NAME = r.TableName 
+JOIN [rows] r ON c.TABLE_SCHEMA = r.SchemaName AND c.TABLE_NAME = r.TableName 
+-- uncomment to list only some data types
+/*
 WHERE DATA_TYPE IN (
 	N'timestamp',
 	N'bigint',
@@ -52,11 +56,10 @@ WHERE DATA_TYPE IN (
 	N'image',
 	N'bit',
 	N'varbinary',
-	N'text',
 	N'ntext',
 	N'float',
-	N'double',
 	N'uniqueidentifier'
 )
-ORDER BY r.[rows] DESC
+*/
+ORDER BY r.[rows] DESC, tbl, Pos
 OPTION (RECOMPILE, MAXDOP 1);

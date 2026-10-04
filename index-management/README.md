@@ -43,7 +43,7 @@ Lists missing indexes spotted by the optimizer, in the current database.
 
 ## 📝 [index scans](./index-scans.sql)
 
-Searches the plan cache (`sys.dm_exec_query_stats`) for plans containing an `IndexScan` operator on the current database, and returns the table, the index, the statement text, logical reads and execution count. Uncomment the last line to filter on one table. Parsing cached plans as XML can be heavy on a large plan cache.
+Searches the plan cache (`sys.dm_exec_query_stats`) for statements whose plan contains an Index Scan or Clustered Index Scan operator (seeks excluded) on the current database, and returns the 100 with the most logical reads, with the table, the index, the statement text, logical reads and execution count. Uncomment the `WHERE [Table]` line to filter on one table. Parsing cached plans as XML can be heavy on a large plan cache.
 
 ## 📝 [index used by queries](./index-used-by-queries.sql)
 
@@ -51,8 +51,8 @@ Finds the cached query plans that mention a given index, by a text search of the
 
 ## 📝 [index used by queries, Query Store](./index-used-by-queries-query-store.sql)
 
-Same search in the plans stored by the Query Store of the current database (`sys.query_store_plan`), which keeps plans that left the cache. Set `@indexName` before running. Requires Query Store enabled on the database.
+Same search in the plans stored by the Query Store of the current database (`sys.query_store_plan`), which keeps plans that left the cache. Set `@indexName` before running, with brackets as in the plan XML (`[IX_name]`). Requires Query Store enabled on the database.
 
 ## 📝 [index used by procedures](./index-used-by-proc.sql)
 
-Lists the cached stored procedures (`sys.dm_exec_procedure_stats`) whose plan references one of the given indexes. Edit the `IN (N'[IX1]', N'[IX2]')` list in the `WHERE` clause with your index names, brackets included.
+Lists the cached stored procedures (`sys.dm_exec_procedure_stats`) of all databases whose plan references one of the given indexes, with the database of each procedure. Edit the `IN (N'[IX1]', N'[IX2]')` list in the `WHERE` clause with your index names, brackets included.

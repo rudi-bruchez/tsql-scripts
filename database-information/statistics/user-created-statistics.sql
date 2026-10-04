@@ -14,7 +14,7 @@ SELECT
 	stat.object_id,
 	stat.stats_id,
 	MIN(stat.name) as stat_name,
-	STRING_AGG(c.name, ',') WITHIN GROUP ( ORDER BY sc.column_id ) as cols
+	STRING_AGG(c.name, ',') WITHIN GROUP ( ORDER BY sc.stats_column_id ) as cols
 FROM sys.stats AS stat
 JOIN sys.stats_columns sc ON stat.object_id = sc.object_id AND stat.stats_id = sc.stats_id
 JOIN sys.columns c ON sc.object_id = c.object_id AND sc.column_id = c.column_id

@@ -12,15 +12,18 @@ WITH xmlnamespaces ('http://schemas.microsoft.com/sqlserver/2004/07/showplan' AS
 	  , x.value(N'@Database', N'sysname') AS [Database]
 	  , x.value(N'@Schema', N'sysname') + N'.' + x.value(N'@Table', N'sysname') AS [Table]
 	  , x.value(N'@Index', N'sysname') AS [Index]
-	  , substring(t.text, q.statement_start_offset/2,   
-	  CASE WHEN 0 < q.statement_end_offset THEN (q.statement_end_offset - q.statement_start_offset)/2
+	  , substring(t.text, q.statement_start_offset/2 + 1,   
+	  CASE WHEN 0 < q.statement_end_offset THEN (q.statement_end_offset - q.statement_start_offset)/2 + 1
 	  ELSE len(t.text) - q.statement_start_offset/2 END) AS [Statement]
 	FROM sys.dm_exec_query_stats q
-	CROSS APPLY sys.dm_exec_query_plan(plan_handle)
+	CROSS APPLY sys.dm_exec_text_query_plan(q.plan_handle, q.statement_start_offset, q.statement_end_offset) AS p
 	CROSS APPLY sys.dm_exec_sql_text(sql_handle) AS t
-	CROSS APPLY query_plan.nodes(N'//sp:IndexScan/sp:Object') s(x)
+	CROSS APPLY (SELECT TRY_CONVERT(xml, p.query_plan) AS query_plan) AS qp
+	CROSS APPLY qp.query_plan.nodes(N'//sp:RelOp[@PhysicalOp = "Index Scan" or @PhysicalOp = "Clustered Index Scan"]/sp:IndexScan/sp:Object') s(x)
+	WHERE x.value(N'@Database', N'sysname') = QUOTENAME(DB_NAME())
+	ORDER BY q.total_logical_reads DESC
 )
 SELECT *
 FROM cte
-WHERE [Database] = QUOTENAME(DB_NAME())
---AND [Table] = N'TABLE_NAME';
+--WHERE [Table] = N'TABLE_NAME'
+ORDER BY total_logical_reads DESC;

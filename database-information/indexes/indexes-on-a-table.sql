@@ -20,7 +20,7 @@ SELECT
 	COUNT(*) as [partitions],
 	MIN(CAST(i.is_disabled as tinyint)) as [disabled],
 	MIN(CAST(i.is_hypothetical as tinyint)) as hypothetical,
-	SUM(COALESCE(ius.user_seeks + ius.user_scans, 0)) as usage 
+	MIN(COALESCE(ius.user_seeks + ius.user_scans, 0)) as usage 
 FROM sys.indexes i
 JOIN sys.partitions p ON p.object_id = i.object_id AND p.index_id = i.index_id
 JOIN sys.tables t ON i.object_id = t.object_id

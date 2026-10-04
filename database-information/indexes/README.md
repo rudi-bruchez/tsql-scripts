@@ -8,7 +8,7 @@ Analyzes indexes with non-default fill factors, showing fragmentation, compressi
 
 ## 📝 [fragmentation-analysis](./fragmentation-analysis.sql)
 
-Comprehensive index fragmentation analysis showing fragmentation percentage, page count, allocation type, and generating REBUILD statements for fragmented indexes.
+Index fragmentation analysis showing fragmentation percentage, page count, allocation type and forwarded records, with a schema-qualified `ALTER INDEX ... REBUILD` (or `ALTER TABLE ... REBUILD` for a heap) statement for every index of more than 20 pages, fragmented or not: pick the ones to run from the fragmentation column.
 
 ## 📝 [indexed-views](./indexed-views.sql)
 

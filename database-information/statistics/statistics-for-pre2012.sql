@@ -10,7 +10,7 @@
        OBJECT_NAME(i.id) as [table],
        i.name as [stats],
        CAST(STATS_DATE(i.id, i.indid) as DATETIME2(0)) as [last update],
-	   (SELECT SUM(rows) FROM sys.partitions p WHERE p.object_id = i.id AND p.object_id < 2) as [rows],
+	   (SELECT SUM(rows) FROM sys.partitions p WHERE p.object_id = i.id AND p.index_id < 2) as [rows],
        i.rowmodctr as modifications,
        STUFF((SELECT ', ' + c.name as [text()]
        FROM sys.stats_columns sc

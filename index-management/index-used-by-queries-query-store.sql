@@ -8,9 +8,7 @@
 SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
-DECLARE @indexName sysname = '';
-
-SET @indexName = CONCAT('//Object[@Index = "', @indexName, '"]')
+DECLARE @indexName sysname = ''; -- with brackets, as in the plan XML: '[IX_name]'
 
 ;WITH XMLNAMESPACES (
     DEFAULT 'http://schemas.microsoft.com/sqlserver/2004/07/showplan'
@@ -36,5 +34,5 @@ SELECT
     query_plan_xml,
     last_execution_time
 FROM QueryStorePlansXML
-WHERE query_plan_xml.exist(@indexName) = 1
+WHERE query_plan_xml.exist('//Object[@Index = sql:variable("@indexName")]') = 1
 OPTION (RECOMPILE);

@@ -18,15 +18,16 @@ WITH cte AS (
                     WHEN 1 THEN 'initialised'
                     WHEN 2 THEN 'active'
              END as vlf_status,
-             SUM(vlf_size_mb) OVER (ORDER BY vlf_begin_offset) - vlf_size_mb as size_before,
-             SUM(vlf_size_mb) OVER (ORDER BY vlf_begin_offset DESC) - vlf_size_mb as size_after,
-             CAST(PERCENT_RANK() OVER (ORDER BY vlf_begin_offset) * 100 as DECIMAL(5, 2)) as [% position],
-             SUM(vlf_size_mb) OVER () as total_size,
-             COUNT(*) OVER () as vlf_number,
+             SUM(vlf_size_mb) OVER (PARTITION BY file_id ORDER BY vlf_begin_offset) - vlf_size_mb as size_before,
+             SUM(vlf_size_mb) OVER (PARTITION BY file_id ORDER BY vlf_begin_offset DESC) - vlf_size_mb as size_after,
+             CAST(PERCENT_RANK() OVER (PARTITION BY file_id ORDER BY vlf_begin_offset) * 100 as DECIMAL(5, 2)) as [% position],
+             SUM(vlf_size_mb) OVER (PARTITION BY file_id) as total_size,
+             COUNT(*) OVER (PARTITION BY file_id) as vlf_number,
              vlf_begin_offset
        FROM sys.dm_db_log_info ( NULL )
 )
 SELECT
+       file_id,
        MIN(vlf_number) as vlf_number,
        SUM(vlf_size_mb) as active_portion_size_mb,
        COUNT(*) as nb_active_vlf,
@@ -36,4 +37,5 @@ SELECT
        MIN(total_size) as total_size
 FROM cte
 WHERE vlf_active = 1
+GROUP BY file_id
 OPTION (RECOMPILE, MAXDOP 1);

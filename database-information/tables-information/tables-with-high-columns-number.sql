@@ -10,7 +10,7 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 ;WITH cte_partitions AS (
     SELECT p.object_id,
-        SUM(p.rows) as rows,
+        SUM(IIF(p.index_id < 2, p.rows, 0)) as rows,
         IIF(SUM(p.data_compression) > 0, 1, 0) as compressed
     FROM sys.partitions p
     GROUP BY p.object_id
@@ -28,5 +28,5 @@ JOIN sys.columns c ON t.object_id = c.object_id
 JOIN cte_partitions p ON t.object_id = p.object_id
 WHERE t.type = 'U'
 GROUP BY t.object_id
-ORDER BY [nb_nullables] DESC, [table]
+ORDER BY [nb_cols] DESC, [table]
 OPTION (RECOMPILE, MAXDOP 1);

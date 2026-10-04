@@ -8,7 +8,8 @@
 ;with xmlnamespaces ('http://schemas.microsoft.com/sqlserver/2004/07/showplan' as sp),
 cte AS (
     SELECT 
-        OBJECT_NAME(s.object_id) as ProcedureName,
+        DB_NAME(s.database_id) as DatabaseName,
+        OBJECT_NAME(s.object_id, s.database_id) as ProcedureName,
         n.value(N'@Index', N'sysname') as IndexName,
         s.execution_count,
         p.query_plan
@@ -20,8 +21,9 @@ cte AS (
 )
 SELECT 
     IndexName, 
+    DatabaseName,
     ProcedureName, 
     min(execution_count) as execution_count
 FROM cte
-GROUP BY ProcedureName, IndexName
-ORDER BY ProcedureName, IndexName;
+GROUP BY DatabaseName, ProcedureName, IndexName
+ORDER BY DatabaseName, ProcedureName, IndexName;
