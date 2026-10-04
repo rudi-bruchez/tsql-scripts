@@ -51,12 +51,17 @@ ALTER EVENT SESSION Waits_of_Particular_Session ON SERVER
 STATE = START
 GO
 
+-- stop the session, once you are done collecting
+/*
 ALTER EVENT SESSION Waits_of_Particular_Session ON SERVER
-STATE = STOP
-GO
+STATE = STOP;
+*/
 	
 -------------------------------------------------
 --               drop the session              --
 -------------------------------------------------
+-- once the files are read and the session is no longer needed
+/*
 DROP EVENT SESSION Waits_of_Particular_Session ON SERVER;
+*/
 

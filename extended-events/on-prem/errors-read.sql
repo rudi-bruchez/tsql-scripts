@@ -11,6 +11,10 @@ DECLARE @file nvarchar(max) = (SELECT (CONVERT(xml, target_data)).value('(/Event
 	WHERE s.name = 'errors'
 	AND t.target_name = N'event_file');
 
+-- read all the rollover files of the session, not only the current one:
+-- errors_0_133....xel becomes errors_0*.xel
+SET @file = LEFT(@file, LEN(@file) - CHARINDEX(N'_', REVERSE(@file))) + N'*.xel';
+
 ;WITH xe AS (
 	SELECT
 		[XMLData],
@@ -30,4 +34,4 @@ DECLARE @file nvarchar(max) = (SELECT (CONVERT(xml, target_data)).value('(/Event
 )
 SELECT *
 FROM xe
-WHERE [Timestamp] > DATEADD(day, -1, CURRENT_TIMESTAMP);
+WHERE [Timestamp] > DATEADD(day, -1, GETUTCDATE()); -- the event timestamp is in UTC

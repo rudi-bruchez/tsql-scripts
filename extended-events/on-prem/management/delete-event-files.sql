@@ -2,6 +2,15 @@ SET NOCOUNT ON;
 SET STATISTICS IO, TIME OFF;
 GO
 
+-- remember the current values, to put them back at the end
+IF OBJECT_ID('tempdb..#config') IS NOT NULL
+	DROP TABLE #config;
+SELECT name, CAST(value_in_use AS int) AS value
+INTO #config
+FROM sys.configurations
+WHERE name IN (N'show advanced options', N'xp_cmdshell');
+GO
+
 EXECUTE sp_configure 'show advanced options', 1;
 RECONFIGURE;
 GO
@@ -62,9 +71,16 @@ CLOSE cur
 DEALLOCATE cur
 GO
 
-EXECUTE sp_configure 'xp_cmdshell', 0;
-RECONFIGURE;
+-- put back the values found at the start
+IF (SELECT value FROM #config WHERE name = N'xp_cmdshell') = 0
+BEGIN
+	EXECUTE sp_configure 'xp_cmdshell', 0;
+	RECONFIGURE;
+END
 GO
-EXECUTE sp_configure 'show advanced options', 0;
-RECONFIGURE;
+IF (SELECT value FROM #config WHERE name = N'show advanced options') = 0
+BEGIN
+	EXECUTE sp_configure 'show advanced options', 0;
+	RECONFIGURE;
+END
 GO

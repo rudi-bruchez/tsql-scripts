@@ -11,6 +11,8 @@ SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 
+-- the session has no target and is not started: start it and use
+-- Watch Live Data in SSMS, or add a target (ring_buffer, event_file)
 CREATE EVENT SESSION [Preemptive_QueryRegistry] ON SERVER 
 ADD EVENT sqlos.wait_info_external(
     ACTION(

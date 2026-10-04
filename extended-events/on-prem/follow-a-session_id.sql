@@ -25,11 +25,17 @@ ALTER EVENT SESSION [trace_session_id] ON SERVER
 STATE = START
 GO
 
+-- stop the session, once you are done collecting
+-- (a stopped session loses its ring buffer: read it first)
+/*
 ALTER EVENT SESSION [trace_session_id] ON SERVER
-STATE = STOP
-GO
+STATE = STOP;
+*/
 
 -------------------------------------------------
 --               drop the session              --
 -------------------------------------------------
+-- once the ring buffer is read and the session is no longer needed
+/*
 DROP EVENT SESSION [trace_session_id] ON SERVER;
+*/

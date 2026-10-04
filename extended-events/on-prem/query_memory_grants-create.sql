@@ -34,5 +34,7 @@ GO
 
 -- start the session
 ALTER EVENT SESSION [query_memory] ON SERVER STATE=START;
--- stop the sesison
+-- stop the session, once you are done collecting
+/*
 ALTER EVENT SESSION [query_memory] ON SERVER STATE=STOP;
+*/

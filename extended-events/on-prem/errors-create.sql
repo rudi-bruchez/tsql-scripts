@@ -26,5 +26,7 @@ GO
 
 -- start the session
 ALTER EVENT SESSION [errors] ON SERVER STATE=START;
--- stop the session
+-- stop the session, once you are done collecting
+/*
 ALTER EVENT SESSION [errors] ON SERVER STATE=STOP;
+*/

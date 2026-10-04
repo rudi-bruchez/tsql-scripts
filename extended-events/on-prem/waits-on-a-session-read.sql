@@ -1,6 +1,7 @@
 -----------------------------------------------------------------
--- change the session_id, change the destination folder
--- use wait_completed if available
+-- read the waits of the Waits_of_Particular_Session event session
+-- (see waits-on-a-session-create.sql)
+-- change the folder to the one set in the create script
 -- 
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------

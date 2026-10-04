@@ -1,4 +1,5 @@
-DECLARE @ExtendedEventsSessionName sysname = N'Perf2-procedure';
+-- reads the ring buffer of the trace-procedure session (see trace-procedure-create.sql)
+DECLARE @ExtendedEventsSessionName sysname = N'trace-procedure';
 DECLARE @StartTime datetimeoffset;
 DECLARE @EndTime datetimeoffset;
 DECLARE @Offset int;

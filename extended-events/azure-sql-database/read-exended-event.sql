@@ -1,4 +1,5 @@
-DECLARE @ExtendedEventsSessionName sysname = N'Perf';
+-- reads the ring buffer of the long_queries session (see long-queries-create.sql)
+DECLARE @ExtendedEventsSessionName sysname = N'long_queries';
 DECLARE @StartTime datetimeoffset;
 DECLARE @EndTime datetimeoffset;
 DECLARE @Offset int;

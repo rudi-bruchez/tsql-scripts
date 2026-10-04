@@ -1,5 +1,5 @@
 --------------------------------------------------------------------
--- read recompilations event session
+-- read procedure cache removal statistics event session
 --
 -- rudi@babaluga.com, go ahead license
 --------------------------------------------------------------------
@@ -24,30 +24,26 @@ WHERE s.name = @ExtendedEventsSessionName
 xmlResults AS (
 	SELECT src.xeXML
 		, CONVERT(varchar(30), DATEADD(MINUTE, 0 - DATEDIFF(MINUTE, GETDATE(), GETUTCDATE()), src.xeXML.value('(/event/@timestamp)[1]', 'datetimeoffset(7)')), 120) AS [TimeStamp]
-		, src.xeXML.value('(/event/data[@name=''recompile_cause'']/text)[1]', 'varchar(128)') as cause
-		, src.xeXML.value('(/event/data[@name=''sql_handle'']/value)[1]', 'varbinary(max)') as sql_handle
+		-- the handle is written in hex: value() as varbinary would decode it as base64
+		, CONVERT(varbinary(64), src.xeXML.value('(/event/data[@name=''sql_handle'']/value)[1]', 'varchar(130)'), 2) as sql_handle
 		, src.xeXML.value('(/event/data[@name=''compiled_object_id'']/value)[1]', 'int') as obj
 		, src.xeXML.value('(/event/data[@name=''compiled_object_type'']/text)[1]', 'varchar(128)') as obj_type
-		, src.xeXML.value('(/event/data[@name=''statement'']/value)[1]', 'nvarchar(max)') as statement
 		, src.execution_statistics
-		, src.execution_statistics.value('(/ProcedureExecutionStats/GeneralStats[@CachedTime])[1]', 'datetime') as cached_time -- to correct
+		, src.execution_statistics.value('(/ProcedureExecutionStats/GeneralStats/@CachedTime)[1]', 'datetime') as cached_time
 	FROM src
 )
 SELECT --TOP 50 
     xr.TimeStamp
    --,xr.xeXML
-   ,xr.cause
    ,xr.sql_handle
-   --,CONCAT(QUOTENAME(OBJECT_SCHEMA_NAME(xr.obj, xr.db)), '.', QUOTENAME(OBJECT_NAME(xr.obj, xr.db))) AS [object]
    ,xr.obj
-   ,OBJECT_NAME(xr.obj) as [object_name] -- hum, how to find the database ? sys.dm_exec_sql_text, but it is failing
+   -- the event has no database id: it comes from the procedure text, still in cache
+   -- most of the time (NULL when the text left the cache too)
+   ,DB_NAME(st.dbid) AS db
+   ,CONCAT(QUOTENAME(OBJECT_SCHEMA_NAME(xr.obj, st.dbid)), '.', QUOTENAME(OBJECT_NAME(xr.obj, st.dbid))) AS [object]
    ,xr.obj_type
-   ,xr.statement
    ,xr.execution_statistics
-   --,xr.cached_time
-   --,st.objectid
-   --,st.dbid
-   --,st.text
+   ,xr.cached_time
 FROM xmlResults xr
---OUTER APPLY sys.dm_exec_sql_text(COALESCE(xr.sql_handle, 0)) st
+OUTER APPLY sys.dm_exec_sql_text(xr.sql_handle) st
 ORDER BY [TimeStamp] desc;

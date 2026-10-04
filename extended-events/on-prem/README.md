@@ -32,7 +32,7 @@ Stops and drops the `blocked_processes` session, then sets `blocked process thre
 
 ## 📝 [Errors: create](./errors-create.sql)
 
-Creates the `errors` session on `error_reported` with a severity above 10, with client, database, `query_hash`, `sql_text` and `tsql_stack` actions, written to `errors.xel`. The script starts the session and stops it on the next line: run the start statement alone to keep it collecting.
+Creates the `errors` session on `error_reported` with a severity above 10, with client, database, `query_hash`, `sql_text` and `tsql_stack` actions, written to `errors.xel`. The script creates and starts the session; the stop statement is commented out, to run once you are done collecting.
 
 ## 📝 [Errors: create (alternate version)](./monitor-errors-create.sql)
 
@@ -40,11 +40,11 @@ Another definition of the same `errors` session (severity above 10, without `que
 
 ## 📝 [Errors: read](./errors-read.sql)
 
-Reads the current file of the running `errors` session and returns the errors of the last 24 hours: number, severity, message, login, database, host, application and statement. Only the file being written is read, not the older rollover files.
+Reads all the rollover files of the running `errors` session and returns the errors of the last 24 hours: number, severity, message, login, database, host, application and statement. The `Timestamp` column is in UTC, as recorded by the session.
 
 ## 📝 [Errors: read procedure](./errors-read-procedure.sql)
 
-Creates `dbo.ReadErrorsXEvent` in `master`, a procedure that runs the same read for the last hour and leaves out error 17830 (network error during login). Handy to give a support team a single command to run.
+Creates `dbo.ReadErrorsXEvent` in `master`, a procedure that runs the same read (all rollover files, `Timestamp` in UTC) for the last hour and leaves out error 17830 (network error during login). Handy to give a support team a single command to run.
 
 ## 📝 [Timeouts: create](./timeouts-create.sql)
 
@@ -52,7 +52,7 @@ Creates and starts the `timeouts` session, which captures `rpc_completed` and `s
 
 ## 📝 [Timeouts: read](./timeouts-read.sql)
 
-Reads the current file of the running `timeouts` session and returns the last `@last` (100) aborted calls with CPU, duration, row count, login, database, host, application and statement. SQL Server 2017+ (`timestamp_utc` column).
+Reads all the rollover files of the running `timeouts` session and returns the last `@last` (100) aborted calls with CPU, duration, row count, login, database, host, application and statement. SQL Server 2017+ (`timestamp_utc` column).
 
 ## 📝 [Long running queries](./long-running-queries-create.sql)
 
@@ -60,7 +60,7 @@ Creates and starts the `long_running_queries` session: `rpc_completed` and `sql_
 
 ## 📝 [Performances](./performances-create.sql)
 
-Creates the `performances` session: user `rpc_completed` (without connection resets) and `sql_batch_completed` events of 10 ms or more, to `performances*.xel`. The script starts the session and stops it on the last line: run the start statement alone to keep it collecting.
+Creates the `performances` session: user `rpc_completed` (without connection resets) and `sql_batch_completed` events of 10 ms or more, to `performances*.xel`. The script creates and starts the session; the stop statement is commented out, to run once you are done collecting.
 
 ## 📝 [Performance session for SQL Server 2008 R2](./xevents-perfs-2008r2.sql)
 
@@ -72,15 +72,15 @@ Creates and starts the `stored_procedure` session, which captures `rpc_completed
 
 ## 📝 [Actual plans with lightweight profiling](./lightweight-profiling-v3-create.sql)
 
-Creates and starts the `plans_proc` session, which keeps the actual execution plans (`query_post_execution_plan_profile`) of one procedure in a ring buffer. Run the first `SELECT OBJECT_ID('<MY PROCEDURE>')` in the right database, then replace `<DB NAME>` and the hard-coded `object_id` (1234) with the result. SQL Server 2017 CU14+ or 2019+.
+Creates and starts the `plans_proc` session, which keeps the actual execution plans (`query_post_execution_plan_profile`) of one procedure in a ring buffer. Run the first `SELECT OBJECT_ID('<MY PROCEDURE>')` in the right database, then replace `<OBJECT ID>` with the result and `<DB NAME>` with the database name: the session is not created until `<OBJECT ID>` is replaced. The database filter uses the global `sqlserver.database_name` field, since the event's own `database_name` field is left empty. SQL Server 2017 CU14+ or 2019+.
 
 ## 📝 [Follow a session_id](./follow-a-session_id.sql)
 
-Creates the `trace_session_id` session (ring buffer) with the statements, batches and actual plans of one session. Replace `<session_id>`. The script then starts, stops and drops the session: run each part separately, and read the ring buffer before dropping it. The plan event needs SQL Server 2017 CU14+ or 2019+.
+Creates the `trace_session_id` session (ring buffer) with the statements, batches and actual plans of one session. Replace `<session_id>`. The script then starts the session; the stop and drop statements are commented out, to run once the ring buffer is read. The plan event needs SQL Server 2017 CU14+ or 2019+.
 
 ## 📝 [Waits of a session: create](./waits-on-a-session-create.sql)
 
-Creates the `Waits_of_Particular_Session` session with statement start and completion, `wait_info` and `wait_info_external` for one session, written to `D:\traces\`. Edit the `session_id` (68) and the path. The script starts, stops and drops the session in sequence: run each part separately.
+Creates the `Waits_of_Particular_Session` session with statement start and completion, `wait_info` and `wait_info_external` for one session, written to `D:\traces\`. Edit the `session_id` (68) and the path. The script then starts the session; the stop and drop statements are commented out, to run once the files are read.
 
 ## 📝 [Waits of a session: read](./waits-on-a-session-read.sql)
 
@@ -96,7 +96,7 @@ Creates and starts the `recompilations` session on `sql_statement_recompile`, le
 
 ## 📝 [Statement recompilations: create](./tracking_statement_recompilations-create.sql)
 
-Creates the `tracking_statement_recompilations` session (ring buffer) on `sql_statement_recompile`, without `OPTION (RECOMPILE)`. The script starts the session and stops it on the last line: run the start statement alone, since a stopped session loses its ring buffer.
+Creates the `tracking_statement_recompilations` session (ring buffer) on `sql_statement_recompile`, without `OPTION (RECOMPILE)`. The script creates and starts the session; the stop statement is commented out, to run once the ring buffer is read, since a stopped session loses it.
 
 ## 📝 [Statement recompilations: read](./tracking_statement_recompilations-read.sql)
 
@@ -108,7 +108,7 @@ Creates the `procedure_removal_statistics` session (ring buffer) on `query_cache
 
 ## 📝 [Procedure cache removals: read](./procedure_cache_removal_statistics-read.sql)
 
-Reads the ring buffer of the running `procedure_removal_statistics` session and returns the object id and name, the object type and the `execution_statistics` XML of each removed plan. Unfinished: `OBJECT_NAME` resolves in the current database only, and some columns (cause, statement) come from the recompilation reader it was copied from.
+Reads the ring buffer of the running `procedure_removal_statistics` session and returns, for each removed plan, the `sql_handle`, the object id, database and name, the object type, the `execution_statistics` XML and the time the plan was cached. The event has no database id: it is taken from the procedure text still in cache (`sys.dm_exec_sql_text`), and the database and object stay empty when that text left the cache too.
 
 ## 📝 [Implicit conversions](./implicit-conversion-create.sql)
 
@@ -120,7 +120,7 @@ Creates and starts the `spills_to_tempdb` session on `exchange_spill`, `hash_spi
 
 ## 📝 [Query memory grants](./query_memory_grants-create.sql)
 
-Creates the `query_memory` session on `query_memory_grant_usage`, to `query memory*.xel`. Add a filter on `granted_memory_kb`, `used_memory_kb` or `usage_percent` before using it on a busy server. The script starts the session and stops it on the last line: run the start statement alone to keep it collecting.
+Creates the `query_memory` session on `query_memory_grant_usage`, to `query memory*.xel`. Add a filter on `granted_memory_kb`, `used_memory_kb` or `usage_percent` before using it on a busy server. The script creates and starts the session; the stop statement is commented out, to run once you are done collecting.
 
 ## 📝 [Auto stats](./auto-stats-create.sql)
 
@@ -132,7 +132,7 @@ Creates the `lock_escalations` session on `lock_escalation` with application, da
 
 ## 📝 [Lock escalation: read](./lock-escalation-read.sql)
 
-Empty file: the reader for the `lock_escalations` session is not written yet.
+Reads all the rollover files of the `lock_escalations` session, running or stopped, and returns the last `@last` (100) escalations: local time, database, object, hobt, resource type, lock mode, escalation cause, number of locks escalated, session, application and statement. SQL Server 2017+ (`timestamp_utc` column).
 
 ## 📝 [Logins and logouts from the connection pool](./login-logout-from-connection-pool-create.sql)
 

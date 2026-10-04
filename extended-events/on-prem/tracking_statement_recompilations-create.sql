@@ -21,5 +21,7 @@ GO
 
 -- start the session
 ALTER EVENT SESSION [tracking_statement_recompilations] ON SERVER STATE=START;
--- stop the sesison
+-- stop the session, once you are done collecting (a stopped session loses its ring buffer: read it first)
+/*
 ALTER EVENT SESSION [tracking_statement_recompilations] ON SERVER STATE=STOP;
+*/

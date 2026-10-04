@@ -33,5 +33,7 @@ GO
 
 -- start the session
 ALTER EVENT SESSION [performances] ON SERVER STATE=START;
--- stop the session
+-- stop the session, once you are done collecting
+/*
 ALTER EVENT SESSION [performances] ON SERVER STATE=STOP;
+*/

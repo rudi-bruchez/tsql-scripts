@@ -13,6 +13,10 @@ AS BEGIN
 		WHERE s.name = 'errors'
 		AND t.target_name = N'event_file');
 
+	-- read all the rollover files of the session, not only the current one:
+	-- errors_0_133....xel becomes errors_0*.xel
+	SET @file = LEFT(@file, LEN(@file) - CHARINDEX(N'_', REVERSE(@file))) + N'*.xel';
+
 	;WITH xe AS (
 		SELECT
 			[XMLData],
@@ -32,7 +36,7 @@ AS BEGIN
 	)
 	SELECT *
 	FROM xe
-	WHERE [Timestamp] > DATEADD(hour, -1, CURRENT_TIMESTAMP)
+	WHERE [Timestamp] > DATEADD(hour, -1, GETUTCDATE()) -- the event timestamp is in UTC
 	AND ErrorNumber NOT IN (17830)
 	ORDER BY [Timestamp] DESC;
 

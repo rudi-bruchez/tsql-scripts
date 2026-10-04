@@ -16,6 +16,10 @@ DECLARE @file nvarchar(max) = (SELECT (CONVERT(xml, target_data)).value('(/Event
     WHERE s.name = 'timeouts'
     AND t.target_name = N'event_file');
 
+-- read all the rollover files of the session, not only the current one:
+-- timeouts_0_133....xel becomes timeouts_0*.xel
+SET @file = LEFT(@file, LEN(@file) - CHARINDEX(N'_', REVERSE(@file))) + N'*.xel';
+
 ;WITH xe AS (
     SELECT
         [Event],

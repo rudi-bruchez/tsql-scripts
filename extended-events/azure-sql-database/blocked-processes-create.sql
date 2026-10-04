@@ -17,5 +17,8 @@ GO
 -- start the session
 ALTER EVENT SESSION [blocked_processes] ON DATABASE STATE=START;
 
--- stop the sesison
+-- stop the session, once you are done collecting
+-- (a stopped session loses its ring buffer: read it first)
+/*
 ALTER EVENT SESSION [blocked_processes] ON DATABASE STATE=STOP;
+*/

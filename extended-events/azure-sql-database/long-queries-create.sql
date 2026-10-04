@@ -27,7 +27,9 @@ ALTER EVENT SESSION [long_queries] ON DATABASE
 STATE = START;
 GO
 
--- stop the session
+-- stop the session, once you are done collecting
+-- (a stopped session loses its ring buffer: read it first)
+/*
 ALTER EVENT SESSION [long_queries] ON DATABASE
 STATE = STOP;
-GO
+*/
