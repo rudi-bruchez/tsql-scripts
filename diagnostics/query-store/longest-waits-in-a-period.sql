@@ -4,7 +4,7 @@
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 
-DECLARE @when DATETIMEOFFSET(0) = '2022-10-04 10:00';
+DECLARE @when DATETIME2(0) = '2022-10-04 10:00'; -- local time of the server
 
 SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
@@ -20,6 +20,6 @@ JOIN sys.query_store_wait_stats qsws ON qsp.plan_id = qsws.plan_id
 JOIN sys.query_store_runtime_stats_interval qsrsi ON 
 	qsws.runtime_stats_interval_id = qsrsi.runtime_stats_interval_id
 WHERE qsq.is_internal_query = 0 
-AND @when BETWEEN qsrsi.start_time AND qsrsi.end_time
+AND TODATETIMEOFFSET(@when, DATEPART(TZOFFSET, SYSDATETIMEOFFSET())) BETWEEN qsrsi.start_time AND qsrsi.end_time
 ORDER BY qsws.total_query_wait_time_ms DESC
 OPTION (RECOMPILE, MAXDOP 1);

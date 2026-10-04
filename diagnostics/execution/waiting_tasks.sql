@@ -21,15 +21,14 @@ SELECT
    ,r.command
    ,t.text
 FROM sys.dm_os_waiting_tasks wt
-JOIN sys.dm_exec_sessions s 	ON wt.session_id = s.session_id
-    JOIN sys.dm_exec_requests r ON r.session_id = s.session_id
+LEFT JOIN sys.dm_exec_sessions s 	ON wt.session_id = s.session_id
+LEFT JOIN sys.dm_exec_requests r ON r.session_id = s.session_id
 OUTER APPLY sys.dm_exec_sql_text(r.sql_handle) t
-WHERE s.is_user_process = 1
-AND (
+WHERE (
     (s.session_id <> @@SPID AND s.is_user_process = 1)
-    OR s.session_id IS NULL -- THREADPOOL
+    OR wt.wait_type = N'THREADPOOL' -- tasks waiting for a worker have no session yet
     )
-AND s.status NOT IN (N'spleeping')
+AND (s.status NOT IN (N'sleeping') OR s.status IS NULL)
 AND wt.wait_type NOT IN (
 	'XE_LIVE_TARGET_TVF',
 	'BROKER_TASK_STOP',

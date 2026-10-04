@@ -14,7 +14,7 @@ Lists running user requests with the full batch and the current statement text, 
 
 ## 📝 [Running requests with their live plan](./running-plans-using-ligthweight-profile.sql)
 
-Lists running user requests with their cached plan and their in-flight plan with live statistics, from `sys.dm_exec_query_statistics_xml`. It first enables trace flag 7412 globally (`DBCC TRACEON (7412, -1)`) to turn on lightweight profiling, which is only needed on SQL Server 2016 SP1 to 2017: remove that line on 2019 and later, where it is on by default.
+Lists running user requests with their cached plan and their in-flight plan with live statistics, from `sys.dm_exec_query_statistics_xml`. It first enables trace flag 7412 globally (`DBCC TRACEON (7412, -1)`) to turn on lightweight profiling, which is only needed on SQL Server 2016 SP1 to 2017: remove that line on 2019 and later, where it is on by default. This changes the instance: the flag stays on for every session until `DBCC TRACEOFF (7412, -1)` or the next restart. Requests that are running on CPU (no current wait) are listed too.
 
 ## 📝 [sp_WhoIsActive examples](./sp_whoisactive.sql)
 
@@ -30,7 +30,7 @@ Lists the currently running requests with the database, the name of the calling 
 
 ## 📝 [Waiting tasks](./waiting_tasks.sql)
 
-Lists user sessions that currently have a task in `sys.dm_os_waiting_tasks`, with the wait type, wait duration, blocking session, command and query text. Benign background waits (Service Broker, Extended Events, `WAITFOR`, `SLEEP_TASK`...) are filtered out.
+Lists user sessions that currently have a task in `sys.dm_os_waiting_tasks`, with the wait type, wait duration, blocking session, command and query text, plus the tasks waiting for a worker thread (`THREADPOOL`), which have no session yet. Benign background waits (Service Broker, Extended Events, `WAITFOR`, `SLEEP_TASK`...) are filtered out.
 
 ## 📝 [Active transactions](./active-transactions.sql)
 

@@ -25,7 +25,7 @@ WITH stats AS (
     FROM sys.query_store_plan qsp
     JOIN sys.query_store_runtime_stats rs ON qsp.plan_id = rs.plan_id
     JOIN sys.query_store_runtime_stats_interval rsi ON rs.runtime_stats_interval_id = rsi.runtime_stats_interval_id
-    WHERE rsi.end_time BETWEEN DATEADD(week, -1, CURRENT_TIMESTAMP) AND CURRENT_TIMESTAMP
+    WHERE rsi.end_time > DATEADD(week, -1, SYSDATETIMEOFFSET())
     GROUP BY qsp.query_id
 )
 SELECT
@@ -38,7 +38,7 @@ SELECT
     s.max_duration_ms,
     s.min_duration_ms,
     CONCAT('EXEC ', QUOTENAME(DB_NAME()), '.sys.sp_query_store_set_hints @query_id=', qsq.query_id,
-        ', @value= N''', @hint_to_add, ''';') as [ddl]
+        ', @value= N''', REPLACE(@hint_to_add, '''', ''''''), ''';') as [ddl]
 FROM sys.query_store_query qsq
 JOIN sys.query_store_query_text qst ON qsq.query_text_id = qst.query_text_id
 JOIN stats s ON s.query_id = qsq.query_id

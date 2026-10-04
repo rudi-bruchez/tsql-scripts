@@ -19,7 +19,7 @@ SELECT
 	CAST(AVG(ws.avg_query_wait_time_ms) as DECIMAL(10, 2)) as avg_query_wait_time_ms,
 	--MIN(ws.min_query_wait_time_ms) as min_query_wait_time_ms,
 	MAX(ws.max_query_wait_time_ms) as max_query_wait_time_ms,
-	CAST(STDEV(ws.stdev_query_wait_time_ms) as DECIMAL(10, 2)) as stdev_query_wait_time_ms
+	CAST(MAX(ws.stdev_query_wait_time_ms) as DECIMAL(10, 2)) as max_stdev_query_wait_time_ms -- per plan, stdevs of different plans cannot be combined without execution counts
 FROM sys.query_store_wait_stats ws
 JOIN sys.query_store_runtime_stats_interval si ON ws.runtime_stats_interval_id = si.runtime_stats_interval_id
 WHERE ws.wait_category IN (6, 14)

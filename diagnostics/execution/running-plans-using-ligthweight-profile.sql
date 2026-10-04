@@ -16,7 +16,9 @@ SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 GO
 
+-- enables the trace flag for the whole instance, until restart or TRACEOFF
 DBCC TRACEON (7412, -1)
+-- to disable it when you are done: DBCC TRACEOFF (7412, -1)
 
 SELECT r.session_id, s.login_name, s.host_name, r.start_time, r.status, r.command, t.text,
 	DB_NAME(r.database_id) as db, r.wait_type, r.wait_time, r.last_wait_type,
@@ -31,8 +33,8 @@ OUTER APPLY sys.dm_exec_query_statistics_xml(s.session_id) qx
 WHERE s.is_user_process = 1
 AND r.command NOT IN ('VDI_CLIENT_WORKER', 'PARALLEL REDO TASK', 'UNKNOWN TOKEN', 'PARALLEL REDO HELP TASK', 
 	'BRKR TASK', 'DB STARTUP', 'TASK MANAGER', 'HADR_AR_MGR_NOTIFICATION_WORKER') -- removing uninteresting processes
-AND t.text NOT IN ('sp_server_diagnostics')
-AND r.wait_type NOT IN ('BROKER_RECEIVE_WAITFOR')
+AND (t.text NOT IN ('sp_server_diagnostics') OR t.text IS NULL)
+AND (r.wait_type NOT IN ('BROKER_RECEIVE_WAITFOR') OR r.wait_type IS NULL)
 AND r.session_id <> @@SPID
 OPTION (RECOMPILE, MAXDOP 1);
 

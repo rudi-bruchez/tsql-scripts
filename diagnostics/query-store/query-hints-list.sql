@@ -20,7 +20,6 @@ SELECT
     CONCAT('EXEC ', QUOTENAME(DB_NAME()), '.sys.sp_query_store_clear_hints @query_id=', qsq.query_id, ';') as [remove_ddl]
 FROM sys.query_store_query qsq
 JOIN sys.query_store_query_text qst ON qsq.query_text_id = qst.query_text_id
-JOIN sys.query_store_plan qsp ON qsp.query_id = qsq.query_id
 JOIN sys.query_store_query_hints qh ON qsq.query_id = qh.query_id
 ORDER BY qsq.query_id
 OPTION (RECOMPILE, MAXDOP 1);

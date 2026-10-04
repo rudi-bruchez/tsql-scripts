@@ -9,7 +9,7 @@ SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 SELECT 
-	CAST(SYSDATETIME() as DATETIME2(3)) as [now]],
+	CAST(SYSDATETIME() as DATETIME2(3)) as [now],
 	r.session_id as [session],
 	CAST(r.start_time AS DATETIME2(0)) AS [start],
 	r.status,
@@ -19,8 +19,8 @@ SELECT
 	LTRIM(CASE 
 		WHEN r.statement_start_offset > 0 AND r.statement_end_offset > 0 THEN 
 			SUBSTRING(t.text, 
-				r.statement_start_offset / 2, 
-				(r.statement_end_offset - r.statement_start_offset) / 2) 
+				r.statement_start_offset / 2 + 1, 
+				(r.statement_end_offset - r.statement_start_offset) / 2 + 1) 
 		ELSE t.text END) as text_offset,
 	OBJECT_NAME(t.objectid, r.database_id) as [proc],
 	DB_NAME(r.database_id) as db,

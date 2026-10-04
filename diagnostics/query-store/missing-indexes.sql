@@ -27,7 +27,7 @@ qs AS (
     JOIN sys.query_store_runtime_stats_interval qsrsi on qrs.runtime_stats_interval_id=qsrsi.runtime_stats_interval_id
     WHERE
         qsp.query_plan like N'%<MissingIndexes>%'
-        and qsrsi.start_time >= DATEADD(week, -1, SYSDATETIME())
+        and qsrsi.start_time >= DATEADD(week, -1, SYSDATETIMEOFFSET())
     GROUP BY qsq.query_id, qsq.query_hash
 ), 
 missingIndexes AS (

@@ -35,15 +35,15 @@ Lists the 50 queries with the highest average duration over the last day, with t
 
 ## 📝 [Longest queries in a period](./longest-queries-in-a-period.sql)
 
-Lists the runtime statistics of the statistics interval containing `@when`, sorted by maximum duration. Only queries that belong to a module (procedure, function, trigger) are returned. Set `@when` before running, with its UTC offset, otherwise it is read as UTC.
+Lists the runtime statistics of the statistics interval containing `@when`, sorted by maximum duration. Only queries that belong to a module (procedure, function, trigger) are returned. Set `@when` before running, in the local time of the server. It is converted with the current UTC offset of the server, so a time on the other side of a daylight saving change is one hour off.
 
 ## 📝 [Longest waits in a period](./longest-waits-in-a-period.sql)
 
-Lists the wait statistics (`sys.query_store_wait_stats`) of the statistics interval containing `@when`, per query plan and wait category, sorted by total wait time, with the calling module and the plan. Set `@when` before running, with its UTC offset, otherwise it is read as UTC.
+Lists the wait statistics (`sys.query_store_wait_stats`) of the statistics interval containing `@when`, per query plan and wait category, sorted by total wait time, with the calling module and the plan. Set `@when` before running, in the local time of the server. It is converted with the current UTC offset of the server, so a time on the other side of a daylight saving change is one hour off.
 
 ## 📝 [I/O wait stats](./wait-stats-io.sql)
 
-Shows, per statistics interval, the average and maximum query wait times for data reads (`Buffer IO`) and transaction log writes (`Tran Log IO`), from the Query Store wait statistics. Replace `<database>` in the `USE` statement before running.
+Shows, per statistics interval, the average and maximum query wait times for data reads (`Buffer IO`) and transaction log writes (`Tran Log IO`), from the Query Store wait statistics, and the largest standard deviation of a single plan (the Query Store keeps no execution count with the wait statistics, so the deviations of several plans cannot be combined into one). Replace `<database>` in the `USE` statement before running.
 
 ## 📝 [Aborted queries](./aborted-queries.sql)
 

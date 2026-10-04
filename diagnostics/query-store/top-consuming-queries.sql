@@ -19,7 +19,7 @@ FROM sys.query_store_runtime_stats rs
     JOIN sys.query_store_plan p ON p.plan_id = rs.plan_id
     JOIN sys.query_store_query q ON q.query_id = p.query_id
     JOIN sys.query_store_query_text qt ON q.query_text_id = qt.query_text_id
-WHERE rs.last_execution_time > DATEADD(day, -1, CURRENT_TIMESTAMP)
+WHERE rs.last_execution_time > DATEADD(day, -1, SYSDATETIMEOFFSET())
 GROUP BY p.query_id, qt.query_sql_text, q.object_id
 HAVING COUNT(distinct p.plan_id) >= 1
 ORDER BY avg_duration DESC
