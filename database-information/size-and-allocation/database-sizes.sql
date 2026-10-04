@@ -1,5 +1,6 @@
 -----------------------------------------------------------------
 -- SQL Server database and log size
+-- sqlq: name=database-data-log-sizes params=systemdbs
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 

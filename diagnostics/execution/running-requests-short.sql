@@ -1,5 +1,6 @@
 -----------------------------------------------------------------
 -- lists running requests with query text, short version
+-- sqlq: name=requests-running-now
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------

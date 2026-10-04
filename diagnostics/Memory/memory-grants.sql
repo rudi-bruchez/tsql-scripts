@@ -1,5 +1,6 @@
 -----------------------------------------------------------------
 -- Look at live memory grants
+-- sqlq: name=memory-grants-live
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------

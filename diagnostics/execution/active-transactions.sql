@@ -1,5 +1,6 @@
 ----------------------------------------------------------
 -- list all opened transactions with detail
+-- sqlq: name=transactions-open
 -- rudi@babaluga.com, go ahead license
 ----------------------------------------------------------
 

@@ -1,5 +1,6 @@
 -----------------------------------------------------------------
 -- Use dm_exec_trigger_stats to get execution stats on triggers
+-- sqlq: name=trigger-execution-stats params=ForCurrentDbOnly
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
 

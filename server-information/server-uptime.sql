@@ -1,4 +1,5 @@
 -- sql server uptime
+-- sqlq: name=instance-uptime
 SELECT 
 	sqlserver_start_time,
 	DATEDIFF(day, sqlserver_start_time, CURRENT_TIMESTAMP) as uptime_days, 

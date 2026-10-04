@@ -1,5 +1,6 @@
 -------------------------------------------------------------------------------
 -- get detailed SQL Server version information
+-- sqlq: name=instance-version-detail
 -- rudi@babaluga.com, go ahead license
 -------------------------------------------------------------------------------
 

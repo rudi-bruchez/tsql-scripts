@@ -1,5 +1,6 @@
 -----------------------------------------------------------------
 -- Query Store Metadata
+-- sqlq: name=query-store-state
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------

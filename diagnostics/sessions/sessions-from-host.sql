@@ -1,5 +1,6 @@
 -----------------------------------------------------------------
 -- Get sessions from a specific host
+-- sqlq: name=sessions-by-host params=hostname
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
