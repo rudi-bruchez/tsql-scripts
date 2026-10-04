@@ -29,14 +29,14 @@ They return DDL or commands as text in a result column and execute nothing. The 
 - `database-information/tables-information/search-columns-by-name.sql`
 - `index-management/missing-indexes.sql`, `unused-indexes.sql` (CREATE and DROP INDEX statements)
 - `diagnostics/query-store/query-hints-set.sql`
-- `security/list-and-generate-roles.sql`, `list-and-generate-role-members.sql`, `list-logins.sql` (the latter can output password hashes)
+- `security/list-and-generate-roles.sql`, `list-and-generate-role-members.sql`, `list-logins.sql` (the latter outputs password hashes, or a `<password>` placeholder with `@withPassword = 0`)
 
 ### Scripts that change the server or a database when run
 
 - `database-administration/clear-proc-in-cache.sql`: evicts one plan from the cache.
 - `database-administration/remove-useless-schemas.sql`: drops the legacy `db_*` schemas.
 - `database-administration/configuration/set-instance-dop.sql`: changes MAXDOP and cost threshold when `@execute = 1`.
-- `database-administration/ddl-generation/drop-database-users.sql`: executes `DROP USER`, despite its folder.
+- `database-administration/ddl-generation/drop-database-users.sql`: lists the `DROP USER` statements by default and executes them with `@execute = 1`.
 - `database-administration/ddl-generation/remove-files.sql`: empties (`DBCC SHRINKFILE ... EMPTYFILE`) and removes database files unless `@debug = 1`.
 - `database-administration/maintenance/clean-old-backups.sql` (deletes backup files with `xp_delete_file`), `rebuild-heaps-forwarded-records.sql` (rebuilds by default, `@Execute = 1`).
 - `database-administration/sqlagent/add-notification-to-all-jobs.sql`, `disable-all-jobs.sql`, `increase-agent-history.sql`.
@@ -55,9 +55,9 @@ They return DDL or commands as text in a result column and execute nothing. The 
 
 ### Scripts that install objects
 
-- Extended Events sessions: every `*-create.sql` under `extended-events/` and `hadr/` creates a session, and most start it. Some create, start, stop and drop the session in one run (`follow-a-session_id.sql`, `waits-on-a-session-create.sql`), and some stop it on their last line: read the end of the script before running it whole.
+- Extended Events sessions: every `*-create.sql` under `extended-events/` and `hadr/` creates a session, and most start it. The lines that stop or drop a session are commented out, with a note on when to run them.
 - Procedures in `stored-procedures/`: most are installed in `master` as `sp_` procedures so they can be called from any database; `RebuildHeaps.sql` and `ConvertLobToMax.sql` install in the current database and modify data when called with `@Execute = 1`.
-- Functions in `functions/` (in `master`, except `fn_tableSize` in the current database), `hadr/functions/`, and `math/` (schema `math` in the current database; several files are marked IN PROGRESS and do not compile).
+- Functions in `functions/` (in `master`, except `fn_tableSize` in the current database), `hadr/functions/`, and `math/` (schema `math` in the current database, installed in the order given by its README).
 - `security/block-by-logon-trigger.sql`: a server logon trigger that refuses every connection not in its allow list, sysadmins and SQL Agent included. Edit the allowed hosts first; recovery goes through the DAC.
 - `diagnostics/locking/vBlockingGraph.sql` (a view), `monitoring/monitor-long-transactions.sql`, `monitoring/queries-for-dashboards/transaction-logs.sql`, `database-administration/alerts/` (Agent alerts), `cloud/aws/rds/create-alwayson-xevent.sql`.
 - `database-administration/dba-database/`: creates the `_dba` database, installs Ola Hallengren's MaintenanceSolution and the Agent jobs. Run the files in the order of their numeric prefix.
@@ -139,10 +139,11 @@ Paths are relative to the repository root. The README of each folder lists furth
 
 ## Known traps
 
-- Performance counter queries filter on the `SQLServer:` prefix. On a named instance the prefix is `MSSQL$<instance>:`, and these queries return nothing: `monitoring/prtg.sql`, `database-administration/migration/deprecated-features.sql`, `diagnostics/execution/active-transactions.sql`.
-- Query Store and Extended Events store UTC times. Scripts that compare them with `CURRENT_TIMESTAMP` or `GETDATE()` shift the time window by the server's UTC offset.
-- Scripts installed in `master` with an `sp_` name are found from any database; `stored-procedures/sp_databases.sql` collides with the system procedure `sys.sp_databases`.
-- `extended-events/on-prem/lock-escalation-read.sql` and `powershell/eventlog-sqlagent.ps1` are empty files.
+- Scripts are written for SSMS, which sets `QUOTED_IDENTIFIER ON`. `sqlcmd` leaves it OFF: run them with `sqlcmd -I`, or every script that uses XML methods (`.value()`, `.nodes()`, `.exist()`) fails with Msg 1934.
+- `object_name` in `sys.dm_os_performance_counters` is a blank-padded `nchar`, and its prefix is `SQLServer:` on a default instance but `MSSQL$<instance>:` on a named one. Filter with `RTRIM(object_name) LIKE N'%:Databases'`: an equality on `SQLServer:` misses named instances, and a `LIKE` without `RTRIM` or a trailing `%` matches no row at all.
+- Query Store and Extended Events store UTC times: compare them with `SYSDATETIMEOFFSET()` or `GETUTCDATE()`, never with `GETDATE()` or `CURRENT_TIMESTAMP`.
+- Extended Events readers must read every rollover file (`<session>*.xel`), not only the current one.
+- `stored-procedures/sp_databases.sql` installs `master.dbo.sp_databases`, which can never be called: `EXEC sp_databases`, even fully qualified, runs the system procedure `sys.sp_databases`.
 
 ## Keeping this file true
 
