@@ -16,12 +16,13 @@ foreach ($sql in $SQLInstances) {
 
 Write-Host "The following SQL Instances were detected on the server $env:Computername $SQLInstances" -ForegroundColor Yellow
 
-If ($SQLInstances -ne "MSSQLSERVER") {
-    Write-Host "$($env:Computername)\$($SQLInstances)"
-    $serverName =  "$($env:Computername)\$($SQLInstances)"
-} Else {
-    Write-Host "Standard SQL Instance was found, proceeding with the script."
-    $ServerName = $env:Computername
-}
+foreach ($sql in $SQLInstances) {
+    If ($sql -ne "MSSQLSERVER") {
+        $serverName =  "$($env:Computername)\$($sql)"
+    } Else {
+        Write-Host "Standard SQL Instance was found, proceeding with the script."
+        $ServerName = $env:Computername
+    }
 
-Write-Host $serverName
+    Write-Host $serverName
+}

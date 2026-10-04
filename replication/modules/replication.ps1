@@ -1,7 +1,7 @@
 Function Get-ReplDistributor {
     param(
         [string]$SqlInstance,
-        [SqlCredential]$Cred
+        [PSCredential]$Cred
     )
     $sql = "SELECT name FROM sys.databases WHERE is_distributor = 1;"
     $result = Invoke-DbaQuery -SqlInstance $SqlInstance -SqlCredential $Cred -Query $sql
@@ -11,7 +11,7 @@ Function Get-ReplDistributor {
 Function Get-ReplSubscribers {
     param(
         [string]$SqlInstance,
-        [SqlCredential]$Cred,
+        [PSCredential]$Cred,
         [string]$Distributor
     )
     $sql = "SELECT srv.srvname, sub.dest_db, sub.subscription_type, sub.status
@@ -24,7 +24,7 @@ Function Get-ReplSubscribers {
 Function Remove-ReplSubscription {
     param(
         [string]$SqlInstance,
-        [SqlCredential]$Cred,
+        [PSCredential]$Cred,
         [string]$Publisher,
         [string]$PublisherDb,
         [string]$Publication,
@@ -38,8 +38,9 @@ Function Remove-ReplSubscription {
     $result = Invoke-DbaQuery -SqlInstance $SqlInstance -SqlCredential $Cred -Query $sql
 
     # remove subscription on publisher
-    $sql = "EXEC $($SubscriberDb).sp_dropsubscription @publication = N'$($Publication)', 
+    # sp_dropsubscription runs at the publisher, in the publication database
+    $sql = "EXEC $($PublisherDb).dbo.sp_dropsubscription @publication = N'$($Publication)', 
         @subscriber = N'$($Subscriber)', @destination_db = N'$($SubscriberDb)', @article = N'all'"
-    $result = Invoke-DbaQuery -SqlInstance $SqlInstance -SqlCredential $Cred -Query $sql
+    $result = Invoke-DbaQuery -SqlInstance $Publisher -SqlCredential $Cred -Query $sql
 
 }

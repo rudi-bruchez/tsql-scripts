@@ -34,7 +34,7 @@ if (!(Test-Path -path $path)) { Mkdir $path }
 $db = $srv.Databases["master"]
 
 foreach ($sp in $db.StoredProcedures) {
-	if ($sp.IsSystemObject && $sp.Schema -eq "sys") {
+	if ($sp.IsSystemObject -and $sp.Schema -eq "sys") {
 		$so.FileName = "$($path)$($sp.Name).sql"
 		$so.FileName
 		$sp.Script($so)
