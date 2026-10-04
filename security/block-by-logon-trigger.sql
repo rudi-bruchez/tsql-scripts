@@ -38,8 +38,12 @@ BEGIN
 END
 GO
 
-ENABLE TRIGGER [LogonBLOCKTrigger] ON ALL SERVER
--- DISABLE TRIGGER [LogonBLOCKTrigger] ON ALL SERVER
+-- a logon trigger is enabled when it is created: disable it at once, so that
+-- running this file does not lock everybody out. Edit the allowed host names
+-- and IP addresses above, check them, then enable it. If you get locked out,
+-- connect through the DAC (ADMIN:server) and disable it.
+DISABLE TRIGGER [LogonBLOCKTrigger] ON ALL SERVER
+-- ENABLE TRIGGER [LogonBLOCKTrigger] ON ALL SERVER
 GO
 
 

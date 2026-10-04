@@ -7,7 +7,7 @@
 USE master;
 GO
 
-CREATE OR ALTER PROCEDURE dbo.sp_databases
+CREATE OR ALTER PROCEDURE dbo.sp_databaseSizes
     @namePattern SYSNAME
 AS BEGIN
 

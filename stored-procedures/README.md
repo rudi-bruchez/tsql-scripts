@@ -43,9 +43,9 @@ Lists active running transactions.
 
 Lists the backups taken in the last week from the msdb history, with type, duration, size, compressed size, backup file and recovery model, and whether this replica is the preferred backup replica of an availability group. Created in master. Databases with no backup in the last week do not appear.
 
-## 📝 [sp_databases](./sp_databases.sql)
+## 📝 [sp_databaseSizes](./sp_databaseSizes.sql)
 
-Returns databases with size information.
+Data size, log size, log used and percentage, recovery model and log reuse wait of each user database whose name contains `@namePattern`, from the performance counters. Created in master. Example: `EXEC sp_databaseSizes @namePattern = N'sales';`. It was called `sp_databases`, a name the system procedure `sys.sp_databases` always takes over: if an older version is installed, drop `master.dbo.sp_databases`.
 
 ## 📝 [sp_df](./sp_df.sql)
 

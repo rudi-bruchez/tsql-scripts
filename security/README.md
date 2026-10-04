@@ -4,7 +4,7 @@ Scripts for auditing and managing SQL Server security: logins, users, roles, and
 
 ## 📝 [block-by-logon-trigger](./block-by-logon-trigger.sql)
 
-Creates a logon trigger that acts as a Database Application Firewall (DAF). Blocks connections from unauthorized hosts or IP addresses and logs blocked attempts. Useful when other security solutions are not available.
+Creates a logon trigger that acts as a Database Application Firewall (DAF). Blocks connections from unauthorized hosts or IP addresses and logs blocked attempts. Useful when other security solutions are not available. The trigger is created disabled: edit the allowed host names and IP addresses, then run the commented `ENABLE TRIGGER`. If it locks you out, connect through the DAC and disable it.
 
 ## 📝 [list-and-generate-role-members](./list-and-generate-role-members.sql)
 

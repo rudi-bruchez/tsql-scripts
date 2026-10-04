@@ -20,7 +20,7 @@ Each script directory has a README.md with links and descriptions of all scripts
 - **database-administration/** - Maintenance, DDL generation, SQL Agent, alerts, dba-database setup
 - **database-information/** - Size, allocation, compression, statistics, indexes, in-memory, ledger
 - **index-management/** - Missing indexes, usage stats, fragmentation analysis
-- **stored-procedures/** - Reusable procedures (sp_activeTransactions, sp_databases, sp_logspace, etc.)
+- **stored-procedures/** - Reusable procedures (sp_activeTransactions, sp_databaseSizes, sp_logspace, etc.)
 - **functions/** - Reusable T-SQL functions (fn_isJobRunning, fn_tableSize, fn_maintenanceOperation)
 
 ### Platform-Specific

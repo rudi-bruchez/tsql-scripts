@@ -58,7 +58,7 @@ They return DDL or commands as text in a result column and execute nothing. The 
 - Extended Events sessions: every `*-create.sql` under `extended-events/` and `hadr/` creates a session, and most start it. The lines that stop or drop a session are commented out, with a note on when to run them.
 - Procedures in `stored-procedures/`: most are installed in `master` as `sp_` procedures so they can be called from any database; `RebuildHeaps.sql` and `ConvertLobToMax.sql` install in the current database and modify data when called with `@Execute = 1`.
 - Functions in `functions/` (in `master`, except `fn_tableSize` in the current database), `hadr/functions/`, and `math/` (schema `math` in the current database, installed in the order given by its README).
-- `security/block-by-logon-trigger.sql`: a server logon trigger that refuses every connection not in its allow list, sysadmins and SQL Agent included. Edit the allowed hosts first; recovery goes through the DAC.
+- `security/block-by-logon-trigger.sql`: a server logon trigger that refuses every connection not in its allow list, sysadmins and SQL Agent included. It is created disabled; enable it only after editing the allowed hosts. Recovery goes through the DAC.
 - `diagnostics/locking/vBlockingGraph.sql` (a view), `monitoring/monitor-long-transactions.sql`, `monitoring/queries-for-dashboards/transaction-logs.sql`, `database-administration/alerts/` (Agent alerts), `cloud/aws/rds/create-alwayson-xevent.sql`.
 - `database-administration/dba-database/`: creates the `_dba` database, installs Ola Hallengren's MaintenanceSolution and the Agent jobs. Run the files in the order of their numeric prefix.
 
@@ -143,7 +143,7 @@ Paths are relative to the repository root. The README of each folder lists furth
 - `object_name` in `sys.dm_os_performance_counters` is a blank-padded `nchar`, and its prefix is `SQLServer:` on a default instance but `MSSQL$<instance>:` on a named one. Filter with `RTRIM(object_name) LIKE N'%:Databases'`: an equality on `SQLServer:` misses named instances, and a `LIKE` without `RTRIM` or a trailing `%` matches no row at all.
 - Query Store and Extended Events store UTC times: compare them with `SYSDATETIMEOFFSET()` or `GETUTCDATE()`, never with `GETDATE()` or `CURRENT_TIMESTAMP`.
 - Extended Events readers must read every rollover file (`<session>*.xel`), not only the current one.
-- `stored-procedures/sp_databases.sql` installs `master.dbo.sp_databases`, which can never be called: `EXEC sp_databases`, even fully qualified, runs the system procedure `sys.sp_databases`.
+- A procedure installed in `master` must not reuse the name of a system procedure: `EXEC sp_databases`, even fully qualified, runs `sys.sp_databases` and never a `master.dbo.sp_databases` (the reason `sp_databaseSizes` was renamed).
 
 ## Keeping this file true
 
