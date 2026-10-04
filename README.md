@@ -9,6 +9,8 @@ Transact-SQL scripts and gists for administration and [diagnostics](./diagnostic
 
 You'll also find some [management stored procedures](./stored-procedures/)
 
+Coding agents and language models: [AGENTS.md](./AGENTS.md) maps common needs to scripts and lists the scripts that change something on the server.
+
 Feel free to use them and copy them. If you have significant improvements to propose, please fork the repo and propose a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests).
 
 ## Folders

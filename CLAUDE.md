@@ -9,6 +9,8 @@ A collection of T-SQL scripts and PowerShell utilities for SQL Server administra
 **Author**: Rudi Bruchez (rudi@babaluga.com)
 **License**: MIT ("go ahead license")
 
+Which script answers which need, and which scripts change the server: see @AGENTS.md.
+
 ## Project Structure
 
 Each script directory has a README.md with links and descriptions of all scripts (a folder holding only a config example is documented by its parent README).
