@@ -79,9 +79,9 @@ AS BEGIN
 		AND dt.database_transaction_type = 1
 	JOIN sys.databases db ON dt.database_id = db.database_id
 	LEFT JOIN sys.dm_os_performance_counters logSize ON db.name = logSize.instance_name
-		AND logSize.object_name LIKE '%:Databases' AND logSize.counter_name = 'Log File(s) Size (KB)'
+		AND RTRIM(logSize.object_name) LIKE '%:Databases' AND logSize.counter_name = 'Log File(s) Size (KB)'
 	LEFT JOIN sys.dm_os_performance_counters logPercent ON db.name = logPercent.instance_name
-		AND logPercent.object_name LIKE '%:Databases' AND logPercent.counter_name = 'Percent Log Used'
+		AND RTRIM(logPercent.object_name) LIKE '%:Databases' AND logPercent.counter_name = 'Percent Log Used'
 	JOIN sys.dm_tran_session_transactions st ON t.transaction_id = st.transaction_id
 	LEFT JOIN sys.dm_exec_sessions se ON st.session_id = se.session_id
 	LEFT JOIN sys.dm_exec_connections cn ON cn.session_id = se.session_id

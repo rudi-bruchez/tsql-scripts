@@ -1,5 +1,7 @@
 -----------------------------------------------------------------
--- IN PROGRESS
+-- math.fnRegularizedGammaQ
+-- needs the math.fnLogGamma, math.ContinuedFraction and
+-- math.fnRegularizedGammaP functions
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
@@ -16,7 +18,7 @@ GO
 CREATE OR ALTER FUNCTION math.fnRegularizedGammaQ(
 	@a float,
     @x float,
-    @epsilon bigint,
+    @epsilon float,
     @maxIterations int)
 RETURNS FLOAT
 WITH RETURNS NULL ON NULL INPUT
@@ -32,42 +34,11 @@ AS BEGIN
         --use regularizedGammaP because it should converge faster in this case.
         SET @ret = 1.0 - math.fnRegularizedGammaP(@a, @x, @epsilon, @maxIterations);
     end else begin
-        -- create continued fraction
-        ContinuedFraction cf = new ContinuedFraction() {
+        -- evaluate the continued fraction
+        SET @ret = 1.0 / math.ContinuedFraction(@a, @x, @epsilon, @maxIterations);
+        SET @ret = EXP(-@x + (@a * LOG(@x)) - math.fnLogGamma(@a)) * @ret;
+    end
 
-		    public double evaluate(double x, double epsilon, int maxIterations) {
-        // Delegate to GeneralizedContinuedFraction
-
-        // Get the first coefficient
-        final double b0 = getB(0, x);
-
-        // Generate coefficients from (a1,b1)
-        final Supplier<Coefficient> gen = new Supplier<Coefficient>() {
-            /** Coefficient index. */
-            private int n;
-            @Override
-            public Coefficient get() {
-                n++;
-                final double a = getA(n, x);
-                final double b = getB(n, x);
-                return Coefficient.of(a, b);
-            }
-        };
-
-            @Override
-            protected double getA(int n, double x) {
-                return ((2.0 * n) + 1.0) - a + x;
-            }
-
-            @Override
-            protected double getB(int n, double x) {
-                return n * (a - n);
-            }
-        };
-
-        ret = 1.0 / cf.evaluate(x, epsilon, maxIterations);
-        ret = FastMath.exp(-x + (a * FastMath.log(x)) - logGamma(a)) * ret;
-    }
-
-    return ret;
+    return @ret;
 END
+GO

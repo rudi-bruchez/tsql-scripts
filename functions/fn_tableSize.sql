@@ -13,14 +13,13 @@ AS
 	RETURN (
 		SELECT 
 			OBJECT_NAME(i.object_id) AS [table],
-			p.rows,
-			FORMAT(p.rows, 'N') AS RowsFormatted
+			SUM(p.rows) AS rows,
+			FORMAT(SUM(p.rows), 'N0') AS RowsFormatted
 		FROM sys.indexes i
 		JOIN sys.partitions AS p 
 			ON p.object_id = i.object_id 
 			AND p.index_id = i.index_id
-		JOIN sys.allocation_units AS a 
-			ON a.container_id = p.partition_id
-		WHERE i.object_id = OBJECT_ID('dbo.GatewayOrdersSlim')
+		WHERE i.object_id = OBJECT_ID(@tableName)
 		AND i.index_id <= 1
+		GROUP BY i.object_id
 	)

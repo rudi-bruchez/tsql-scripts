@@ -47,8 +47,8 @@ AS BEGIN
 		CAST(COALESCE(s.last_user_seek, s.last_user_scan) as datetime2(0)) as last_usage,
 		CONCAT(
 			'CREATE INDEX nix$', lower(object_name(object_id)), '$', 
-			REPLACE(REPLACE(REPLACE(COALESCE(equality_columns, inequality_columns), ']', ''), '[', ''), ', ', '_'),
-			' ON ', statement,' (' + COALESCE(equality_columns, inequality_columns), 
+			REPLACE(REPLACE(REPLACE(COALESCE(d.equality_columns + ', ' + d.inequality_columns, d.equality_columns, d.inequality_columns), ']', ''), '[', ''), ', ', '_'),
+			' ON ', statement,' (' + COALESCE(d.equality_columns + ', ' + d.inequality_columns, d.equality_columns, d.inequality_columns), 
 			COALESCE(') INCLUDE (' + included_columns, ''),
 			') WITH (ONLINE = ', IIF(@EntrepriseFeatures = 1, 'ON', 'OFF')  , ', DATA_COMPRESSION = ROW, SORT_IN_TEMPDB = ON)'
 		)as [DDL]

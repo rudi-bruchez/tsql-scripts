@@ -29,7 +29,7 @@ AS BEGIN
 	DATEDIFF(SECOND, s.last_commit_time, p.last_commit_time) AS [Sync_Lag_Sec],
 	s.redo_queue_mb,
 	s.redo_rate_mb as [avg_redo_rate_mb/s],
-	CAST(s.redo_queue_mb / s.redo_rate_mb / 60 as numeric(10, 2)) as theoretical_min_to_go,
+	CAST(s.redo_queue_mb / NULLIF(s.redo_rate_mb, 0) / 60 as numeric(10, 2)) as theoretical_min_to_go,
 	s.secondary_lag_seconds
 	FROM AG_Stats p
 	JOIN AG_Stats s ON s.[DBName] = p.[DBName] 

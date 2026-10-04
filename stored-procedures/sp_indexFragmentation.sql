@@ -46,9 +46,9 @@ AS BEGIN
         ,ps.record_count as [rows]
     FROM sys.indexes i
     JOIN sys.tables t ON i.object_id = t.object_id
-    CROSS APPLY sys.dm_db_index_physical_stats(DB_ID(), i.object_id, i.index_id, NULL, N'LIMITED') ps
+    CROSS APPLY sys.dm_db_index_physical_stats(DB_ID(), i.object_id, i.index_id, NULL, N'SAMPLED') ps
     WHERE t.name LIKE @table_name
-    AND i.name LIKE @index_name
+    AND COALESCE(i.name, '') LIKE @index_name -- heaps have no name
     AND t.schema_id = SCHEMA_ID(@schema_name)
     AND ps.page_count > 0
     ORDER BY [table], i.index_id

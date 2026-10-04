@@ -12,6 +12,9 @@ CREATE OR ALTER FUNCTION math.fnErfInv(@x float)
 RETURNS FLOAT
 WITH RETURNS NULL ON NULL INPUT
 AS BEGIN
+	-- erfinv(-1) and erfinv(1) are infinite, and erfinv is not defined outside [-1, 1]
+	IF ABS(@x) >= 1.0 RETURN NULL;
+
 	-- from https://commons.apache.org/proper/commons-math/javadocs/api-3.6.1/src-html/org/apache/commons/math3/special/Erf.html
     -- beware that the logarithm argument must be
     -- commputed as (1.0 - x) * (1.0 + x),
@@ -66,37 +69,26 @@ AS BEGIN
         set @p =     0.005370914553590063617 + @p * @w;
         set @p =       1.0052589676941592334 + @p * @w;
         set @p =       3.0838856104922207635 + @p * @w;
+    end else begin
+        set @w = sqrt(@w) - 5.0;
+        set @p =  -2.7109920616438573243e-11;
+        set @p =  -2.5556418169965252055e-10 + @p * @w;
+        set @p =  1.5076572693500548083e-09 + @p * @w;
+        set @p =  -3.7894654401267369937e-09 + @p * @w;
+        set @p =  7.6157012080783393804e-09 + @p * @w;
+        set @p =  -1.4960026627149240478e-08 + @p * @w;
+        set @p =  2.9147953450901080826e-08 + @p * @w;
+        set @p =  -6.7711997758452339498e-08 + @p * @w;
+        set @p =  2.2900482228026654717e-07 + @p * @w;
+        set @p =  -9.9298272942317002539e-07 + @p * @w;
+        set @p =  4.5260625972231537039e-06 + @p * @w;
+        set @p =  -1.9681778105531670567e-05 + @p * @w;
+        set @p =  7.5995277030017761139e-05 + @p * @w;
+        set @p =  -0.00021503011930044477347 + @p * @w;
+        set @p =  -0.00013871931833623122026 + @p * @w;
+        set @p =  1.0103004648645343977 + @p * @w;
+        set @p =  4.8499064014085844221 + @p * @w;
     end
-	--end else if (!Double.isInfinite(w)) {
-    --    w = FastMath.sqrt(w) - 5.0;
-    --    p =  -2.7109920616438573243e-11;
-    --    p =  -2.5556418169965252055e-10 + p * w;
-    --    p =   1.5076572693500548083e-09 + p * w;
-    --    p =  -3.7894654401267369937e-09 + p * w;
-    --    p =   7.6157012080783393804e-09 + p * w;
-    --    p =  -1.4960026627149240478e-08 + p * w;
-    --    p =   2.9147953450901080826e-08 + p * w;
-    --    p =  -6.7711997758452339498e-08 + p * w;
-    --    p =   2.2900482228026654717e-07 + p * w;
-    --    p =  -9.9298272942317002539e-07 + p * w;
-    --    p =   4.5260625972231537039e-06 + p * w;
-    --    p =  -1.9681778105531670567e-05 + p * w;
-    --    p =   7.5995277030017761139e-05 + p * w;
-    --    p =  -0.00021503011930044477347 + p * w;
-    --    p =  -0.00013871931833623122026 + p * w;
-    --    p =       1.0103004648645343977 + p * w;
-    --    p =       4.8499064014085844221 + p * w;
-    --} else {
-    --    // this branch does not appears in the original code, it
-    --    // was added because the previous branch does not handle
-    --    // x = +/-1 correctly. In this case, w is positive infinity
-    --    // and as the first coefficient (-2.71e-11) is negative.
-    --    // Once the first multiplication is done, p becomes negative
-    --    // infinity and remains so throughout the polynomial evaluation.
-    --    // So the branch above incorrectly returns negative infinity
-    --    // instead of the correct positive infinity.
-    --    p = Double.POSITIVE_INFINITY;
-    --}
 
     return @p * @x;
 END

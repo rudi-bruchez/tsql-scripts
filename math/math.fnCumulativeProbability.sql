@@ -16,12 +16,12 @@ AS BEGIN
 	--DECLARE @dev float = @x - mean; -- default mean = 0
 	if (ABS(@x) > 40 /* * standardDeviation (default 1) */)
 	begin
-        return @x;
+        return IIF(@x < 0, 0, 1);
     end
 
 	if (ABS(@x) >= 6.5 /* * standardDeviation (default 1) */)
 	begin
-        return 1;
+        return IIF(@x < 0, 0, 1);
     end else if ABS(@x) >= 6.0 begin
 		return round(0.5 * (1 - math.fnErfHorner(-@x / sqrt(2.0))), 10);
 	end

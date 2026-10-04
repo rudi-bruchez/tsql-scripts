@@ -1,5 +1,6 @@
 -----------------------------------------------------------------
--- math.fnErfc -- IN PROGRESS
+-- math.fnErfc
+-- needs the math.fnRegularizedGammaQ function
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
@@ -18,3 +19,4 @@ AS BEGIN
 	DECLARE @ret float = math.fnRegularizedGammaQ(0.5, @x * @x, 1.0e-15, 10000);
 	RETURN IIF(@x < 0, 2 - @ret, @ret);
 END
+GO

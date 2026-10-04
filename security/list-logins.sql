@@ -22,7 +22,9 @@ SELECT
 		CASE p.type
 			WHEN 'U' THEN ' FROM WINDOWS WITH '
 			WHEN 'S' THEN IIF(@withPassword = 1, CONCAT(' WITH PASSWORD = ', 
-                CONVERT(varchar(max), l.password_hash, 1), ' HASHED,'), '') 
+                CONVERT(varchar(max), l.password_hash, 1), ' HASHED,'),
+                -- a SQL login needs a password: without the hash, a placeholder to replace before running
+                ' WITH PASSWORD = N''<password>'',') 
                 + CONCAT(' CHECK_EXPIRATION = OFF, CHECK_POLICY = OFF, SID = ', 
                 CONVERT(varchar(max), p.sid, 1), ', ')
 		END, 'DEFAULT_DATABASE = ', QUOTENAME(p.default_database_name), 

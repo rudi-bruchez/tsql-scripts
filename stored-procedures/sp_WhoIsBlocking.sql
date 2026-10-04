@@ -9,7 +9,7 @@
 USE master;
 GO
 
-CREATE PROCEDURE dbo.sp_WhoIsBlocking
+CREATE OR ALTER PROCEDURE dbo.sp_WhoIsBlocking
 AS
 BEGIN
 	SET NOCOUNT ON;

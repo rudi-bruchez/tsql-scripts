@@ -61,7 +61,7 @@ Analyzes missing and existing indexes for all tables or a specific table in the 
 
 ## 📝 [sp_indexFragmentation](./sp_indexFragmentation.sql)
 
-Fragmentation of the indexes of a table or of all tables in the current database, from `sys.dm_db_index_physical_stats` in `LIMITED` mode: page count, fragmentation percentage, fragments, depth. Created in master and marked as a system object, so it runs in the context of the database it is called from. Parameters are `LIKE` patterns: `@schema_name` (default `dbo`), `@table_name` and `@index_name` (default `%`). Heaps are not listed, and the columns that `LIMITED` mode does not compute (page density, record count, forwarded and ghost records) come back NULL.
+Fragmentation of the indexes and heaps of a table or of all tables in the current database, from `sys.dm_db_index_physical_stats` in `SAMPLED` mode: page count, page density, fragmentation percentage, fragments, depth, record count, forwarded and ghost records. On more than 10,000 pages `SAMPLED` reads 1% of the leaf pages, so the figures are estimates; below that it reads every page. Created in master and marked as a system object, so it runs in the context of the database it is called from. `@schema_name` is an exact schema name (default `dbo`); `@table_name` and `@index_name` are `LIKE` patterns (default `%`). Heaps have no index name: they are listed only when `@index_name` matches an empty string, as `%` does.
 
 ```sql
 EXEC sp_indexFragmentation @table_name = N'Orders';

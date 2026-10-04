@@ -7,7 +7,7 @@
 USE master;
 GO
 
-CREATE PROCEDURE dbo.sp_WhoIsRunning
+CREATE OR ALTER PROCEDURE dbo.sp_WhoIsRunning
 AS
 BEGIN
 	SET NOCOUNT ON;

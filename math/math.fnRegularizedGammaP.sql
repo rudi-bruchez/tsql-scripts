@@ -1,5 +1,6 @@
 -----------------------------------------------------------------
--- math.fnRegularizedGammaP -- IN PROGRESS
+-- math.fnRegularizedGammaP
+-- needs the math.fnLogGamma and math.fnRegularizedGammaQ functions
 --
 -- rudi@babaluga.com, go ahead license
 -----------------------------------------------------------------
@@ -16,7 +17,7 @@ GO
 CREATE OR ALTER FUNCTION math.fnRegularizedGammaP(
 	@a float,
     @x float,
-    @epsilon bigint,
+    @epsilon float,
     @maxIterations int)
 RETURNS FLOAT
 WITH RETURNS NULL ON NULL INPUT
@@ -32,7 +33,7 @@ AS BEGIN
         SET @ret = 0.0;
 	else if (@x >= @a + 1) begin
         -- use regularizedGammaQ because it should converge faster in this case.
-        SET @ret = 1.0 - math.fnRegularizedGammaQ(@a, @x, epsilon, maxIterations);
+        SET @ret = 1.0 - math.fnRegularizedGammaQ(@a, @x, @epsilon, @maxIterations);
     end else begin
         -- calculate series
         DECLARE @n float = 0.0; -- current element index
@@ -54,7 +55,7 @@ AS BEGIN
         --else if (Double.isInfinite(sum)) {
         --    ret = 1.0;
         else 
-            SET @ret = EXP(-@x + (@a * LOG(@x)) - dbo.fnLogGamma(@a)) * @sum;
+            SET @ret = EXP(-@x + (@a * LOG(@x)) - math.fnLogGamma(@a)) * @sum;
     end
 
     return @ret;

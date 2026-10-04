@@ -23,7 +23,8 @@ AS BEGIN
 		SELECT CAST(MIN(r.start_time) as DATETIME2(3))
 		FROM sys.dm_exec_requests r
 		JOIN sys.dm_exec_sessions s ON r.session_id = s.session_id
-		WHERE command IN (N'UPDATE STATISTICS', N'DBCC')
-		AND s.database_id = DB_ID(@database_name)
+		WHERE (r.command = N'UPDATE STATISTICS' OR r.command LIKE N'DBCC%')
+		-- DB_NAME, not DB_ID: DBCC CHECKDB runs in an internal snapshot with its own database_id
+		AND DB_NAME(s.database_id) = @database_name
 	)
 END;

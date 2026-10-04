@@ -8,7 +8,7 @@ Creates a logon trigger that acts as a Database Application Firewall (DAF). Bloc
 
 ## 📝 [list-and-generate-role-members](./list-and-generate-role-members.sql)
 
-Lists database role members and generates DDL (ALTER ROLE ADD MEMBER) statements to recreate the role memberships. Useful for documenting or migrating database security.
+Lists the members of user-defined database roles in the current database and generates the `ALTER ROLE ... ADD MEMBER` statements to recreate the memberships. Fixed roles (`db_owner`, `db_datareader`, `db_datawriter` and the others) are excluded: their members are not listed. Useful for documenting or migrating database security.
 
 ## 📝 [list-and-generate-roles](./list-and-generate-roles.sql)
 
@@ -16,7 +16,7 @@ Lists custom database roles and generates CREATE ROLE DDL statements. Useful for
 
 ## 📝 [list-logins](./list-logins.sql)
 
-Lists all logins in the SQL Server instance with details including SID, creation date, and default database. Generates CREATE LOGIN DDL statements with password hashes for migration purposes.
+Lists the enabled Windows and SQL logins of the instance (the `sa` login and the `NT SERVICE` and `NT AUTHORITY\SYSTEM` logins excepted) with SID, creation date, default database and language, and generates the CREATE LOGIN statements to recreate them on another instance, with the same SID. With `@withPassword = 1` (default), SQL logins keep their password through its hash (`PASSWORD = 0x... HASHED`). With `@withPassword = 0`, they get a `<password>` placeholder instead, to replace before running the statement.
 
 ## 📝 [orphaned-users](./orphaned-users.sql)
 
@@ -28,7 +28,7 @@ Comprehensive security audit that lists logins with server role memberships, dat
 
 ## 📝 [permissions-audit-by-object](./permissions-audit-by-object.sql)
 
-Audits SELECT permissions on a specific database object. Shows all users and role members who have SELECT access to a table, including permissions inherited through roles like db_datareader.
+Audits SELECT permissions on a table of the `dbo` schema, named in `@table_name`. Shows the users and role members who have SELECT access to it, through a GRANT on the table, a GRANT on the `dbo` schema, or membership of `db_datareader`. Limits: the `dbo` schema is hard-coded, only GRANT SELECT is considered (other permissions are ignored, and a DENY is not reported, so a user listed here may in fact be denied), and roles nested in roles are not followed.
 
 ## 📝 [sysadmin-logins](./sysadmin-logins.sql)
 
