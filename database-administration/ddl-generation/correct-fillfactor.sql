@@ -12,8 +12,8 @@ SELECT OBJECT_SCHEMA_NAME(object_id) + '.' + OBJECT_NAME(object_id) AS [table]
 	  ,type_desc AS [type]
 	  ,fill_factor
 	  ,is_padded as [padindex]
-	  ,CONCAT('ALTER INDEX [' , name , '] ON [' , OBJECT_SCHEMA_NAME(object_id) , '].[' 
-        , OBJECT_NAME(object_id) , '] REBUILD WITH (FILLFACTOR = 100'
+	  ,CONCAT('ALTER INDEX ' , QUOTENAME(name) , ' ON ' , QUOTENAME(OBJECT_SCHEMA_NAME(object_id)) , '.'
+        , QUOTENAME(OBJECT_NAME(object_id)) , ' REBUILD WITH (FILLFACTOR = 100'
 		, IIF(@online = 1, ', ONLINE = ON', '')
 		, IIF(@sort_in_tempdb = 1, ', SORT_IN_TEMPDB = ON', ''), ')'
 		) AS [DDL]
