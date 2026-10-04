@@ -12,4 +12,4 @@ Enumerates In-Memory OLTP tables and table types with durability settings, usefu
 
 ## 📝 [natively-compiled-procs](./natively-compiled-procs.sql)
 
-Identifies natively-compiled stored procedures which are compiled to machine code for In-Memory OLTP performance optimization.
+Identifies natively compiled modules (stored procedures and, since SQL Server 2016, scalar functions and triggers), which are compiled to machine code for In-Memory OLTP.

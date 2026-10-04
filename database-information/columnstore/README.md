@@ -4,4 +4,4 @@ Columnstore index diagnostics and monitoring.
 
 ## 📝 [wait-stats-azure](./wait-stats-azure.sql)
 
-Monitors wait statistics specific to columnstore index operations (BPSORT, HTMEMO, COLUMNSTORE_BUILD_THROTTLE, etc.) useful for Azure SQL Database performance tuning.
+Shows batch mode and columnstore wait statistics (BPSORT, HTMEMO, HTBUILD, COLUMNSTORE_BUILD_THROTTLE, etc.) for the current Azure SQL Database, from `sys.dm_db_wait_stats`. Azure SQL Database only.

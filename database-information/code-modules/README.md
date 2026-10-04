@@ -16,4 +16,4 @@ Template script to search for specific text patterns within stored procedures, f
 
 ## 📝 [triggers-in-database](./triggers-in-database.sql)
 
-Comprehensive report of all triggers including type (INSTEAD OF/AFTER), target object, execution context, schema binding, state (enabled/disabled), and execution statistics.
+Report of the T-SQL DML triggers on tables and views of the current database, including type (INSTEAD OF/AFTER), target object, execution context, schema binding, state (enabled/disabled), and execution statistics from `sys.dm_exec_trigger_stats`. Database-level DDL triggers and CLR triggers are not listed.

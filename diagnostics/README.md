@@ -1,5 +1,9 @@
 # Diagnostics queries
 
+## 📝 [Permissions for diagnostics](./permissions-for-diagnostics.sql)
+
+Creates an `audit` server role with the permissions needed to run diagnostics without being sysadmin (`VIEW SERVER STATE`, `VIEW ANY DEFINITION`, `ALTER TRACE`, `ALTER ANY EVENT SESSION`) and adds a login to it. Replace `<login>` before running.
+
 ## 📝 [Execution](./execution/)
 
 Running and active queries, also currently waiting queries.

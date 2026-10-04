@@ -16,7 +16,7 @@ Lists objects in the buffer pool for the current database with page counts and m
 
 ## 📝 [optimize-for-adhoc-workloads](./optimize-for-adhoc-workloads.sql)
 
-Analyzes plan cache to show single-use plans vs. multi-use plans for evaluating the optimize for adhoc workloads setting.
+Compares the total size of non-procedure plans in the plan cache with the size of the single-use ones, to evaluate the optimize for ad hoc workloads setting.
 
 ## 📝 [pages-in-buffer](./pages-in-buffer.sql)
 

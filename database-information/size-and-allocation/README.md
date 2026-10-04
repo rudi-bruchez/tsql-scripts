@@ -8,11 +8,11 @@ Analyzes index allocation including partition information, pages, rows, compress
 
 ## 📝 [check-allocation](./check-allocation.sql)
 
-Uses DBCC IND and dm_db_database_page_allocations to examine page-level allocation details (IAM, GAM, SGAM pages).
+Demo script tied to a sample database (PachaDataFormation): uses DBCC IND, DBCC PAGE and sys.dm_db_database_page_allocations to examine the pages allocated to a table and its IAM page. Object names and page numbers are hardcoded.
 
 ## 📝 [database-files](./database-files.sql)
 
-Lists all database files (data and log) with physical names, total size, available space, filegroups, growth settings, and file state.
+Lists the files (data and log) of the current database with physical names, total size, available space, filegroups and file state.
 
 ## 📝 [database-files-details](./database-files-details.sql)
 
@@ -20,7 +20,7 @@ Extended file information including LSN values, file properties, max size, growt
 
 ## 📝 [database-sizes](./database-sizes.sql)
 
-Reports database and transaction log size using performance counters, including percent log used, recovery model, log reuse wait reason, and log backup history.
+Reports data and transaction log size of every user database using performance counters, including percent log used, recovery model and log reuse wait reason, with a total row. Set `@systemdbs = 1` to include msdb and tempdb.
 
 ## 📝 [filegroup-analysis](./filegroup-analysis.sql)
 
@@ -28,7 +28,7 @@ Three-part query showing filegroup structure, objects/indexes allocated to fileg
 
 ## 📝 [number-of-files-per-database](./number-of-files-per-database.sql)
 
-Summarizes file count per database by type (ROWS/LOG) with total size calculations across all databases.
+Summarizes file count and total size per database and file type (ROWS/LOG) for all databases of the instance.
 
 ## 📝 [objects-in-filegroups](./objects-in-filegroups.sql)
 

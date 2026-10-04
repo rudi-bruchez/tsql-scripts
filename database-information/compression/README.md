@@ -4,7 +4,7 @@ Data compression analysis, estimation, and implementation scripts.
 
 ## 📝 [compressed-objects](./compressed-objects.sql)
 
-Lists all objects (tables/indexes) that currently have data compression enabled (ROW or PAGE) with details on index types and partitions.
+Lists all objects (tables/indexes) whose partitions have a compression setting other than NONE (ROW, PAGE, COLUMNSTORE or COLUMNSTORE_ARCHIVE) with details on index types and partitions.
 
 ## 📝 [estimate-compression-benefits-on-a-database](./estimate-compression-benefits-on-a-database.sql)
 
@@ -20,4 +20,4 @@ Estimates compression savings for a specific table's indexes by comparing curren
 
 ## 📝 [uncompressed-objects](./uncompressed-objects.sql)
 
-Identifies uncompressed objects and generates ALTER statements to apply ROW compression with configurable options for online operations and MAXDOP.
+Identifies indexes and heaps that are not PAGE compressed and generates the ALTER ... REBUILD statements to compress them, with configurable compression type (ROW by default), table name filter, ONLINE, RESUMABLE, MAXDOP and an optional `BACKUP LOG` to NUL between commands. The statements are only generated, not executed.

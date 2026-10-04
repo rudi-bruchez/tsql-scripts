@@ -10,6 +10,14 @@ Cleans up backup files older than a configurable number of days from a specified
 
 Lists all backup history for the current database showing backup type, duration, sizes (compressed and uncompressed), LSNs, and recovery model.
 
+## 📝 [job-steps-database](./job-steps-database.sql)
+
+Lists the T-SQL steps of every SQL Agent job with the database each step runs in (`database_name` of `msdb.dbo.sysjobsteps`). Steps of other subsystems (CmdExec, PowerShell, SSIS) are not shown.
+
+## 📝 [last-page-on-file](./last-page-on-file.sql)
+
+Walks back from the end of the primary data file (`file_id = 1`) page by page with `sys.dm_db_page_info` until it finds an allocated page, and returns the object and index that own it and how many pages from the end it sits. Useful before a shrink, to know which object blocks the file truncation. Requires SQL Server 2019 or later; only the primary data file is examined.
+
 ## 📝 [rebuild-heaps-forwarded-records](./rebuild-heaps-forwarded-records.sql)
 
 Rebuilds heaps of the current database having more than a given number of forwarded records, worst first. List-only mode, time limit, lock timeout per table, and a final error if any rebuild failed so a SQL Agent job reports it. For fragmentation/free-space based heap rebuilds across databases, see [015.rebuild_heaps](../dba-database/015.rebuild_heaps.sql). Also available as a stored procedure working on several databases: [RebuildHeaps](../../stored-procedures/RebuildHeaps.sql).

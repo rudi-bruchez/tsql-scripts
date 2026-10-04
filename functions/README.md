@@ -12,4 +12,4 @@ Returns the start time of the oldest maintenance operation (UPDATE STATISTICS, D
 
 ## 📝 [fn_tableSize](./fn_tableSize.sql)
 
-Returns the row count for a specified table using partition metadata. Provides a fast way to get table size without scanning the actual table.
+Inline table-valued function meant to return the row count of a table from partition metadata, without scanning the table. As written, it ignores its `@tableName` parameter and always reads `dbo.GatewayOrdersSlim`: edit the code before use.

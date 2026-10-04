@@ -24,7 +24,7 @@ Identifies tables generating the most row versions, sorted by version store usag
 
 ## 📝 [version-store-by-transaction](./version-store-by-transaction.sql)
 
-Details version store usage by transaction with session information and allocation/deallocation metrics.
+Lists the transactions using row versioning with their state, elapsed time and program, and the tempdb user and internal object allocations of their sessions.
 
 ## 📝 [version-store-content-by-index](./version-store-content-by-index.sql)
 
@@ -36,4 +36,4 @@ Provides detailed row version records from version store including transaction a
 
 ## 📝 [version-store-usage](./version-store-usage.sql)
 
-Shows tempdb space usage breakdown including user objects, internal objects, and version store space.
+Shows tempdb space usage breakdown including user objects, internal objects, and version store space. Also lists the transactions maintaining the version store, with their session details and SQL text.

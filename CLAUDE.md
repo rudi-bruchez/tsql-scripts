@@ -11,7 +11,7 @@ A collection of T-SQL scripts and PowerShell utilities for SQL Server administra
 
 ## Project Structure
 
-Each directory has a README.md with links and descriptions of all scripts.
+Each script directory has a README.md with links and descriptions of all scripts (a folder holding only a config example is documented by its parent README).
 
 ### Core Directories
 - **diagnostics/** - Execution stats, IO, locking, memory, query-store, sessions, tempdb, wait-statistics

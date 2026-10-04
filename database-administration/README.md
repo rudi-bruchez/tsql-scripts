@@ -36,6 +36,10 @@ Scripts to generate DDL for database objects.
 
 Scripts for checking database maintenance and backups.
 
+### 📁 [migration](./migration/)
+
+Scripts to prepare a migration or an upgrade to a newer SQL Server version.
+
 ### 📁 [sqlagent](./sqlagent/)
 
 Scripts to manage SQL Server Agent.

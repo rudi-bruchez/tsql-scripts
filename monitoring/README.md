@@ -14,6 +14,10 @@ Shows the progress percentage of currently running backup operations. Simple que
 
 Stored procedure that monitors for long-running transactions and sends email alerts with detailed HTML reports. Reports include transaction details, session info, log usage, and isolation levels. Configure with database mail profile and operator.
 
+## 📝 [prtg](./prtg.sql)
+
+Returns a selection of performance counters (batch requests, page life expectancy, log usage and growths, blocked processes, memory grants pending, user errors, lock waits...) from `sys.dm_os_performance_counters`, named in the `\Object(instance)\Counter` format used by PRTG, with a `cumulative` flag for counters that must be turned into a rate. `master`, `model`, `msdb` and `_Total` are excluded (`tempdb` is kept). The object names are matched with the `SQLServer:` prefix, so it returns nothing useful on a named instance (`MSSQL$<name>:`) without editing; `TRIM` requires SQL Server 2017.
+
 ## 📝 [shrink-monitoring](./shrink-monitoring.sql)
 
 Monitors running database shrink operations showing start time, status, wait types, percent complete, and estimated completion time.

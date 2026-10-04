@@ -20,4 +20,4 @@ Lists the most executed stored procedures in the current database with execution
 
 ## 📝 [tracking-recompiles](./tracking-recompiles.sql)
 
-Identifies stored procedures that use constructs likely to trigger recompilations, such as SET ARITHABORT.
+Lists the modules of the current database whose code contains SET ARITHABORT, a construct likely to trigger recompilations, with their execution statistics when they are in the plan cache.

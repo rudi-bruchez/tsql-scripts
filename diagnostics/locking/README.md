@@ -4,7 +4,7 @@ Locking and blocking diagnostic queries.
 
 ## 📝 [analyze-blocked-sessions](./analyze-blocked-sessions.sql)
 
-Displays current blocking sessions with session IDs, wait types, and the tables involved in locks.
+Displays sessions currently waiting on a lock held by a head blocker, with wait type, statement text, and the locked table when the lock resource is an object.
 
 ## 📝 [get-deadlock-from-xevents](./get-deadlock-from-xevents.sql)
 
@@ -16,7 +16,7 @@ Detects active blocking and sends email alerts with HTML table showing blocked s
 
 ## 📝 [vBlockingGraph](./vBlockingGraph.sql)
 
-Creates a view that displays the blocking graph of all active sessions showing blocking chains and levels.
+Creates a view that displays the blocking chains of the user sessions involved in blocking, with their level in the chain and their last input buffer.
 
 ## 📝 [what-is-locked](./what-is-locked.sql)
 
