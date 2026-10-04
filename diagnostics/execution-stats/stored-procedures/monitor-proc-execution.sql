@@ -7,7 +7,7 @@
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
 DECLARE @proc TABLE (
-	ordre tinyint identity(1,1)  primary key,
+	ordre int identity(1,1)  primary key,
 	procName sysname not null);
 
 -- add the procedure names here	
@@ -16,18 +16,18 @@ VALUES
 	('PROC_1'),
 	('PROC_2')
 
--- or search in the text
-INSERT INTO @proc (procName)
-SELECT OBJECT_NAME(object_id)
-FROM sys.sql_modules
-WHERE definition LIKE '%%'
+-- or search in the text: uncomment and put the searched text between the %
+--INSERT INTO @proc (procName)
+--SELECT OBJECT_NAME(object_id)
+--FROM sys.sql_modules
+--WHERE definition LIKE '%%'
 
 SELECT 
 	p.name AS [SP Name], 
 	ps.total_elapsed_time/ps.execution_count/1000 AS avg_elapsed_time_ms,
 	ps.last_elapsed_time / 1000 as last_elapsed_time_ms, 
 	ps.execution_count as [exec], 
-	ISNULL(ps.execution_count/DATEDIFF(Minute, ps.cached_time, GETDATE()), 0) AS [Calls/Minute],
+	ps.execution_count/NULLIF(DATEDIFF(Minute, ps.cached_time, GETDATE()), 0) AS [Calls/Minute],
 	ps.last_execution_time as [last_exec], 
 	ps.total_worker_time/ps.execution_count/1000 AS avg_worker_time_ms, 
 	ps.last_worker_time/1000 AS last_worker_time_ms,

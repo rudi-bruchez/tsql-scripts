@@ -12,7 +12,7 @@ Retrieves deadlock information from the system_health extended events session wi
 
 ## 📝 [monitor-blocking](./monitor-blocking.sql)
 
-Detects active blocking and sends email alerts with HTML table showing blocked sessions and blocking details.
+Detects active blocking and sends email alerts with HTML table showing blocked sessions and blocking details. The locked table is named for object locks; for key, page and RID locks the lock resource description is shown instead.
 
 ## 📝 [vBlockingGraph](./vBlockingGraph.sql)
 

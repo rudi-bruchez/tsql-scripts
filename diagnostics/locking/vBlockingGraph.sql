@@ -42,7 +42,7 @@ blocking_graph AS (
 	SELECT session_id, blocking_session_id, 0 as level
 	FROM sessions s
 	WHERE s.session_id IN (SELECT session_id FROM blocking_blocked_sessions)
-	AND blocking_session_id IS NULL
+	AND NULLIF(blocking_session_id, 0) IS NULL -- 0 when the head blocker is running a request
 
 	UNION ALL
 

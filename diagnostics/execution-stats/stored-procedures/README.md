@@ -4,7 +4,7 @@ Scripts for analyzing stored procedure execution performance.
 
 ## 📝 [monitor-proc-execution](./monitor-proc-execution.sql)
 
-Monitors execution statistics for specific stored procedures including elapsed time, execution count, and resource usage.
+Monitors execution statistics for the stored procedures listed by name at the top of the script (a commented block can add them by searching their code instead), including elapsed time, execution count, and resource usage.
 
 ## 📝 [procedure-execution-analysis](./procedure-execution-analysis.sql)
 

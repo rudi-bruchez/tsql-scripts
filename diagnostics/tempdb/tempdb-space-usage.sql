@@ -7,6 +7,9 @@
 SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
+-- sys.dm_db_file_space_usage returns the files of the current database
+USE tempdb;
+
 SELECT
     SUM (user_object_reserved_page_count)*8 as user_obj_kb,
     SUM (internal_object_reserved_page_count)*8 as internal_obj_kb,

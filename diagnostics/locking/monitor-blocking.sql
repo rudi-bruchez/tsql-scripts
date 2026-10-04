@@ -31,10 +31,10 @@ WHERE ws.blocking_session_id > 0
 				'KILL ' + CAST(ses.session_id as varchar(20)) as [kill],
 				der.command,
 				CASE 
-				WHEN der.statement_start_offset > 0 AND der.statement_end_offset > 0 THEN 
+				WHEN der.statement_end_offset IS NOT NULL THEN 
 					SUBSTRING(txt.text, 
-						der.statement_start_offset / 2, 
-						(der.statement_end_offset - der.statement_start_offset) / 2) 
+						der.statement_start_offset / 2 + 1, 
+						(CASE der.statement_end_offset WHEN -1 THEN DATALENGTH(txt.text) ELSE der.statement_end_offset END - der.statement_start_offset) / 2 + 1) 
 				ELSE txt.text END as text_offset,
 				OBJECT_NAME(txt.objectid, der.database_id) as [proc],
 				der.database_id
@@ -64,8 +64,9 @@ WHERE ws.blocking_session_id > 0
 			, text_offset
 			, [proc]
 			, database_id
-			, CAST(SUBSTRING(resource_description, resource_description_start,
-			CHARINDEX(' ', resource_description, resource_description_start)-resource_description_start) AS INT) AS [object_id]
+			-- objid= only exists for object locks; key, page and RID locks only carry a hobt id
+			, CASE WHEN resource_description_start > 6 THEN TRY_CAST(SUBSTRING(resource_description, resource_description_start,
+			CHARINDEX(' ', resource_description + ' ', resource_description_start)-resource_description_start) AS INT) END AS [object_id]
 			FROM cte
 		)
 	SELECT @body = N'<style>
@@ -91,7 +92,7 @@ WHERE ws.blocking_session_id > 0
 	 		 , command AS td
 	 		 , text_offset AS td
 	 		 , [proc] AS td
-	 		 , OBJECT_NAME(object_id, database_id) AS td
+	 		 , COALESCE(OBJECT_NAME(object_id, database_id), resource_description) AS td
 		FROM cte2
 		FOR XML RAW('tr'), ELEMENTS
 		) AS NVARCHAR(MAX))

@@ -1,5 +1,8 @@
 -- https://docs.microsoft.com/fr-fr/archive/blogs/sqlserverfaq/troubleshooting-tempdb-growth-due-to-version-store-usage
 
+-- sys.dm_db_file_space_usage returns the files of the current database
+USE tempdb;
+
 SELECT 
     getdate() AS runtime, 
     SUM (user_object_reserved_page_count)*8 as usr_obj_kb,
@@ -42,6 +45,4 @@ select GETDATE() AS runtime,b.spid,c.*
 from sys.dm_tran_active_snapshot_database_transactions a
 join sys.sysprocesses b on a.session_id = b.spid
 cross apply sys.dm_exec_sql_text(sql_handle) c
-
---  You can use the T-SQL batch below to capture the above information from the DMVs in a loop:
 

@@ -6,16 +6,17 @@
 SET NOCOUNT ON;
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 
-SELECT db_name(spu.database_id) as database_name,
+SELECT db_name(ses.database_id) as database_name, -- session space usage is always in tempdb
        at.transaction_begin_time as begin_time,
        case 
          when at.transaction_state in (0,1) then 'init'
          when at.transaction_state = 2 then 'active'
          when at.transaction_state = 3 then 'ended'
          when at.transaction_state = 4 then 'committing'
-         when at.transaction_state = 6 then 'comitted'
+         when at.transaction_state = 5 then 'prepared'
+         when at.transaction_state = 6 then 'committed'
          when at.transaction_state = 7 then 'rolling back'
-         when at.transaction_state = 6 then 'rolled back'
+         when at.transaction_state = 8 then 'rolled back'
          else 'other'
        end as transaction_state,
        ast.elapsed_time_seconds as elapsed_seconds,

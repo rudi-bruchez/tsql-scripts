@@ -19,7 +19,7 @@ FROM sys.dm_os_memory_clerks
 UNION ALL
 SELECT
     'Buffer Pool',
-    CAST(cntr_value / 1024 AS VARCHAR(20)) + ' Mb'
+    CAST(cntr_value * 8 / 1024 AS VARCHAR(20)) + ' Mb'
 FROM sys.dm_os_performance_counters
 WHERE counter_name = 'Database pages' AND object_name LIKE '%Buffer Manager%'
 UNION ALL

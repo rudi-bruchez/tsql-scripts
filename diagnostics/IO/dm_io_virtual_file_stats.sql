@@ -26,7 +26,7 @@ SELECT
 	[vfs].[num_of_writes],
 	[vfs].[size_on_disk_bytes]/1024/1024 as [size_on_disk_MB],
 	--[mf].[physical_name],
-	RIGHT([mf].[physical_name], CHARINDEX(N'\',REVERSE([mf].[physical_name]))-1) as file_name
+	RIGHT([mf].[physical_name], PATINDEX(N'%[\/]%',REVERSE([mf].[physical_name]))-1) as file_name -- \ on Windows, / on Linux
 FROM [sys].[dm_io_virtual_file_stats](NULL,NULL) AS vfs
 JOIN [sys].[master_files] [mf] 
     ON [vfs].[database_id] = [mf].[database_id] 

@@ -43,7 +43,7 @@ SELECT
 	PageFaults,
 	WorkingSetDelta,
 	100 - [% SQL Process] - Idle as [% CPU other],
-	CAST((100 * KernelModeTime_ms) / (UserModeTime_ms + KernelModeTime_ms) as decimal(5, 2)) As [% Kernel]
+	CAST((100 * KernelModeTime_ms) / NULLIF(UserModeTime_ms + KernelModeTime_ms, 0) as decimal(5, 2)) As [% Kernel]
 FROM cte
 ORDER BY [time]
 OPTION (RECOMPILE, MAXDOP 1);

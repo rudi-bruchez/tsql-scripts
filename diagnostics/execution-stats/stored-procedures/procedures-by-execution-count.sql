@@ -19,7 +19,7 @@ SELECT
 	ps.min_elapsed_time / 1000 as min_execution_time_ms,
 	ps.max_elapsed_time / 1000 as max_execution_time_ms
 FROM sys.dm_exec_procedure_stats ps
-WHERE object_name(ps.object_id) NOT LIKE N'sp_%'
+WHERE object_name(ps.object_id) NOT LIKE N'sp[_]%'
 AND ps.database_id = DB_ID() -- current DB only
 ORDER BY avg_exec_per_hour DESC
 OPTION (RECOMPILE, MAXDOP 1);
