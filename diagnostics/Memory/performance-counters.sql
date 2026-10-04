@@ -19,7 +19,7 @@ UNION ALL
 SELECT CONCAT(TRIM([counter_name]), ' per NUMA') as counter_name, 
 	STRING_AGG(CONCAT('NUMA ', TRIM([instance_name]), ' : ', [cntr_value]), ',') as [Value]
 FROM sys.dm_os_performance_counters
-WHERE [object_name] LIKE '%SQLServer:Buffer Node%'
+WHERE [object_name] LIKE N'%:Buffer Node%'
 AND [counter_name] = 'Page life expectancy'
 GROUP BY [counter_name]
 UNION ALL 
