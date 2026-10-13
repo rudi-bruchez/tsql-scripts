@@ -10,6 +10,10 @@ Retrieves FlushCache checkpoint messages from SQL Server error log, indicating l
 
 Shows IO stall statistics per database and file with read/write latency and average bytes per operation.
 
+## 📝 [dm_io_virtual_file_stats-delta](./dm_io_virtual_file_stats-delta.sql)
+
+Measures IO latency, throughput and average IOs in flight per file and per drive over a sampling window (5 minutes by default), instead of the cumulative values since startup. Explains how to tell queueing from a slow device.
+
 ## 📝 [io-wait-statistics-for-monitoring](./io-wait-statistics-for-monitoring.sql)
 
 Queries specific IO wait types (PAGEIOLATCH_SH, WRITELOG, PAGEIOLATCH_EX) for monitoring and Prometheus integration.
