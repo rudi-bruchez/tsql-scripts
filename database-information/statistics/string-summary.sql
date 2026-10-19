@@ -2,9 +2,8 @@
 -- Decode the string summary (the trie behind "String Index = YES")
 -- of a statistics object, and estimate a LIKE pattern from it
 --
--- Requires the dedicated administrator connection (DAC):
---   sqlcmd -S admin:<server> or "admin:<server>" in SSMS (new query window).
--- sys.sysobjvalues is only readable over the DAC. Read-only.
+-- Reads the statistics blob from DBCC SHOW_STATISTICS ... WITH STATS_STREAM,
+-- captured with INSERT ... EXEC. Read-only.
 --
 -- The format is undocumented and was decoded on SQL Server 2025 CU7:
 -- https://www.pachadata.com/docs/articles/sqlserver/performances/statistiques-de-chaines/
@@ -25,23 +24,26 @@ DECLARE @b varbinary(max), @p int, @pos int, @w int, @collation sysname,
         @parent varbinary(8000), @path varbinary(8000), @sib bit,
         @string nvarchar(400), @sql nvarchar(max);
 
-SELECT TOP (1) @b = v.imageval,
+SELECT TOP (1) @stats = s.name,
        @w = CASE WHEN c.system_type_id IN (99, 231, 239) THEN 2 ELSE 1 END, -- ntext, nvarchar, nchar
        @collation = c.collation_name
-FROM sys.sysobjvalues AS v
-JOIN sys.stats AS s ON s.object_id = v.objid AND s.stats_id = v.subobjid
+FROM sys.stats AS s
 JOIN sys.stats_columns AS sc ON sc.object_id = s.object_id AND sc.stats_id = s.stats_id AND sc.stats_column_id = 1
 JOIN sys.columns AS c ON c.object_id = sc.object_id AND c.column_id = sc.column_id
-WHERE v.valclass = 60
-  AND v.objid = OBJECT_ID(@table)
+WHERE s.object_id = OBJECT_ID(@table)
   AND (s.name = @stats OR (@stats IS NULL AND c.name = @column))
 ORDER BY s.stats_id;
 
-IF @b IS NULL
+IF @w IS NULL
 BEGIN
-    RAISERROR('Statistics not found, or not connected through the DAC.', 16, 1);
+    RAISERROR('Statistics not found.', 16, 1);
     RETURN;
 END;
+
+DECLARE @stream TABLE (stats_stream varbinary(max), [rows] bigint, data_pages bigint);
+SET @sql = N'DBCC SHOW_STATISTICS (' + QUOTENAME(@table, '''') + N', ' + QUOTENAME(@stats) + N') WITH STATS_STREAM, NO_INFOMSGS;';
+INSERT @stream EXEC (@sql);
+SELECT @b = stats_stream FROM @stream;
 
 -- The summary starts at the last 0xFF01000000 marker followed by the 40/40 truncation lengths
 SET @pos = CHARINDEX(0xFF01000000, @b);
