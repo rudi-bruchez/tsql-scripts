@@ -76,7 +76,7 @@ SET @nodes    = CAST(SUBSTRING(@b, @pos, 1) AS int) + CAST(SUBSTRING(@b, @pos + 
 SET @pos += 4;
 
 -- Nodes in preorder, 5 bytes each: flags and count, label length, label offset (3 bytes).
--- Flags: 0x80 next sibling, 0x40 has children, 0x10 count on 2 more bytes, 0x20 on 4 more bytes,
+-- Flags: 0x80 next sibling, 0x40 has children, 0x10 count on 1 more byte, 0x20 on 4 more bytes,
 -- otherwise the low 4 bits are the count of sampled strings that end on this node.
 -- Strings are kept as bytes and converted once, at the end, in the collation of the column.
 DECLARE @stack TABLE (lvl int PRIMARY KEY, path varbinary(8000), sib bit);
@@ -94,8 +94,8 @@ BEGIN
     SET @cnt = @f & 15;
     IF @f & 48 = 16
     BEGIN
-        SET @cnt = CAST(SUBSTRING(@b, @pos, 1) AS int) + CAST(SUBSTRING(@b, @pos + 1, 1) AS int) * 256;
-        SET @pos += 2;
+        SET @cnt = CAST(SUBSTRING(@b, @pos, 1) AS int);
+        SET @pos += 1;
     END
     ELSE IF @f & 48 = 32
     BEGIN
