@@ -35,6 +35,7 @@ They return DDL or commands as text in a result column and execute nothing. The 
 
 - `database-administration/clear-proc-in-cache.sql`: evicts one plan from the cache.
 - `database-administration/remove-useless-schemas.sql`: drops the legacy `db_*` schemas.
+- `database-administration/configuration/indirect-checkpoint.sql`: sets `TARGET_RECOVERY_TIME` on the user databases and model when `@execute = 1`.
 - `database-administration/configuration/set-instance-dop.sql`: changes MAXDOP and cost threshold when `@execute = 1`.
 - `database-administration/ddl-generation/drop-database-users.sql`: lists the `DROP USER` statements by default and executes them with `@execute = 1`.
 - `database-administration/ddl-generation/remove-files.sql`: empties (`DBCC SHRINKFILE ... EMPTYFILE`) and removes database files unless `@debug = 1`.
