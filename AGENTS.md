@@ -87,6 +87,7 @@ Paths are relative to the repository root. The README of each folder lists furth
 | Need | Script |
 |---|---|
 | Heaviest queries in the plan cache | `diagnostics/execution-stats/query_stats.sql` |
+| Same batch text with multiple cached plans and different cache keys | `diagnostics/Memory/plan-cache-duplicates.sql` |
 | Most executed procedures | `diagnostics/execution-stats/stored-procedures/procedures-by-execution-count.sql` |
 | Queries that were slow or waited at a given time | `diagnostics/query-store/longest-queries-in-a-period.sql`, `longest-waits-in-a-period.sql` |
 | Queries that timed out or failed | `diagnostics/query-store/aborted-queries.sql`, `extended-events/on-prem/timeouts-create.sql` then `timeouts-read.sql` |

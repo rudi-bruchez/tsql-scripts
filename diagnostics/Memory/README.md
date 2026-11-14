@@ -30,6 +30,10 @@ Queries important memory and buffer performance counters including buffer cache 
 
 Provides detailed analysis of cached execution plans including cache attributes, creation time, and usage metrics.
 
+## 📝 [plan-cache-duplicates](./plan-cache-duplicates.sql)
+
+Finds batch texts with multiple cached plans and compares database, SET options, default schema (`user_id`), language, and reuse counts. Read-only, instance-wide; requires `VIEW SERVER STATE` before SQL Server 2022, or `VIEW SERVER PERFORMANCE STATE` on SQL Server 2022 and later. Different databases can legitimately have separate plans for the same text. The query uses `sys.dm_exec_query_stats`, so entries without statement execution statistics are omitted.
+
 ## 📝 [plan-cache-usage](./plan-cache-usage.sql)
 
 Summarizes plan cache usage by object type showing count and size for single-use vs. multi-use plans.
