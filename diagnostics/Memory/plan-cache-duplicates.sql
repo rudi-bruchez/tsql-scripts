@@ -14,20 +14,20 @@ SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
 WITH plans AS (
     SELECT DISTINCT qs.sql_handle, qs.plan_handle
     FROM sys.dm_exec_query_stats AS qs
-), doublons AS (
-    SELECT sql_handle, COUNT(*) AS nb_plans
+), duplicates AS (
+    SELECT sql_handle, COUNT(*) AS plan_count
     FROM plans
     GROUP BY sql_handle
     HAVING COUNT(*) > 1
 )
-SELECT d.nb_plans,
-       DB_NAME(CAST(pa.dbid AS int)) AS base,
+SELECT d.plan_count,
+       DB_NAME(CAST(pa.dbid AS int)) AS database_name,
        CAST(pa.set_options AS int) AS set_options,
        CAST(pa.user_id AS int) AS user_id,
        CAST(pa.language_id AS int) AS language_id,
        cp.usecounts,
-       LEFT(t.text, 70) AS debut_du_texte
-FROM doublons AS d
+       LEFT(t.text, 70) AS text_start
+FROM duplicates AS d
 JOIN plans AS p ON p.sql_handle = d.sql_handle
 JOIN sys.dm_exec_cached_plans AS cp ON cp.plan_handle = p.plan_handle
 CROSS APPLY sys.dm_exec_sql_text(d.sql_handle) AS t
@@ -36,5 +36,5 @@ CROSS APPLY (
     FROM (SELECT attribute, value FROM sys.dm_exec_plan_attributes(cp.plan_handle)) AS s
     PIVOT (MAX(value) FOR attribute IN (dbid, set_options, user_id, language_id)) AS pv
 ) AS pa
-ORDER BY d.nb_plans DESC, debut_du_texte, set_options
+ORDER BY d.plan_count DESC, text_start, set_options
 OPTION (RECOMPILE, MAXDOP 1);
